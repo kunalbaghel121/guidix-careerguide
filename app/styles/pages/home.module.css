@@ -1,0 +1,62 @@
+/* Home Page Styles */
+@import "tailwindcss" reference;
+
+.container {
+  @apply min-h-screen p-4;
+  background: linear-gradient(135deg, #F4F8FF 0%, #E9F1FF 100%);
+}
+
+.mainContent {
+  @apply max-w-7xl mx-auto space-y-12 py-8 lg:py-16;
+}
+
+.header {
+  @apply text-center space-y-8 animate-fade-in;
+}
+
+.iconContainer {
+  @apply inline-flex items-center justify-center w-28 h-28 rounded-3xl shadow-lg mb-8;
+  background: linear-gradient(135deg, #2370FF, #79C7FF);
+}
+
+.title {
+  @apply text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight;
+  color: #2370FF;
+}
+
+.subtitle {
+  @apply text-xl lg:text-2xl text-gray-600 font-medium max-w-4xl mx-auto leading-relaxed;
+}
+
+.ctaSection {
+  @apply text-center animate-fade-in;
+}
+
+.ctaCard {
+  @apply rounded-3xl p-8 lg:p-12 border-2 shadow-lg;
+  background-color: #F4F8FF;
+  border-color: #D5E4FF;
+}
+
+.ctaTitle {
+  @apply text-3xl lg:text-4xl font-bold mb-4 tracking-tight;
+  color: #2370FF;
+}
+
+.ctaDescription {
+  @apply text-xl text-gray-600 font-medium mb-8 max-w-3xl mx-auto leading-relaxed;
+}
+
+.ctaButtons {
+  @apply flex flex-col sm:flex-row gap-6 justify-center;
+}
+
+.primaryButton {
+  @apply text-white px-10 py-5 text-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl;
+  background: linear-gradient(135deg, #2370FF, #2B49C2);
+}
+
+.secondaryButton {
+  @apply bg-white border border-gray-300 hover:border-blue-400 hover:text-blue-700 transition-all duration-300 px-10 py-5 text-xl font-bold rounded-xl;
+  color: #2370FF;
+}

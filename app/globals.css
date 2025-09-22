@@ -1,8 +1,37 @@
 @import "tailwindcss";
 
 :root {
+  /* Base colors */
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Brand color palette */
+  --brand-primary: #2370FF;
+  --brand-primary-dark: #2B49C2;
+  --brand-primary-darker: #0355BE;
+  --brand-primary-darkest: #002A79;
+
+  /* Secondary colors */
+  --brand-secondary-lightest: #F4F8FF;
+  --brand-secondary-light: #E9F1FF;
+  --brand-secondary: #D5E4FF;
+  --brand-secondary-medium: #BCCDF9;
+
+  /* Accent colors */
+  --brand-accent-light: #9AB9FF;
+  --brand-accent: #74A2FF;
+  --brand-accent-bright: #79C7FF;
+
+  /* Neutral colors */
+  --neutral-white: #FFFFFF;
+  --neutral-lightest: #F6F7FA;
+  --neutral-light: #F3F7FF;
+  --neutral-medium-light: #E1E4EB;
+  --neutral-medium: #C4C9D6;
+  --neutral-medium-dark: #8A96C9;
+  --neutral-dark: #7D85BF;
+  --neutral-darker: #23355C;
+  --neutral-darkest: #192150;
 }
 
 @theme inline {
@@ -23,4 +52,25 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Utility classes for the design system */
+.brand-gradient {
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark));
+}
+
+.brand-bg-light {
+  background: linear-gradient(135deg, var(--brand-secondary-lightest), var(--brand-secondary-light));
+}
+
+.brand-text {
+  color: var(--brand-primary);
+}
+
+.brand-border {
+  border-color: var(--brand-primary);
+}
+
+.brand-hover:hover {
+  border-color: var(--brand-primary);
 }
