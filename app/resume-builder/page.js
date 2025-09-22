@@ -653,7 +653,7 @@ export default function ResumeBuilderPage() {
                     <span className="text-3xl">✨</span>
                   </div>
                   <h1 className="text-4xl lg:text-5xl font-black mb-6" style={{color: '#2370FF'}}>
-                    AI About to Glow You Up
+                    AI About to Glow You Up.
                   </h1>
                   <p className="text-xl lg:text-2xl font-semibold mb-10 leading-relaxed" style={{color: '#23355C'}}>
                     Drop your vibe, let AI flex it into a resume that hits different ✨
