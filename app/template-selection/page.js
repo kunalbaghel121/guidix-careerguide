@@ -147,28 +147,48 @@ export default function TemplateSelection() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <>
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+          animation: fadeIn 0.6s ease-out;
+        }
+        .hover\\:scale-105:hover {
+          transform: scale(1.02);
+        }
+        .scale-105 {
+          transform: scale(1.02);
+        }
+      `}</style>
+      <div className="min-h-screen" style={{background: 'linear-gradient(135deg, #F4F8FF 0%, #E9F1FF 100%)'}}>
+        <div className="max-w-7xl mx-auto px-4 py-8">
 
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl shadow-lg mb-6" style={{background: 'linear-gradient(135deg, #2370FF, #79C7FF)'}}>
+            <Palette className="h-10 w-10 text-white" />
+          </div>
+          <h1 className="text-5xl md:text-6xl font-bold mb-4" style={{color: '#2370FF'}}>
             Templates that absolutely slay ✨
           </h1>
-          <p className="text-gray-600">
+          <p className="text-xl text-gray-600 font-medium max-w-3xl mx-auto leading-relaxed">
             Pick your vibe bestie - you can switch it up later, no cap!
           </p>
         </div>
 
-        <div className="flex gap-8">
+        <div className="flex gap-8 lg:gap-10">
           {/* Filters Sidebar */}
           <div className="w-64 flex-shrink-0">
-            <div className="bg-white rounded-lg p-6 shadow-sm">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border-2 transition-all duration-300 hover:shadow-md" style={{borderColor: '#D5E4FF'}}>
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
+                <h2 className="text-lg font-semibold" style={{color: '#2370FF'}}>Filters</h2>
                 <button
                   onClick={clearFilters}
-                  className="text-blue-600 text-sm hover:underline"
+                  className="text-sm hover:underline transition-colors duration-300"
+                  style={{color: '#2370FF'}}
                 >
                   Clear Filters
                 </button>
@@ -176,7 +196,7 @@ export default function TemplateSelection() {
 
               {/* Headshot Filter */}
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-3">Headshot</h3>
+                <h3 className="font-semibold mb-3" style={{color: '#2370FF'}}>Headshot</h3>
                 <div className="space-y-2">
                   <label className="flex items-center">
                     <input
@@ -201,7 +221,7 @@ export default function TemplateSelection() {
 
               {/* Columns Filter */}
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-3">Columns</h3>
+                <h3 className="font-semibold mb-3" style={{color: '#2370FF'}}>Columns</h3>
                 <div className="space-y-2">
                   <label className="flex items-center">
                     <input
@@ -226,7 +246,7 @@ export default function TemplateSelection() {
 
               {/* Style Filter */}
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-3">Style</h3>
+                <h3 className="font-semibold mb-3" style={{color: '#2370FF'}}>Style</h3>
                 <div className="space-y-2">
                   <label className="flex items-center">
                     <input
@@ -262,17 +282,20 @@ export default function TemplateSelection() {
 
           {/* Templates Grid */}
           <div className="flex-1">
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 lg:gap-10 animate-fade-in">
               {filteredTemplates.map((template, index) => (
                 <div
                   key={template.id}
                   onClick={() => handleTemplateSelect(template.id)}
-                  className={`bg-white rounded-lg shadow-sm border-2 cursor-pointer transition-all duration-200 hover:shadow-md relative ${
-                    selectedTemplate === template.id ? 'border-blue-500 shadow-lg' : 'border-gray-200'
+                  className={`bg-white rounded-2xl shadow-sm border-2 cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105 relative group transform ${
+                    selectedTemplate === template.id ? 'shadow-lg scale-105' : ''
                   }`}
+                  style={{
+                    borderColor: selectedTemplate === template.id ? '#2370FF' : '#D5E4FF'
+                  }}
                 >
                   {/* Template Preview - Using standard letter size aspect ratio (8.5:11) */}
-                  <div className="relative aspect-[8.5/11] bg-white rounded-t-lg overflow-hidden shadow-inner border border-gray-100">
+                  <div className="relative aspect-[8.5/11] bg-white rounded-t-2xl overflow-hidden shadow-inner border" style={{borderColor: '#E9F1FF'}}>
 
                     {/* Template 1: Modern Two-Column with Photo */}
                     {template.id === "saanvi-patel-1" && (
@@ -1124,7 +1147,7 @@ export default function TemplateSelection() {
                     {/* Recommended Badge */}
                     {template.isRecommended && (
                       <div className="absolute top-2 left-2">
-                        <span className="bg-red-500 text-white text-xs px-2 py-1 rounded font-semibold">
+                        <span className="text-white text-xs px-3 py-1.5 rounded-xl font-bold shadow-lg" style={{background: 'linear-gradient(135deg, #2370FF, #79C7FF)'}}>
                           RECOMMENDED
                         </span>
                       </div>
@@ -1133,17 +1156,17 @@ export default function TemplateSelection() {
                     {/* Selection Checkmark */}
                     {selectedTemplate === template.id && (
                       <div className="absolute top-2 right-2">
-                        <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
-                          <span className="text-white text-xs">✓</span>
+                        <div className="w-7 h-7 rounded-full flex items-center justify-center shadow-lg" style={{background: 'linear-gradient(135deg, #2370FF, #79C7FF)'}}>
+                          <span className="text-white text-sm font-bold">✓</span>
                         </div>
                       </div>
                     )}
                   </div>
 
                   {/* Template Name */}
-                  <div className="p-4">
-                    <h3 className="font-semibold text-gray-900 mb-2">{template.name}</h3>
-                    <p className="text-sm text-gray-600">{template.description}</p>
+                  <div className="p-6">
+                    <h3 className="font-bold text-xl mb-2 group-hover:text-blue-700 transition-colors" style={{color: '#2370FF'}}>{template.name}</h3>
+                    <p className="text-base text-gray-600 font-medium leading-relaxed">{template.description}</p>
                   </div>
                 </div>
               ))}
@@ -1152,30 +1175,46 @@ export default function TemplateSelection() {
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex justify-between items-center mt-8">
+        <div className="flex justify-between items-center mt-12">
           <Button
             variant="outline"
             onClick={handlePrev}
-            className="bg-white text-gray-700 px-6 py-3 rounded-lg font-semibold border border-gray-300 hover:border-blue-400 hover:text-blue-700 transition-all duration-300 flex items-center gap-2"
+            className="bg-white px-8 py-4 rounded-xl font-bold border-2 transition-all duration-300 flex items-center gap-3 hover:shadow-sm"
+            style={{
+              borderColor: '#D5E4FF',
+              color: '#2370FF'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.borderColor = '#2370FF';
+              e.target.style.backgroundColor = '#F4F8FF';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.borderColor = '#D5E4FF';
+              e.target.style.backgroundColor = 'white';
+            }}
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-5 w-5" />
             Previous
           </Button>
 
           <Button
             onClick={handleContinue}
             disabled={!selectedTemplate}
-            className={`px-8 py-3 font-bold rounded-lg transition-all duration-300 flex items-center gap-2 ${
+            className={`px-12 py-4 font-bold rounded-xl transition-all duration-300 flex items-center gap-3 shadow-lg hover:shadow-xl ${
               !selectedTemplate
                 ? 'opacity-50 cursor-not-allowed bg-gray-400 text-white'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
+                : 'text-white'
             }`}
+            style={{
+              background: !selectedTemplate ? undefined : 'linear-gradient(135deg, #2370FF, #2B49C2)'
+            }}
           >
             Continue
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-5 w-5" />
           </Button>
         </div>
       </div>
     </div>
+    </>
   );
 }
