@@ -52,32 +52,32 @@ export default function TemplateSelection() {
     },
     {
       id: "saanvi-patel-3",
-      name: "Saanvi Patel",
-      description: "Creative two-column design with photo",
+      name: "Professional Modern",
+      description: "Clean two-column design with photo",
       hasPhoto: true,
       columns: 2,
-      style: "creative",
-      colors: ["#059669", "#0891b2", "#ea580c", "#dc2626", "#374151", "#1e40af", "multicolor"],
+      style: "contemporary",
+      colors: ["#1e40af", "#374151", "#6b7280", "#1f2937", "#9ca3af", "#3b82f6", "multicolor"],
       isRecommended: true
     },
     {
       id: "template-4",
-      name: "Modern Pro",
-      description: "Professional single-column without photo",
+      name: "Harvard Classic",
+      description: "Professional academic-style layout",
       hasPhoto: false,
       columns: 1,
-      style: "contemporary",
-      colors: ["#1e40af", "#374151", "#7c3aed", "#ea580c", "#dc2626", "#16a34a", "multicolor"],
+      style: "traditional",
+      colors: ["#1e40af", "#374151", "#6b7280", "#1f2937", "#9ca3af", "#3b82f6", "multicolor"],
       isRecommended: false
     },
     {
       id: "template-5",
-      name: "Creative Edge",
-      description: "Artistic two-column with photo",
+      name: "Executive Professional",
+      description: "Premium two-column layout with photo",
       hasPhoto: true,
       columns: 2,
-      style: "creative",
-      colors: ["#7c3aed", "#ea580c", "#0891b2", "#dc2626", "#16a34a", "#374151", "multicolor"],
+      style: "contemporary",
+      colors: ["#374151", "#1e40af", "#6b7280", "#1f2937", "#9ca3af", "#3b82f6", "multicolor"],
       isRecommended: false
     },
     {
@@ -157,34 +157,31 @@ export default function TemplateSelection() {
           animation: fadeIn 0.6s ease-out;
         }
         .hover\\:scale-105:hover {
-          transform: scale(1.02);
-        }
-        .scale-105 {
-          transform: scale(1.02);
+          transform: translateY(-2px);
         }
       `}</style>
       <div className="min-h-screen" style={{background: 'linear-gradient(135deg, #F4F8FF 0%, #E9F1FF 100%)'}}>
         <div className="max-w-7xl mx-auto px-4 py-8">
 
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl shadow-lg mb-6" style={{background: 'linear-gradient(135deg, #2370FF, #79C7FF)'}}>
-            <Palette className="h-10 w-10 text-white" />
+        <div className="text-center mb-8 lg:mb-12">
+          <div className="inline-flex items-center justify-center w-16 h-16 lg:w-20 lg:h-20 rounded-3xl shadow-lg mb-4 lg:mb-6" style={{background: 'linear-gradient(135deg, #2370FF, #79C7FF)'}}>
+            <Palette className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-4" style={{color: '#2370FF'}}>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4" style={{color: '#2370FF'}}>
             Templates that absolutely slay ✨
           </h1>
-          <p className="text-xl text-gray-600 font-medium max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg lg:text-xl text-gray-600 font-medium max-w-3xl mx-auto leading-relaxed px-4">
             Pick your vibe bestie - you can switch it up later, no cap!
           </p>
         </div>
 
-        <div className="flex gap-8 lg:gap-10">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Filters Sidebar */}
-          <div className="w-64 flex-shrink-0">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border-2 transition-all duration-300 hover:shadow-md" style={{borderColor: '#D5E4FF'}}>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-semibold" style={{color: '#2370FF'}}>Filters</h2>
+          <div className="w-full lg:w-64 lg:flex-shrink-0">
+            <div className="bg-white rounded-2xl p-4 lg:p-6 shadow-sm border-2 transition-all duration-300 hover:shadow-md" style={{borderColor: '#D5E4FF'}}>
+              <div className="flex items-center justify-between mb-4 lg:mb-6">
+                <h2 className="text-base lg:text-lg font-semibold" style={{color: '#2370FF'}}>Filters</h2>
                 <button
                   onClick={clearFilters}
                   className="text-sm hover:underline transition-colors duration-300"
@@ -194,87 +191,90 @@ export default function TemplateSelection() {
                 </button>
               </div>
 
-              {/* Headshot Filter */}
-              <div className="mb-6">
-                <h3 className="font-semibold mb-3" style={{color: '#2370FF'}}>Headshot</h3>
-                <div className="space-y-2">
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={filters.headshot === 'with'}
-                      onChange={(e) => handleFilterChange('headshot', e.target.checked ? 'with' : 'all')}
-                      className="mr-2"
-                    />
-                    <span className="text-sm text-gray-700">With photo</span>
-                  </label>
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={filters.headshot === 'without'}
-                      onChange={(e) => handleFilterChange('headshot', e.target.checked ? 'without' : 'all')}
-                      className="mr-2"
-                    />
-                    <span className="text-sm text-gray-700">Without photo</span>
-                  </label>
+              {/* Mobile Filter Layout */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4 lg:gap-6">
+                {/* Headshot Filter */}
+                <div>
+                  <h3 className="font-semibold mb-2 lg:mb-3" style={{color: '#2370FF'}}>Headshot</h3>
+                  <div className="space-y-2">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={filters.headshot === 'with'}
+                        onChange={(e) => handleFilterChange('headshot', e.target.checked ? 'with' : 'all')}
+                        className="mr-2"
+                      />
+                      <span className="text-sm text-gray-700">With photo</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={filters.headshot === 'without'}
+                        onChange={(e) => handleFilterChange('headshot', e.target.checked ? 'without' : 'all')}
+                        className="mr-2"
+                      />
+                      <span className="text-sm text-gray-700">Without photo</span>
+                    </label>
+                  </div>
                 </div>
-              </div>
 
-              {/* Columns Filter */}
-              <div className="mb-6">
-                <h3 className="font-semibold mb-3" style={{color: '#2370FF'}}>Columns</h3>
-                <div className="space-y-2">
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={filters.columns === '1'}
-                      onChange={(e) => handleFilterChange('columns', e.target.checked ? '1' : 'all')}
-                      className="mr-2"
-                    />
-                    <span className="text-sm text-gray-700">1 Column</span>
-                  </label>
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={filters.columns === '2'}
-                      onChange={(e) => handleFilterChange('columns', e.target.checked ? '2' : 'all')}
-                      className="mr-2"
-                    />
-                    <span className="text-sm text-gray-700">2 Columns</span>
-                  </label>
+                {/* Columns Filter */}
+                <div>
+                  <h3 className="font-semibold mb-2 lg:mb-3" style={{color: '#2370FF'}}>Columns</h3>
+                  <div className="space-y-2">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={filters.columns === '1'}
+                        onChange={(e) => handleFilterChange('columns', e.target.checked ? '1' : 'all')}
+                        className="mr-2"
+                      />
+                      <span className="text-sm text-gray-700">1 Column</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={filters.columns === '2'}
+                        onChange={(e) => handleFilterChange('columns', e.target.checked ? '2' : 'all')}
+                        className="mr-2"
+                      />
+                      <span className="text-sm text-gray-700">2 Columns</span>
+                    </label>
+                  </div>
                 </div>
-              </div>
 
-              {/* Style Filter */}
-              <div className="mb-6">
-                <h3 className="font-semibold mb-3" style={{color: '#2370FF'}}>Style</h3>
-                <div className="space-y-2">
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={filters.style === 'traditional'}
-                      onChange={(e) => handleFilterChange('style', e.target.checked ? 'traditional' : 'all')}
-                      className="mr-2"
-                    />
-                    <span className="text-sm text-gray-700">Traditional</span>
-                  </label>
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={filters.style === 'creative'}
-                      onChange={(e) => handleFilterChange('style', e.target.checked ? 'creative' : 'all')}
-                      className="mr-2"
-                    />
-                    <span className="text-sm text-gray-700">Creative</span>
-                  </label>
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={filters.style === 'contemporary'}
-                      onChange={(e) => handleFilterChange('style', e.target.checked ? 'contemporary' : 'all')}
-                      className="mr-2"
-                    />
-                    <span className="text-sm text-gray-700">Contemporary</span>
-                  </label>
+                {/* Style Filter */}
+                <div>
+                  <h3 className="font-semibold mb-2 lg:mb-3" style={{color: '#2370FF'}}>Style</h3>
+                  <div className="space-y-2">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={filters.style === 'traditional'}
+                        onChange={(e) => handleFilterChange('style', e.target.checked ? 'traditional' : 'all')}
+                        className="mr-2"
+                      />
+                      <span className="text-sm text-gray-700">Traditional</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={filters.style === 'creative'}
+                        onChange={(e) => handleFilterChange('style', e.target.checked ? 'creative' : 'all')}
+                        className="mr-2"
+                      />
+                      <span className="text-sm text-gray-700">Creative</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={filters.style === 'contemporary'}
+                        onChange={(e) => handleFilterChange('style', e.target.checked ? 'contemporary' : 'all')}
+                        className="mr-2"
+                      />
+                      <span className="text-sm text-gray-700">Contemporary</span>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -282,13 +282,13 @@ export default function TemplateSelection() {
 
           {/* Templates Grid */}
           <div className="flex-1">
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 lg:gap-10 animate-fade-in">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 lg:gap-8 animate-fade-in">
               {filteredTemplates.map((template, index) => (
                 <div
                   key={template.id}
                   onClick={() => handleTemplateSelect(template.id)}
-                  className={`bg-white rounded-2xl shadow-sm border-2 cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105 relative group transform ${
-                    selectedTemplate === template.id ? 'shadow-lg scale-105' : ''
+                  className={`bg-white rounded-2xl shadow-sm border-2 cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 relative group ${
+                    selectedTemplate === template.id ? 'shadow-xl border-4 -translate-y-1' : 'hover:shadow-md'
                   }`}
                   style={{
                     borderColor: selectedTemplate === template.id ? '#2370FF' : '#D5E4FF'
@@ -624,390 +624,443 @@ export default function TemplateSelection() {
                       </div>
                     )}
 
-                    {/* Template 3: Creative Green Two-Column */}
+                    {/* Template 3: Professional Modern Two-Column */}
                     {template.id === "saanvi-patel-3" && (
-                      <div className="h-full flex bg-white">
-                        {/* Left Column - Green Sidebar */}
-                        <div className="w-2/5 bg-emerald-600 text-white p-3 text-[6px]">
-                          <div className="text-center mb-3">
-                            <div className="w-10 h-10 bg-white rounded-full mx-auto mb-2 shadow-md"></div>
-                            <div className="font-bold text-[9px] leading-none">Saanvi Patel</div>
-                            <div className="text-[6px] mt-1 font-medium opacity-90">RETAIL SALES ASSOCIATE</div>
-                          </div>
-
-                          <div className="mb-3">
-                            <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">CONTACT</div>
-                            <div className="text-[5px] space-y-1">
-                              <div className="flex items-center gap-1">
-                                <span>📧</span> saanvi.patel@email.com
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <span>📱</span> +91 98 123-4567
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <span>🌐</span> linkedin.com/in/saanvipatel
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <span>📍</span> New Delhi, India
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="mb-3">
-                            <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">EDUCATION</div>
-                            <div className="text-[5px]">
-                              <div className="font-semibold">Diploma in Financial Accounting</div>
-                              <div className="opacity-90">Delhi University</div>
-                              <div className="opacity-90">2018 - 2020</div>
-                            </div>
-                          </div>
-
-                          <div className="mb-3">
-                            <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">SKILLS</div>
-                            <div className="text-[5px] space-y-0.5">
-                              <div>• Customer Service</div>
-                              <div>• Sales Strategy</div>
-                              <div>• Team Leadership</div>
-                              <div>• Inventory Management</div>
-                              <div>• Visual Merchandising</div>
-                              <div>• Problem Solving</div>
-                            </div>
-                          </div>
-
-                          <div>
-                            <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">LANGUAGES</div>
-                            <div className="text-[5px] space-y-0.5">
-                              <div>• English (Fluent)</div>
-                              <div>• Hindi (Native)</div>
-                              <div>• Punjabi (Conversational)</div>
-                            </div>
-                          </div>
+                      <div className="h-full bg-white p-2 text-[4px] leading-tight">
+                        {/* Header with Name and Title */}
+                        <div className="text-center mb-2 pb-1 border-b border-gray-300">
+                          <div className="font-bold text-[7px] text-gray-800 tracking-wider">JENNIFER WILLIAMS</div>
+                          <div className="text-[4px] text-gray-600 mt-0.5 font-medium">SENIOR PROJECT MANAGER</div>
+                          <div className="text-[3px] text-gray-500 mt-0.5">jennifer.williams@email.com • +1 (555) 123-4567 • New York, NY • linkedin.com/in/jenniferwilliams</div>
                         </div>
 
-                        {/* Right Column - Main Content */}
-                        <div className="w-3/5 p-3 text-[6px]">
-                          <div className="mb-2">
-                            <div className="font-bold text-emerald-700 mb-1 text-[7px] uppercase tracking-wide">PROFESSIONAL SUMMARY</div>
-                            <div className="text-[5px] text-gray-600 leading-relaxed">
-                              Dynamic retail professional with 3+ years of proven success in sales, customer service, and team leadership. Consistently exceeds targets while building lasting customer relationships. Passionate about creating exceptional shopping experiences and driving business growth.
+                        <div className="flex gap-2">
+                          {/* Left Column */}
+                          <div className="w-1/3 space-y-1.5">
+                            {/* Photo */}
+                            <div className="text-center">
+                              <div className="w-8 h-8 bg-gray-300 rounded mx-auto border-2 border-gray-400"></div>
                             </div>
-                          </div>
 
-                          <div className="mb-2">
-                            <div className="font-bold text-emerald-700 mb-1 text-[7px] uppercase tracking-wide">PROFESSIONAL EXPERIENCE</div>
-                            <div className="text-[5px] text-gray-600">
-                              <div className="mb-1.5">
-                                <div className="font-semibold text-gray-800">Senior Retail Sales Associate</div>
-                                <div className="font-medium text-emerald-600">Fashion Forward • 05/2019 - Present</div>
-                                <div className="mt-0.5 space-y-0.5">
-                                  <div>• Achieved 125% of sales targets for 18 consecutive months</div>
-                                  <div>• Improved customer satisfaction ratings by 30%</div>
-                                  <div>• Led training programs for 5 new team members</div>
-                                  <div>• Implemented merchandising strategies increasing sales by 20%</div>
+                            {/* Professional Summary */}
+                            <div>
+                              <div className="font-bold text-gray-700 mb-0.5 text-[4px] uppercase tracking-wide">PROFESSIONAL SUMMARY</div>
+                              <div className="text-[3.5px] text-gray-600 leading-relaxed">
+                                Dynamic Project Manager with 8+ years of experience leading cross-functional teams and delivering complex projects on time and within budget. Expertise in Agile methodologies, stakeholder management, and process optimization.
+                              </div>
+                            </div>
+
+                            {/* Core Competencies */}
+                            <div>
+                              <div className="font-bold text-gray-700 mb-0.5 text-[4px] uppercase tracking-wide">CORE COMPETENCIES</div>
+                              <div className="text-[3.5px] text-gray-600 space-y-0.5">
+                                <div>• Project Management</div>
+                                <div>• Agile & Scrum Methodologies</div>
+                                <div>• Team Leadership</div>
+                                <div>• Stakeholder Management</div>
+                                <div>• Risk Assessment</div>
+                                <div>• Budget Management</div>
+                                <div>• Process Improvement</div>
+                                <div>• Strategic Planning</div>
+                              </div>
+                            </div>
+
+                            {/* Technical Skills */}
+                            <div>
+                              <div className="font-bold text-gray-700 mb-0.5 text-[4px] uppercase tracking-wide">TECHNICAL SKILLS</div>
+                              <div className="text-[3.5px] text-gray-600 space-y-0.5">
+                                <div>• MS Project & Smartsheet</div>
+                                <div>• JIRA & Confluence</div>
+                                <div>• Tableau & Power BI</div>
+                                <div>• Advanced Excel & VBA</div>
+                                <div>• Salesforce CRM</div>
+                                <div>• SQL & Database Management</div>
+                              </div>
+                            </div>
+
+                            {/* Education */}
+                            <div>
+                              <div className="font-bold text-gray-700 mb-0.5 text-[4px] uppercase tracking-wide">EDUCATION</div>
+                              <div className="text-[3.5px] text-gray-600 space-y-0.5">
+                                <div>
+                                  <div className="font-semibold text-gray-800">MBA, Operations Management</div>
+                                  <div className="text-gray-600">Columbia Business School • 2018</div>
+                                </div>
+                                <div>
+                                  <div className="font-semibold text-gray-800">B.S. Industrial Engineering</div>
+                                  <div className="text-gray-600">NYU • 2014 • Magna Cum Laude</div>
                                 </div>
                               </div>
+                            </div>
 
-                              <div>
-                                <div className="font-semibold text-gray-800">Sales Assistant</div>
-                                <div className="font-medium text-emerald-600">Retail Plus • 01/2018 - 04/2019</div>
-                                <div className="mt-0.5 space-y-0.5">
-                                  <div>• Maintained 95% customer satisfaction score</div>
-                                  <div>• Assisted in inventory management and stock control</div>
+                            {/* Certifications */}
+                            <div>
+                              <div className="font-bold text-gray-700 mb-0.5 text-[4px] uppercase tracking-wide">CERTIFICATIONS</div>
+                              <div className="text-[3.5px] text-gray-600 space-y-0.5">
+                                <div>• PMP Certified (2020)</div>
+                                <div>• Certified ScrumMaster (2019)</div>
+                                <div>• Six Sigma Green Belt (2018)</div>
+                                <div>• ITIL Foundation (2017)</div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Right Column */}
+                          <div className="w-2/3 space-y-1.5">
+                            {/* Professional Experience */}
+                            <div>
+                              <div className="font-bold text-gray-700 mb-0.5 text-[4px] uppercase tracking-wide">PROFESSIONAL EXPERIENCE</div>
+                              <div className="text-[3.5px] text-gray-600 space-y-1">
+                                <div>
+                                  <div className="font-semibold text-gray-800">Senior Project Manager</div>
+                                  <div className="font-medium text-gray-600">Tech Solutions Inc. • 01/2021 - Present • New York, NY</div>
+                                  <div className="mt-0.5 space-y-0.5">
+                                    <div>• Led 15+ cross-functional projects with budgets ranging from $500K to $5M</div>
+                                    <div>• Implemented Agile practices reducing project delivery time by 30%</div>
+                                    <div>• Managed teams of 20+ members across multiple departments and time zones</div>
+                                    <div>• Achieved 98% on-time delivery rate while maintaining quality standards</div>
+                                    <div>• Developed project management framework adopted company-wide</div>
+                                  </div>
+                                </div>
+
+                                <div>
+                                  <div className="font-semibold text-gray-800">Project Manager</div>
+                                  <div className="font-medium text-gray-600">Digital Innovations Corp • 03/2018 - 12/2020 • New York, NY</div>
+                                  <div className="mt-0.5 space-y-0.5">
+                                    <div>• Managed software development projects from initiation to closure</div>
+                                    <div>• Coordinated with stakeholders to define project scope and requirements</div>
+                                    <div>• Implemented risk management strategies reducing project failures by 40%</div>
+                                    <div>• Led digital transformation initiatives improving operational efficiency by 25%</div>
+                                  </div>
+                                </div>
+
+                                <div>
+                                  <div className="font-semibold text-gray-800">Associate Project Manager</div>
+                                  <div className="font-medium text-gray-600">Consulting Partners LLC • 06/2015 - 02/2018 • New York, NY</div>
+                                  <div className="mt-0.5 space-y-0.5">
+                                    <div>• Assisted senior project managers in planning and executing client projects</div>
+                                    <div>• Maintained project schedules and tracked deliverables using MS Project</div>
+                                    <div>• Conducted regular status meetings and prepared executive reports</div>
+                                    <div>• Supported business process improvement initiatives for Fortune 500 clients</div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
 
-                          <div className="mb-2">
-                            <div className="font-bold text-emerald-700 mb-1 text-[7px] uppercase tracking-wide">KEY ACHIEVEMENTS</div>
-                            <div className="text-[5px] text-gray-600 space-y-0.5">
-                              <div>🏆 Employee of the Month (3 times in 2023)</div>
-                              <div>🏆 Top Sales Performer of the Year 2023</div>
-                              <div>🏆 Customer Service Excellence Award 2022</div>
-                              <div>🏆 Perfect Attendance Award 2021-2023</div>
-                            </div>
-                          </div>
-
-                          <div className="mb-1.5">
-                            <div className="font-bold text-emerald-700 mb-1 text-[6px] uppercase tracking-wide">CERTIFICATIONS</div>
-                            <div className="text-[4px] text-gray-600 space-y-0.5">
-                              <div>• Retail Sales Certification (2023)</div>
-                              <div>• Customer Service Excellence (2022)</div>
-                              <div>• First Aid & CPR Certified (2023)</div>
-                              <div>• Digital Marketing Basics (2023)</div>
-                              <div>• Inventory Management Systems (2022)</div>
-                            </div>
-                          </div>
-
-                          <div className="mb-1.5">
-                            <div className="font-bold text-emerald-700 mb-1 text-[6px] uppercase tracking-wide">VOLUNTEER WORK</div>
-                            <div className="text-[4px] text-gray-600">
-                              <div className="font-semibold text-gray-800">Community Outreach Volunteer</div>
-                              <div className="font-medium text-emerald-600">Delhi Youth Foundation • 2020-Present</div>
-                              <div className="mt-0.5 space-y-0.5">
-                                <div>• Organized clothing drives collecting 500+ items</div>
-                                <div>• Mentored 15+ youth in professional development</div>
-                                <div>• Coordinated COVID-19 relief efforts</div>
+                            {/* Key Achievements */}
+                            <div>
+                              <div className="font-bold text-gray-700 mb-0.5 text-[4px] uppercase tracking-wide">KEY ACHIEVEMENTS</div>
+                              <div className="text-[3.5px] text-gray-600 space-y-0.5">
+                                <div>🏆 Project Manager of the Year - Tech Solutions Inc. (2023)</div>
+                                <div>🏆 Excellence in Leadership Award - Digital Innovations Corp (2020)</div>
+                                <div>🏆 Client Satisfaction Award - Consulting Partners LLC (2017)</div>
+                                <div>🏆 Dean's List - Columbia Business School (2017, 2018)</div>
                               </div>
                             </div>
-                          </div>
 
-                          <div className="mb-1.5">
-                            <div className="font-bold text-emerald-700 mb-1 text-[6px] uppercase tracking-wide">PROJECTS</div>
-                            <div className="text-[4px] text-gray-600 space-y-0.5">
-                              <div>
-                                <div className="font-semibold text-gray-800">Customer Feedback System Implementation</div>
-                                <div>• Designed and implemented digital feedback collection system</div>
-                                <div>• Increased response rate by 60% and improved store rating to 4.8/5</div>
-                              </div>
-                              <div>
-                                <div className="font-semibold text-gray-800">Store Layout Optimization Project</div>
-                                <div>• Collaborated on redesigning store layout for improved customer flow</div>
-                                <div>• Result: 25% increase in average transaction value</div>
+                            {/* Professional Development */}
+                            <div>
+                              <div className="font-bold text-gray-700 mb-0.5 text-[4px] uppercase tracking-wide">PROFESSIONAL DEVELOPMENT</div>
+                              <div className="text-[3.5px] text-gray-600 space-y-0.5">
+                                <div>• Advanced Project Management Program - Stanford University (2022)</div>
+                                <div>• Leadership in Digital Transformation - MIT Sloan (2021)</div>
+                                <div>• Strategic Thinking and Problem Solving - Wharton Executive Education (2020)</div>
+                                <div>• Change Management Certification - Prosci (2019)</div>
                               </div>
                             </div>
-                          </div>
 
-                          <div>
-                            <div className="font-bold text-emerald-700 mb-1 text-[6px] uppercase tracking-wide">ADDITIONAL INFO</div>
-                            <div className="text-[4px] text-gray-600 space-y-0.5">
-                              <div>• Available for flexible scheduling including weekends</div>
-                              <div>• Proficient in MS Office Suite and social media platforms</div>
-                              <div>• Strong analytical skills with attention to detail</div>
-                              <div>• Excellent interpersonal and cross-cultural communication</div>
-                              <div>• Valid driver's license with reliable transportation</div>
+                            {/* Professional Associations */}
+                            <div>
+                              <div className="font-bold text-gray-700 mb-0.5 text-[4px] uppercase tracking-wide">PROFESSIONAL ASSOCIATIONS</div>
+                              <div className="text-[3.5px] text-gray-600 space-y-0.5">
+                                <div>• Project Management Institute (PMI) - Active Member since 2016</div>
+                                <div>• Scrum Alliance - Certified Member</div>
+                                <div>• Women in Technology Leadership - Board Member</div>
+                                <div>• NYC Project Management Meetup - Organizing Committee</div>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     )}
 
-                    {/* Template 4: Modern Professional */}
+                    {/* Template 4: Harvard Classic */}
                     {template.id === "template-4" && (
-                      <div className="h-full p-4 text-[6px] bg-gray-50 leading-tight">
+                      <div className="h-full p-4 text-[6px] bg-white leading-tight">
                         <div className="text-center mb-3 border-b-2 border-blue-600 pb-2">
-                          <div className="font-bold text-[10px] text-gray-800 tracking-wider">ALEX JOHNSON</div>
-                          <div className="text-blue-600 font-semibold text-[7px] mt-0.5">SOFTWARE ENGINEER</div>
-                          <div className="text-[5px] text-gray-500 mt-1">alex.johnson@email.com • +1 (555) 123-4567 • San Francisco, CA</div>
+                          <div className="font-bold text-[10px] text-gray-800 tracking-wider">MICHAEL THOMPSON</div>
+                          <div className="text-blue-600 font-semibold text-[7px] mt-0.5">RESEARCH ANALYST</div>
+                          <div className="text-[5px] text-gray-600 mt-1">michael.thompson@email.com • +1 (617) 555-0123 • Cambridge, MA</div>
                         </div>
 
                         <div className="space-y-2">
                           <div>
-                            <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-[6px] uppercase tracking-wide">PROFESSIONAL SUMMARY</div>
-                            <div className="text-[5px] text-gray-600 leading-relaxed">
-                              Full-stack software engineer with 5+ years of experience building scalable web applications. Expertise in modern JavaScript frameworks, cloud technologies, and agile development methodologies.
-                            </div>
-                          </div>
-
-                          <div>
-                            <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-[6px] uppercase tracking-wide">TECHNICAL SKILLS</div>
-                            <div className="text-[5px] text-gray-600 grid grid-cols-2 gap-x-2">
-                              <div>• React, Vue.js, Angular</div>
-                              <div>• Node.js, Express, Django</div>
-                              <div>• Python, JavaScript, TypeScript</div>
-                              <div>• AWS, Docker, Kubernetes</div>
-                              <div>• PostgreSQL, MongoDB</div>
-                              <div>• Git, Jenkins, Agile</div>
-                            </div>
-                          </div>
-
-                          <div>
-                            <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-[6px] uppercase tracking-wide">EXPERIENCE</div>
+                            <div className="font-bold text-blue-600 border-b border-blue-600 mb-1 text-[6px] uppercase tracking-wide">EDUCATION</div>
                             <div className="text-[5px] text-gray-600 space-y-1">
                               <div>
-                                <div className="font-semibold text-gray-800">Senior Software Engineer</div>
-                                <div className="font-medium text-blue-600">TechCorp Inc. • 2021 - Present • San Francisco, CA</div>
-                                <div className="mt-0.5 space-y-0.5">
-                                  <div>• Led development of microservices architecture serving 1M+ users</div>
-                                  <div>• Reduced application load time by 40% through optimization</div>
-                                  <div>• Mentored 3 junior developers and conducted code reviews</div>
-                                </div>
+                                <div className="font-semibold text-gray-800">Master of Business Administration (MBA)</div>
+                                <div className="text-gray-600">Harvard Business School • 2022-2024 • GPA: 3.9/4.0</div>
+                                <div className="text-gray-500">Concentration: Finance & Strategic Management</div>
                               </div>
                               <div>
-                                <div className="font-semibold text-gray-800">Software Engineer</div>
-                                <div className="font-medium text-blue-600">StartupXYZ • 2019 - 2021 • San Francisco, CA</div>
-                                <div className="mt-0.5 space-y-0.5">
-                                  <div>• Built RESTful APIs and responsive web applications</div>
-                                  <div>• Implemented automated testing increasing code coverage to 90%</div>
-                                </div>
+                                <div className="font-semibold text-gray-800">Bachelor of Arts, Economics</div>
+                                <div className="text-gray-600">Harvard College • 2016-2020 • Magna Cum Laude</div>
+                                <div className="text-gray-500">Thesis: "Market Efficiency in Emerging Economies"</div>
                               </div>
-                            </div>
-                          </div>
-
-                          <div className="mb-2">
-                            <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-[5px] uppercase tracking-wide">EDUCATION</div>
-                            <div className="text-[4px] text-gray-600">
-                              <div className="font-semibold text-gray-800">B.S. Computer Science</div>
-                              <div className="text-gray-600">Stanford University • 2015-2019 • GPA: 3.8/4.0</div>
-                              <div className="text-gray-500">Relevant Coursework: Data Structures, Algorithms, Database Systems</div>
-                            </div>
-                          </div>
-
-                          <div className="mb-2">
-                            <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-[5px] uppercase tracking-wide">PROJECTS</div>
-                            <div className="text-[4px] text-gray-600 space-y-1">
-                              <div>
-                                <div className="font-semibold text-gray-800">E-Commerce Platform</div>
-                                <div className="text-blue-600">React, Node.js, PostgreSQL • 2023</div>
-                                <div>• Built full-stack application handling 10K+ concurrent users</div>
-                              </div>
-                              <div>
-                                <div className="font-semibold text-gray-800">ML Recommendation System</div>
-                                <div className="text-blue-600">Python, TensorFlow, AWS • 2023</div>
-                                <div>• Developed ML model improving accuracy by 35%</div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="mb-2">
-                            <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-[5px] uppercase tracking-wide">CERTIFICATIONS</div>
-                            <div className="text-[4px] text-gray-600 space-y-0.5">
-                              <div>• AWS Certified Solutions Architect (2023)</div>
-                              <div>• Google Cloud Professional Developer (2023)</div>
-                              <div>• Certified Kubernetes Administrator (2022)</div>
-                              <div>• Scrum Master Certification (2022)</div>
                             </div>
                           </div>
 
                           <div>
-                            <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-[5px] uppercase tracking-wide">ADDITIONAL INFO</div>
+                            <div className="font-bold text-blue-600 border-b border-blue-600 mb-1 text-[6px] uppercase tracking-wide">PROFESSIONAL EXPERIENCE</div>
+                            <div className="text-[5px] text-gray-600 space-y-1">
+                              <div>
+                                <div className="font-semibold text-gray-800">Research Analyst</div>
+                                <div className="font-medium text-gray-600">Goldman Sachs • 2020 - 2022 • New York, NY</div>
+                                <div className="mt-0.5 space-y-0.5">
+                                  <div>• Conducted financial analysis for equity research reports on 15+ companies</div>
+                                  <div>• Built complex financial models to evaluate investment opportunities</div>
+                                  <div>• Prepared presentations for senior management and client meetings</div>
+                                  <div>• Collaborated with cross-functional teams on strategic initiatives</div>
+                                </div>
+                              </div>
+                              <div>
+                                <div className="font-semibold text-gray-800">Summer Analyst</div>
+                                <div className="font-medium text-gray-600">McKinsey & Company • Summer 2019 • Boston, MA</div>
+                                <div className="mt-0.5 space-y-0.5">
+                                  <div>• Supported consulting engagements for Fortune 500 clients</div>
+                                  <div>• Performed market research and competitive analysis</div>
+                                  <div>• Developed recommendations for operational improvements</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div>
+                            <div className="font-bold text-blue-600 border-b border-blue-600 mb-1 text-[6px] uppercase tracking-wide">ACADEMIC ACHIEVEMENTS</div>
+                            <div className="text-[5px] text-gray-600 space-y-0.5">
+                              <div>• Dean's List: Fall 2017, Spring 2018, Fall 2019, Spring 2020</div>
+                              <div>• Phi Beta Kappa Honor Society, inducted Spring 2020</div>
+                              <div>• Harvard Economics Department Prize for Outstanding Senior Thesis</div>
+                              <div>• John Harvard Scholar (top 5% of class) - 2018, 2019, 2020</div>
+                              <div>• Harvard College Research Program Grant Recipient</div>
+                            </div>
+                          </div>
+
+                          <div className="mb-2">
+                            <div className="font-bold text-blue-600 border-b border-blue-600 mb-1 text-[5px] uppercase tracking-wide">RESEARCH & PUBLICATIONS</div>
+                            <div className="text-[4px] text-gray-600 space-y-1">
+                              <div>
+                                <div className="font-semibold text-gray-800">"Behavioral Economics in Emerging Markets"</div>
+                                <div className="text-gray-600">Harvard Economics Review • Published Spring 2020</div>
+                                <div>• Analyzed consumer behavior patterns across 12 developing economies</div>
+                              </div>
+                              <div>
+                                <div className="font-semibold text-gray-800">"Impact of Digital Banking on Financial Inclusion"</div>
+                                <div className="text-gray-600">Undergraduate Research Symposium • Presented Fall 2019</div>
+                                <div>• Examined mobile banking adoption in Sub-Saharan Africa</div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="mb-2">
+                            <div className="font-bold text-blue-600 border-b border-blue-600 mb-1 text-[5px] uppercase tracking-wide">LEADERSHIP & ACTIVITIES</div>
                             <div className="text-[4px] text-gray-600 space-y-0.5">
-                              <div>• Open source contributor with 50+ GitHub repositories</div>
-                              <div>• Tech blog writer with 10K+ monthly readers</div>
-                              <div>• Volunteer coding instructor for communities</div>
-                              <div>• Fluent in English and Mandarin Chinese</div>
+                              <div>
+                                <div className="font-semibold text-gray-800">President, Harvard Economics Society</div>
+                                <div className="text-gray-600">2019-2020 • Led organization of 200+ members</div>
+                              </div>
+                              <div>
+                                <div className="font-semibold text-gray-800">Teaching Fellow, Economics 101</div>
+                                <div className="text-gray-600">2019-2020 • Conducted weekly review sessions for 30+ students</div>
+                              </div>
+                              <div>
+                                <div className="font-semibold text-gray-800">Varsity Rowing Team</div>
+                                <div className="text-gray-600">2016-2020 • Competed at national collegiate level</div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="mb-2">
+                            <div className="font-bold text-blue-600 border-b border-blue-600 mb-1 text-[5px] uppercase tracking-wide">TECHNICAL SKILLS</div>
+                            <div className="text-[4px] text-gray-600 grid grid-cols-2 gap-x-2">
+                              <div>• Advanced Excel & VBA</div>
+                              <div>• Python & R Programming</div>
+                              <div>• SQL & Database Management</div>
+                              <div>• Stata & SPSS</div>
+                              <div>• Bloomberg Terminal</div>
+                              <div>• Financial Modeling</div>
+                            </div>
+                          </div>
+
+                          <div>
+                            <div className="font-bold text-blue-600 border-b border-blue-600 mb-1 text-[5px] uppercase tracking-wide">ADDITIONAL INFORMATION</div>
+                            <div className="text-[4px] text-gray-600 space-y-0.5">
+                              <div>• CFA Level I Candidate (exam scheduled June 2024)</div>
+                              <div>• Fluent in English and Spanish, conversational in Mandarin</div>
+                              <div>• Volunteer tutor for underprivileged high school students</div>
+                              <div>• Interests: Economic policy research, sustainable finance, rowing</div>
                             </div>
                           </div>
                         </div>
                       </div>
                     )}
 
-                    {/* Template 5: Creative Edge */}
+                    {/* Template 5: Executive Professional */}
                     {template.id === "template-5" && (
-                      <div className="h-full flex bg-white">
-                        <div className="w-1/3 bg-purple-600 text-white p-3 text-[6px]">
-                          <div className="text-center mb-3">
-                            <div className="w-8 h-8 bg-white rounded-full mx-auto mb-1.5 shadow-md"></div>
-                            <div className="font-bold text-[8px] leading-none">MAYA</div>
-                            <div className="font-bold text-[8px] leading-none">CHEN</div>
-                            <div className="text-[5px] mt-1 opacity-90">UI/UX DESIGNER</div>
-                          </div>
-
-                          <div className="mb-3">
-                            <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">CONTACT</div>
-                            <div className="text-[5px] space-y-1">
-                              <div>📧 maya.chen@email.com</div>
-                              <div>🎨 mayachen.design</div>
-                              <div>💼 linkedin.com/in/mayachen</div>
-                              <div>📱 +1 (555) 987-6543</div>
+                      <div className="h-full bg-white p-2 text-[4px] leading-tight">
+                        {/* Header Section */}
+                        <div className="border-b-2 border-gray-800 pb-1 mb-2">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <div className="font-bold text-[8px] text-gray-800 tracking-wide">ROBERT ANDERSON</div>
+                              <div className="text-[5px] text-gray-600 mt-0.5 font-medium">CHIEF FINANCIAL OFFICER</div>
+                              <div className="text-[3.5px] text-gray-500 mt-1">
+                                robert.anderson@email.com • +1 (212) 555-0198 • New York, NY<br/>
+                                linkedin.com/in/robertandersoncfo • Available for C-Suite Opportunities
+                              </div>
                             </div>
-                          </div>
-
-                          <div className="mb-3">
-                            <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">DESIGN SKILLS</div>
-                            <div className="text-[5px] space-y-0.5">
-                              <div>• Figma & Sketch</div>
-                              <div>• Adobe Creative Suite</div>
-                              <div>• Prototyping</div>
-                              <div>• User Research</div>
-                              <div>• Wireframing</div>
-                              <div>• Design Systems</div>
-                            </div>
-                          </div>
-
-                          <div>
-                            <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">SOFTWARE</div>
-                            <div className="text-[5px] space-y-0.5">
-                              <div>• Figma</div>
-                              <div>• Adobe XD</div>
-                              <div>• Photoshop</div>
-                              <div>• Illustrator</div>
-                              <div>• InVision</div>
-                            </div>
+                            <div className="w-8 h-8 bg-gray-300 rounded border-2 border-gray-800 ml-2 flex-shrink-0"></div>
                           </div>
                         </div>
 
-                        <div className="w-2/3 p-3 text-[6px]">
-                          <div className="mb-2">
-                            <div className="font-bold text-purple-600 mb-1 text-[7px] uppercase tracking-wide">CREATIVE SUMMARY</div>
-                            <div className="text-[5px] text-gray-600 leading-relaxed">
-                              Passionate UI/UX designer with 4+ years of experience creating intuitive digital experiences. Specialized in mobile-first design, user research, and design systems. Proven track record of increasing user engagement by 50%.
+                        <div className="flex gap-2">
+                          {/* Left Column */}
+                          <div className="w-1/3 space-y-1.5">
+                            {/* Executive Profile */}
+                            <div>
+                              <div className="font-bold text-gray-800 mb-0.5 text-[4px] uppercase tracking-wide bg-gray-100 p-0.5">EXECUTIVE PROFILE</div>
+                              <div className="text-[3.5px] text-gray-600 leading-relaxed">
+                                Fortune 500 CFO with 15+ years of progressive leadership in financial strategy, M&A, and organizational transformation. Proven expertise in driving $500M+ revenue growth, optimizing capital structure, and leading IPO processes.
+                              </div>
                             </div>
-                          </div>
 
-                          <div className="mb-2">
-                            <div className="font-bold text-purple-600 mb-1 text-[7px] uppercase tracking-wide">DESIGN EXPERIENCE</div>
-                            <div className="text-[5px] text-gray-600 space-y-1">
-                              <div>
-                                <div className="font-semibold text-gray-800">Senior UI/UX Designer</div>
-                                <div className="font-medium text-purple-600">Creative Digital Agency • 2021 - Present</div>
-                                <div className="mt-0.5 space-y-0.5">
-                                  <div>• Designed mobile apps with 4.8+ App Store ratings</div>
-                                  <div>• Led design system implementation across 5 products</div>
-                                  <div>• Conducted user research with 200+ participants</div>
+                            {/* Core Competencies */}
+                            <div>
+                              <div className="font-bold text-gray-800 mb-0.5 text-[4px] uppercase tracking-wide bg-gray-100 p-0.5">CORE COMPETENCIES</div>
+                              <div className="text-[3.5px] text-gray-600 space-y-0.5">
+                                <div>• Financial Strategy & Planning</div>
+                                <div>• Mergers & Acquisitions</div>
+                                <div>• Capital Markets & Fundraising</div>
+                                <div>• Risk Management</div>
+                                <div>• Corporate Governance</div>
+                                <div>• Financial Reporting & Controls</div>
+                                <div>• Team Leadership & Development</div>
+                                <div>• Board Relations</div>
+                              </div>
+                            </div>
+
+                            {/* Education */}
+                            <div>
+                              <div className="font-bold text-gray-800 mb-0.5 text-[4px] uppercase tracking-wide bg-gray-100 p-0.5">EDUCATION</div>
+                              <div className="text-[3.5px] text-gray-600 space-y-0.5">
+                                <div>
+                                  <div className="font-semibold text-gray-800">MBA, Finance & Strategy</div>
+                                  <div className="text-gray-600">Harvard Business School • 2010</div>
+                                  <div className="text-gray-500">Baker Scholar (Top 5%)</div>
+                                </div>
+                                <div>
+                                  <div className="font-semibold text-gray-800">B.S. Accounting</div>
+                                  <div className="text-gray-600">University of Pennsylvania • 2006</div>
+                                  <div className="text-gray-500">Summa Cum Laude, Phi Beta Kappa</div>
                                 </div>
                               </div>
-                              <div>
-                                <div className="font-semibold text-gray-800">UI Designer</div>
-                                <div className="font-medium text-purple-600">Tech Startup • 2020 - 2021</div>
-                                <div className="mt-0.5 space-y-0.5">
-                                  <div>• Redesigned web platform increasing conversion by 35%</div>
-                                  <div>• Created prototypes and wireframes for 3 major features</div>
+                            </div>
+
+                            {/* Certifications & Licenses */}
+                            <div>
+                              <div className="font-bold text-gray-800 mb-0.5 text-[4px] uppercase tracking-wide bg-gray-100 p-0.5">CERTIFICATIONS</div>
+                              <div className="text-[3.5px] text-gray-600 space-y-0.5">
+                                <div>• Certified Public Accountant (CPA)</div>
+                                <div>• Chartered Financial Analyst (CFA)</div>
+                                <div>• Financial Risk Manager (FRM)</div>
+                                <div>• NACD Directorship Certified</div>
+                              </div>
+                            </div>
+
+                            {/* Board Positions */}
+                            <div>
+                              <div className="font-bold text-gray-800 mb-0.5 text-[4px] uppercase tracking-wide bg-gray-100 p-0.5">BOARD POSITIONS</div>
+                              <div className="text-[3.5px] text-gray-600 space-y-0.5">
+                                <div>• Audit Committee Chair<br/>TechNova Corporation</div>
+                                <div>• Board Member<br/>NYC Financial Leaders Council</div>
+                                <div>• Advisory Board<br/>FinTech Ventures Fund</div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Right Column */}
+                          <div className="w-2/3 space-y-1.5">
+                            {/* Professional Experience */}
+                            <div>
+                              <div className="font-bold text-gray-800 mb-0.5 text-[4px] uppercase tracking-wide bg-gray-100 p-0.5">EXECUTIVE EXPERIENCE</div>
+                              <div className="text-[3.5px] text-gray-600 space-y-1">
+                                <div>
+                                  <div className="font-semibold text-gray-800">Chief Financial Officer</div>
+                                  <div className="font-medium text-gray-600">Global Tech Solutions Inc. • 01/2019 - Present • New York, NY</div>
+                                  <div className="mt-0.5 space-y-0.5">
+                                    <div>• Led financial strategy for $2.5B public technology company with 5,000+ employees</div>
+                                    <div>• Orchestrated successful IPO raising $800M in capital, oversubscribed by 3x</div>
+                                    <div>• Directed 12 strategic acquisitions totaling $1.2B, enhancing market position</div>
+                                    <div>• Implemented financial systems transformation saving $25M annually in operational costs</div>
+                                    <div>• Established investor relations program improving analyst coverage and stock performance</div>
+                                  </div>
+                                </div>
+
+                                <div>
+                                  <div className="font-semibold text-gray-800">Vice President, Corporate Finance</div>
+                                  <div className="font-medium text-gray-600">Fortune Financial Corporation • 03/2015 - 12/2018 • New York, NY</div>
+                                  <div className="mt-0.5 space-y-0.5">
+                                    <div>• Managed $500M+ capital raising activities including debt and equity financing</div>
+                                    <div>• Led financial due diligence for M&A transactions exceeding $2B in aggregate value</div>
+                                    <div>• Developed comprehensive financial planning and analysis framework</div>
+                                    <div>• Supervised team of 25+ finance professionals across multiple business units</div>
+                                  </div>
+                                </div>
+
+                                <div>
+                                  <div className="font-semibold text-gray-800">Senior Director, Financial Planning</div>
+                                  <div className="font-medium text-gray-600">Investment Banking Corp • 08/2011 - 02/2015 • New York, NY</div>
+                                  <div className="mt-0.5 space-y-0.5">
+                                    <div>• Built financial models and strategic plans for $1B+ investment portfolio</div>
+                                    <div>• Established risk management protocols reducing portfolio volatility by 30%</div>
+                                    <div>• Collaborated with C-suite executives on strategic planning and capital allocation</div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
 
-                          <div className="mb-2">
-                            <div className="font-bold text-purple-600 mb-1 text-[7px] uppercase tracking-wide">EDUCATION</div>
-                            <div className="text-[5px] text-gray-600">
-                              <div className="font-semibold text-gray-800">B.A. Graphic Design</div>
-                              <div className="text-gray-600">Art Institute • 2016-2020</div>
-                            </div>
-                          </div>
-
-                          <div className="mb-1.5">
-                            <div className="font-bold text-purple-600 mb-1 text-[6px] uppercase tracking-wide">AWARDS</div>
-                            <div className="text-[4px] text-gray-600 space-y-0.5">
-                              <div>🏆 Best Mobile App Design 2023</div>
-                              <div>🏆 UX Design Excellence Award 2022</div>
-                              <div>🏆 Creative Innovation Award 2021</div>
-                              <div>🏆 Design Team Leadership Award 2023</div>
-                            </div>
-                          </div>
-
-                          <div className="mb-1.5">
-                            <div className="font-bold text-purple-600 mb-1 text-[6px] uppercase tracking-wide">PROJECTS</div>
-                            <div className="text-[4px] text-gray-600 space-y-1">
-                              <div>
-                                <div className="font-semibold text-gray-800">FinTech Mobile App Redesign</div>
-                                <div className="text-purple-600">Lead Designer • 2023</div>
-                                <div>• Increased user retention by 65% through UX improvements</div>
-                              </div>
-                              <div>
-                                <div className="font-semibold text-gray-800">E-Learning Platform Design System</div>
-                                <div className="text-purple-600">Senior Designer • 2022</div>
-                                <div>• Created design system adopted across 8 products</div>
+                            {/* Key Achievements */}
+                            <div>
+                              <div className="font-bold text-gray-800 mb-0.5 text-[4px] uppercase tracking-wide bg-gray-100 p-0.5">NOTABLE ACHIEVEMENTS</div>
+                              <div className="text-[3.5px] text-gray-600 space-y-0.5">
+                                <div>🏆 CFO of the Year - Financial Executive Magazine (2023)</div>
+                                <div>🏆 Excellence in Financial Leadership - Fortune 500 Council (2022)</div>
+                                <div>🏆 Outstanding IPO Performance - Wall Street Journal Awards (2020)</div>
+                                <div>🏆 Top 40 Under 40 CFOs - Financial Times (2018)</div>
                               </div>
                             </div>
-                          </div>
 
-                          <div className="mb-1.5">
-                            <div className="font-bold text-purple-600 mb-1 text-[6px] uppercase tracking-wide">VOLUNTEER WORK</div>
-                            <div className="text-[4px] text-gray-600">
-                              <div className="font-semibold text-gray-800">Design Mentor</div>
-                              <div className="text-purple-600">Design for Good Initiative • 2021-Present</div>
-                              <div>• Mentored 20+ aspiring designers from underrepresented communities</div>
+                            {/* Publications & Speaking */}
+                            <div>
+                              <div className="font-bold text-gray-800 mb-0.5 text-[4px] uppercase tracking-wide bg-gray-100 p-0.5">THOUGHT LEADERSHIP</div>
+                              <div className="text-[3.5px] text-gray-600 space-y-0.5">
+                                <div>• "Digital Transformation in Corporate Finance" - Harvard Business Review (2023)</div>
+                                <div>• Keynote Speaker - Global CFO Summit, London (2023)</div>
+                                <div>• "ESG Integration in Financial Strategy" - McKinsey Quarterly (2022)</div>
+                                <div>• Panel Expert - World Economic Forum, Davos (2022)</div>
+                                <div>• "The Future of Capital Markets" - Journal of Corporate Finance (2021)</div>
+                              </div>
                             </div>
-                          </div>
 
-                          <div>
-                            <div className="font-bold text-purple-600 mb-1 text-[6px] uppercase tracking-wide">ADDITIONAL INFO</div>
-                            <div className="text-[4px] text-gray-600 space-y-0.5">
-                              <div>• Speaker at design conferences and workshops</div>
-                              <div>• Proficient in front-end development (HTML, CSS, JS)</div>
-                              <div>• Fluent in English, Spanish, and Portuguese</div>
-                              <div>• Photography enthusiast with published work</div>
+                            {/* Professional Affiliations */}
+                            <div>
+                              <div className="font-bold text-gray-800 mb-0.5 text-[4px] uppercase tracking-wide bg-gray-100 p-0.5">PROFESSIONAL AFFILIATIONS</div>
+                              <div className="text-[3.5px] text-gray-600 space-y-0.5">
+                                <div>• Financial Executives International (FEI) - Executive Committee Member</div>
+                                <div>• National Association of Corporate Directors (NACD) - Active Member</div>
+                                <div>• Young Presidents' Organization (YPO) - Finance Chair, NYC Chapter</div>
+                                <div>• CFA Institute - Charter Holder and Local Society Board Member</div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1164,9 +1217,9 @@ export default function TemplateSelection() {
                   </div>
 
                   {/* Template Name */}
-                  <div className="p-6">
-                    <h3 className="font-bold text-xl mb-2 group-hover:text-blue-700 transition-colors" style={{color: '#2370FF'}}>{template.name}</h3>
-                    <p className="text-base text-gray-600 font-medium leading-relaxed">{template.description}</p>
+                  <div className="p-4 md:p-6">
+                    <h3 className="font-bold text-lg md:text-xl mb-2 group-hover:text-blue-700 transition-colors" style={{color: '#2370FF'}}>{template.name}</h3>
+                    <p className="text-sm md:text-base text-gray-600 font-medium leading-relaxed">{template.description}</p>
                   </div>
                 </div>
               ))}
@@ -1175,11 +1228,11 @@ export default function TemplateSelection() {
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex justify-between items-center mt-12">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-8 lg:mt-12">
           <Button
             variant="outline"
             onClick={handlePrev}
-            className="bg-white px-8 py-4 rounded-xl font-bold border-2 transition-all duration-300 flex items-center gap-3 hover:shadow-sm"
+            className="w-full sm:w-auto bg-white px-6 lg:px-8 py-3 lg:py-4 rounded-xl font-bold border-2 transition-all duration-300 flex items-center justify-center gap-3 hover:shadow-sm"
             style={{
               borderColor: '#D5E4FF',
               color: '#2370FF'
@@ -1193,14 +1246,14 @@ export default function TemplateSelection() {
               e.target.style.backgroundColor = 'white';
             }}
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="h-4 w-4 lg:h-5 lg:w-5" />
             Previous
           </Button>
 
           <Button
             onClick={handleContinue}
             disabled={!selectedTemplate}
-            className={`px-12 py-4 font-bold rounded-xl transition-all duration-300 flex items-center gap-3 shadow-lg hover:shadow-xl ${
+            className={`w-full sm:w-auto px-8 lg:px-12 py-3 lg:py-4 font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl ${
               !selectedTemplate
                 ? 'opacity-50 cursor-not-allowed bg-gray-400 text-white'
                 : 'text-white'
@@ -1210,7 +1263,7 @@ export default function TemplateSelection() {
             }}
           >
             Continue
-            <ArrowRight className="h-5 w-5" />
+            <ArrowRight className="h-4 w-4 lg:h-5 lg:w-5" />
           </Button>
         </div>
       </div>
