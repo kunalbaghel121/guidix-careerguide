@@ -109,60 +109,60 @@ export default function ResumeReviewPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-3">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-        <div className="absolute top-40 right-10 w-32 h-32 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-32 h-32 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse animation-delay-4000"></div>
+        <div className="absolute top-20 left-10 w-24 h-24 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-40 animate-pulse"></div>
+        <div className="absolute top-40 right-10 w-20 h-20 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-24 h-24 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-35 animate-pulse animation-delay-4000"></div>
       </div>
 
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-4">
-            <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg animate-bounce">
-              <Eye className="h-8 w-8 text-white" />
+        <div className="text-center mb-4">
+          <div className="flex items-center justify-center mb-3">
+            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg animate-bounce">
+              <Eye className="h-6 w-6 text-white" />
             </div>
           </div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-2">
-            Resume Review is Here! 📊
+          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+            Resume Review Results 📊
           </h1>
-          <p className="text-lg text-gray-600 mb-4">
-            Your resume analysis just dropped and it's giving main character energy ✨
+          <p className="text-sm text-gray-600 mb-3">
+            Your resume analysis is complete ✨
           </p>
-          <div className="bg-white px-4 py-2 rounded-full border border-purple-200 shadow-sm inline-block">
-            <span className="text-sm font-medium text-purple-700">
+          <div className="bg-white px-3 py-1 rounded-full border border-blue-200 shadow-sm inline-block">
+            <span className="text-xs font-medium text-blue-700">
               📄 {decodeURIComponent(filename)}
             </span>
           </div>
         </div>
 
         {/* Overall Score Card */}
-        <Card className="mb-8 shadow-2xl border-2 border-purple-200 bg-gradient-to-r from-purple-50 to-pink-50">
-          <CardContent className="p-8 text-center">
-            <div className="flex items-center justify-center space-x-4 mb-4">
-              <div className="text-6xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+        <Card className="mb-4 shadow-lg border border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+          <CardContent className="p-4 text-center">
+            <div className="flex items-center justify-center space-x-3 mb-3">
+              <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 {analysisResults.overallScore}
               </div>
-              <div className="text-4xl">{getScoreEmoji(analysisResults.overallScore)}</div>
+              <div className="text-2xl">{getScoreEmoji(analysisResults.overallScore)}</div>
             </div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            <h2 className="text-lg font-bold text-gray-800 mb-2">
               Your Resume Score
             </h2>
-            <p className="text-lg text-gray-600 mb-4">
+            <p className="text-sm text-gray-600 mb-3">
               {analysisResults.overallScore >= 80
-                ? "This resume is absolutely sending! Just needs a few tweaks to be perfect 💅"
+                ? "Great resume! Just needs a few tweaks to be perfect ✨"
                 : analysisResults.overallScore >= 60
-                ? "Solid foundation bestie! Let's add some spice to make it pop off 🌶️"
-                : "No worries babe, we're about to give this a complete glow-up! ✨"
+                ? "Solid foundation! Let's add some improvements 💪"
+                : "Good start! We'll help you improve it significantly ✨"
               }
             </p>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-4 gap-2">
               {analysisResults.quickFacts.map((fact, index) => (
-                <div key={index} className="bg-white rounded-lg p-3 shadow-sm">
-                  <div className="text-lg mb-1">{fact.emoji}</div>
-                  <div className="font-semibold text-gray-800 text-sm">{fact.value}</div>
+                <div key={index} className="bg-white rounded-lg p-2 shadow-sm">
+                  <div className="text-sm mb-1">{fact.emoji}</div>
+                  <div className="font-semibold text-gray-800 text-xs">{fact.value}</div>
                   <div className="text-xs text-gray-600">{fact.label}</div>
                 </div>
               ))}
@@ -170,35 +170,35 @@ export default function ResumeReviewPage() {
           </CardContent>
         </Card>
 
-        <div className="grid lg:grid-cols-2 gap-8 mb-8">
+        <div className="grid lg:grid-cols-2 gap-4 mb-4">
           {/* Strengths */}
           <Card className="shadow-lg border border-green-200 bg-gradient-to-br from-green-50 to-emerald-50">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-green-700">
-                <ThumbsUp className="h-5 w-5" />
-                What's Absolutely Slaying 💅
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2 text-green-700 text-sm">
+                <ThumbsUp className="h-4 w-4" />
+                Strengths 💪
               </CardTitle>
-              <CardDescription>
-                These parts of your resume are giving main character energy
+              <CardDescription className="text-xs">
+                What's working well in your resume
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-2">
               {analysisResults.strengths.map((strength, index) => (
                 <div
                   key={index}
-                  className={`p-4 bg-white rounded-lg border border-green-200 transition-all duration-500 ${
+                  className={`p-2 bg-white rounded-lg border border-green-200 transition-all duration-500 ${
                     animationComplete ? 'animate-fade-in' : 'opacity-0'
                   }`}
                   style={{ animationDelay: `${index * 200}ms` }}
                 >
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+                  <div className="flex items-start gap-2">
+                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center text-green-600">
                       {strength.icon}
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-green-800 mb-1">{strength.title}</h4>
-                      <p className="text-sm text-green-700 mb-2">{strength.description}</p>
-                      <Badge variant="outline" className="border-green-300 text-green-700">
+                      <h4 className="font-semibold text-green-800 mb-1 text-xs">{strength.title}</h4>
+                      <p className="text-xs text-green-700 mb-1">{strength.description}</p>
+                      <Badge variant="outline" className="border-green-300 text-green-700 text-xs">
                         {strength.impact} Impact
                       </Badge>
                     </div>
@@ -210,33 +210,33 @@ export default function ResumeReviewPage() {
 
           {/* Improvements */}
           <Card className="shadow-lg border border-orange-200 bg-gradient-to-br from-orange-50 to-yellow-50">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-orange-700">
-                <Zap className="h-5 w-5" />
-                Glow-Up Opportunities 🌟
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2 text-orange-700 text-sm">
+                <Zap className="h-4 w-4" />
+                Improvements ✨
               </CardTitle>
-              <CardDescription>
-                Small tweaks that'll make your resume absolutely iconic
+              <CardDescription className="text-xs">
+                Areas we can enhance for better results
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-2">
               {analysisResults.improvements.map((improvement, index) => (
                 <div
                   key={index}
-                  className={`p-4 bg-white rounded-lg border border-orange-200 transition-all duration-500 ${
+                  className={`p-2 bg-white rounded-lg border border-orange-200 transition-all duration-500 ${
                     animationComplete ? 'animate-fade-in' : 'opacity-0'
                   }`}
                   style={{ animationDelay: `${(index + 3) * 200}ms` }}
                 >
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center text-orange-600">
+                  <div className="flex items-start gap-2">
+                    <div className="w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center text-orange-600">
                       {improvement.icon}
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-orange-800 mb-1">{improvement.title}</h4>
-                      <p className="text-sm text-orange-700 mb-2">{improvement.description}</p>
+                      <h4 className="font-semibold text-orange-800 mb-1 text-xs">{improvement.title}</h4>
+                      <p className="text-xs text-orange-700 mb-1">{improvement.description}</p>
                       <div className="flex items-center justify-between">
-                        <Badge variant="outline" className="border-orange-300 text-orange-700">
+                        <Badge variant="outline" className="border-orange-300 text-orange-700 text-xs">
                           {improvement.impact} Impact
                         </Badge>
                         <span className="text-xs text-green-600 font-medium">
@@ -252,77 +252,77 @@ export default function ResumeReviewPage() {
         </div>
 
         {/* ATS Compatibility */}
-        <Card className="mb-8 shadow-lg border border-blue-200 bg-gradient-to-r from-blue-50 to-cyan-50">
-          <CardContent className="p-6">
+        {/* <Card className="mb-4 shadow-lg border border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+          <CardContent className="p-3">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-bold text-blue-800 mb-2">ATS Compatibility Check 🤖</h3>
-                <p className="text-blue-700">
-                  How well your resume vibes with applicant tracking systems
+                <h3 className="text-sm font-bold text-blue-800 mb-1">ATS Compatibility 🤖</h3>
+                <p className="text-xs text-blue-700">
+                  How well your resume works with tracking systems
                 </p>
               </div>
               <div className="text-right">
-                <div className="text-3xl font-bold text-blue-600">
+                <div className="text-xl font-bold text-blue-600">
                   {analysisResults.atsScore}/100
                 </div>
-                <p className="text-sm text-blue-600">
-                  {analysisResults.atsScore >= 80 ? "Robots are obsessed! 🤖💕" : "Needs some robot-friendly tweaks"}
+                <p className="text-xs text-blue-600">
+                  {analysisResults.atsScore >= 80 ? "Excellent! 🤖✨" : "Needs improvements"}
                 </p>
               </div>
             </div>
-            <div className="mt-4">
-              <div className="w-full bg-blue-200 rounded-full h-3">
+            <div className="mt-2">
+              <div className="w-full bg-blue-200 rounded-full h-2">
                 <div
-                  className="bg-gradient-to-r from-blue-500 to-cyan-500 h-3 rounded-full transition-all duration-1000"
+                  className="bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full transition-all duration-1000"
                   style={{ width: `${analysisResults.atsScore}%` }}
                 ></div>
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
 
         {/* Call to Action */}
-        <Card className="shadow-2xl border-2 border-purple-300 bg-gradient-to-r from-purple-100 to-pink-100">
-          <CardContent className="p-8 text-center">
-            <div className="mb-6">
-              <h3 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
-                Ready to Serve Looks? 💅✨
+        <Card className="shadow-lg border border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+          <CardContent className="p-4 text-center">
+            {/* <div className="mb-4">
+              <h3 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+                Ready to Improve? ✨
               </h3>
-              <p className="text-lg text-gray-700 mb-4">
-                Let's pick a template that'll make recruiters say "period!" and give your content the glow-up it deserves
+              <p className="text-sm text-gray-700 mb-3">
+                Let's select a template and enhance your resume content
               </p>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="bg-white rounded-lg p-4 shadow-sm">
-                <div className="text-2xl mb-2">🎨</div>
-                <div className="font-semibold text-gray-800 text-sm">Modern Templates</div>
-                <div className="text-xs text-gray-600">That hit different</div>
+            <div className="grid grid-cols-3 gap-2 mb-4">
+              <div className="bg-white rounded-lg p-2 shadow-sm">
+                <div className="text-lg mb-1">🎨</div>
+                <div className="font-semibold text-gray-800 text-xs">Modern Templates</div>
+                <div className="text-xs text-gray-600">Professional designs</div>
               </div>
-              <div className="bg-white rounded-lg p-4 shadow-sm">
-                <div className="text-2xl mb-2">⚡</div>
-                <div className="font-semibold text-gray-800 text-sm">AI Enhanced</div>
+              <div className="bg-white rounded-lg p-2 shadow-sm">
+                <div className="text-lg mb-1">⚡</div>
+                <div className="font-semibold text-gray-800 text-xs">AI Enhanced</div>
                 <div className="text-xs text-gray-600">Smart improvements</div>
               </div>
-              <div className="bg-white rounded-lg p-4 shadow-sm">
-                <div className="text-2xl mb-2">🚀</div>
-                <div className="font-semibold text-gray-800 text-sm">ATS Optimized</div>
-                <div className="text-xs text-gray-600">Robot approved</div>
+              <div className="bg-white rounded-lg p-2 shadow-sm">
+                <div className="text-lg mb-1">🚀</div>
+                <div className="font-semibold text-gray-800 text-xs">ATS Optimized</div>
+                <div className="text-xs text-gray-600">System friendly</div>
               </div>
-            </div>
+            </div> */}
 
             <Button
               onClick={handleContinue}
-              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 text-lg"
+              className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold px-6 py-2 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 text-sm"
             >
-              <Sparkles className="h-5 w-5 mr-2" />
-              Let's Glow Up This Resume!
-              <ArrowRight className="h-5 w-5 ml-2" />
+              <Sparkles className="h-4 w-4 mr-2" />
+              Continue to Templates
+              <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
 
-            <p className="text-sm text-gray-600 mt-4">
-              Time to make this resume absolutely iconic bestie! 💎
-            </p>
+            {/* <p className="text-xs text-gray-600 mt-3">
+              Let's make your resume stand out! 💼
+            </p> */}
           </CardContent>
         </Card>
       </div>
