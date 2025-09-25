@@ -206,8 +206,29 @@ export default function AIPromptInput() {
         companies: "Siemens Healthineers",
         location: "Mumbai",
       },
+      "prod-eng": {
+        name: "Production Engineering",
+        skills: [
+          "Lean Manufacturing",
+          "Quality Control",
+          "Process Optimization",
+          "Six Sigma",
+          "Supply Chain",
+        ],
+        projects: "production systems",
+        companies: "Mahindra",
+        location: "Chennai",
+      },
     };
-    return fieldMap[fieldId] || fieldMap["cse"];
+
+    // Handle field ID aliases and mismatches
+    const fieldAliases = {
+      "biotech": "biotechnology",
+      "prod-eng": "prod-eng", // Already defined above
+    };
+
+    const resolvedFieldId = fieldAliases[fieldId] || fieldId;
+    return fieldMap[resolvedFieldId] || fieldMap["cse"];
   };
 
   const generateDynamicPrompts = () => {

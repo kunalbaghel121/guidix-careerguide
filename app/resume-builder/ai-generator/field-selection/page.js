@@ -151,16 +151,21 @@ export default function FieldSelectionPage() {
   const [selectedField, setSelectedField] = useState("cse");
   const [educationLevel, setEducationLevel] = useState("");
   const [path, setPath] = useState("");
+  const [career, setCareer] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   useEffect(() => {
     const education = searchParams.get("education");
     const pathParam = searchParams.get("path");
+    const careerParam = searchParams.get("career");
     if (education) {
       setEducationLevel(education);
     }
     if (pathParam) {
       setPath(pathParam);
+    }
+    if (careerParam) {
+      setCareer(careerParam);
     }
   }, [searchParams]);
 
@@ -172,12 +177,12 @@ export default function FieldSelectionPage() {
 
   const handleContinue = () => {
     if (path === "ai") {
-      router.push(`/ai-prompt?field=${selectedField}&education=${educationLevel}`);
+      router.push(`/ai-prompt?fields=${selectedField}&education=${educationLevel}&career=${career}`);
     } else if (path === "upload") {
-      router.push(`/upload-resume?field=${selectedField}&education=${educationLevel}`);
+      router.push(`/upload-resume?fields=${selectedField}&education=${educationLevel}&career=${career}`);
     } else {
       // Default to AI path if no path is specified for backward compatibility
-      router.push(`/ai-prompt?field=${selectedField}&education=${educationLevel}`);
+      router.push(`/ai-prompt?fields=${selectedField}&education=${educationLevel}&career=${career}`);
     }
   };
 

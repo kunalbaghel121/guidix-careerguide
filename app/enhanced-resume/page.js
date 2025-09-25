@@ -1,13 +1,44 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Download, Edit3, CheckCircle, AlertCircle, Sparkles, Mail, Phone, MapPin, ArrowLeft, Plus, Wand2, Settings, Eye, Save, X, FileText, Star, Zap, Target, User, ChevronLeft, ChevronRight, Camera, Upload } from "lucide-react";
+import {
+  Download,
+  Edit3,
+  CheckCircle,
+  AlertCircle,
+  Sparkles,
+  Mail,
+  Phone,
+  MapPin,
+  ArrowLeft,
+  Plus,
+  Wand2,
+  Settings,
+  Eye,
+  Save,
+  X,
+  FileText,
+  Star,
+  Zap,
+  Target,
+  User,
+  ChevronLeft,
+  ChevronRight,
+  Camera,
+  Upload,
+} from "lucide-react";
 import { TextSelectionMenu } from "@/components/TextSelectionMenu";
 
 export default function EnhancedResume() {
@@ -22,9 +53,9 @@ export default function EnhancedResume() {
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
 
-  const isFromUpload = searchParams.get('from') === 'upload';
-  const isFromAI = searchParams.get('from') === 'ai';
-  const selectedTemplate = searchParams.get('template') || 'saanvi-patel-1';
+  const isFromUpload = searchParams.get("from") === "upload";
+  const isFromAI = searchParams.get("from") === "ai";
+  const selectedTemplate = searchParams.get("template") || "saanvi-patel-1";
 
   useEffect(() => {
     // Check if mobile
@@ -32,8 +63,8 @@ export default function EnhancedResume() {
       setIsMobile(window.innerWidth < 768);
     };
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   useEffect(() => {
@@ -43,24 +74,24 @@ export default function EnhancedResume() {
         setShowPreview(false);
       }
     };
-    document.addEventListener('keydown', handleEsc);
-    return () => document.removeEventListener('keydown', handleEsc);
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
   }, [showPreview]);
 
   useEffect(() => {
     // Extract user details from prompt and URL parameters
-    const prompt = searchParams.get('prompt') || '';
+    const prompt = searchParams.get("prompt") || "";
 
     // Multiple patterns to extract name
     let extractedName = null;
     const namePatterns = [
-      /I'm\s+\*\*([A-Za-z\s]+)\*\*/,  // I'm **Name**
-      /My name is\s+\*\*([A-Za-z\s]+)\*\*/i,  // My name is **Name**
-      /I am\s+\*\*([A-Za-z\s]+)\*\*/i,  // I am **Name**
-      /name:\s*\*\*([A-Za-z\s]+)\*\*/i,  // name: **Name**
-      /\*\*([A-Z][a-z]+\s+[A-Z][a-z]+)\*\*/,  // **First Last**
-      /Hi.*I'm\s+([A-Za-z\s]+)/i,  // Hi, I'm Name
-      /Hello.*I'm\s+([A-Za-z\s]+)/i,  // Hello, I'm Name
+      /I'm\s+\*\*([A-Za-z\s]+)\*\*/, // I'm **Name**
+      /My name is\s+\*\*([A-Za-z\s]+)\*\*/i, // My name is **Name**
+      /I am\s+\*\*([A-Za-z\s]+)\*\*/i, // I am **Name**
+      /name:\s*\*\*([A-Za-z\s]+)\*\*/i, // name: **Name**
+      /\*\*([A-Z][a-z]+\s+[A-Z][a-z]+)\*\*/, // **First Last**
+      /Hi.*I'm\s+([A-Za-z\s]+)/i, // Hi, I'm Name
+      /Hello.*I'm\s+([A-Za-z\s]+)/i, // Hello, I'm Name
     ];
 
     for (const pattern of namePatterns) {
@@ -72,7 +103,7 @@ export default function EnhancedResume() {
     }
 
     // Also check URL parameters for name
-    const urlName = searchParams.get('name');
+    const urlName = searchParams.get("name");
     if (urlName) {
       extractedName = urlName;
     }
@@ -83,44 +114,50 @@ export default function EnhancedResume() {
 
     // Extract other details from prompt
     const emailMatch = prompt.match(/(\w+@\w+\.\w+)/);
-    const phoneMatch = prompt.match(/(\+?\d{1,4}[\s\-]?\(?\d{1,4}\)?[\s\-]?\d{1,4}[\s\-]?\d{1,4}[\s\-]?\d{1,4})/);
-    const locationMatch = prompt.match(/(from|in|at|live in|based in|located in)\s+([A-Za-z\s,]+)/i);
+    const phoneMatch = prompt.match(
+      /(\+?\d{1,4}[\s\-]?\(?\d{1,4}\)?[\s\-]?\d{1,4}[\s\-]?\d{1,4}[\s\-]?\d{1,4})/
+    );
+    const locationMatch = prompt.match(
+      /(from|in|at|live in|based in|located in)\s+([A-Za-z\s,]+)/i
+    );
 
     // Update resume data with extracted information
-    setResumeData(prev => ({
+    setResumeData((prev) => ({
       ...prev,
       personalInfo: {
         ...prev.personalInfo,
         name: extractedName || prev.personalInfo.name,
         email: emailMatch ? emailMatch[1] : prev.personalInfo.email,
         phone: phoneMatch ? phoneMatch[1] : prev.personalInfo.phone,
-        location: locationMatch ? locationMatch[2].trim() : prev.personalInfo.location
-      }
+        location: locationMatch
+          ? locationMatch[2].trim()
+          : prev.personalInfo.location,
+      },
     }));
   }, [searchParams]);
 
   // Enhanced changes for upload flow
   const enhancedChanges = [
     {
-      section: 'summary',
-      text: 'Highly skilled Senior Software Engineer with 5+ years of experience',
-      type: 'enhanced'
+      section: "summary",
+      text: "Highly skilled Senior Software Engineer with 5+ years of experience",
+      type: "enhanced",
     },
     {
-      section: 'experience',
-      text: 'reducing API response time by 40%',
-      type: 'quantified'
+      section: "experience",
+      text: "reducing API response time by 40%",
+      type: "quantified",
     },
     {
-      section: 'experience',
-      text: 'improving team productivity by 25%',
-      type: 'quantified'
+      section: "experience",
+      text: "improving team productivity by 25%",
+      type: "quantified",
     },
     {
-      section: 'skills',
-      text: 'TypeScript',
-      type: 'added'
-    }
+      section: "skills",
+      text: "TypeScript",
+      type: "added",
+    },
   ];
 
   // Hardcoded resume data - would come from API in real app
@@ -131,7 +168,8 @@ export default function EnhancedResume() {
       email: "claude.ai@anthropic.com",
       phone: "+1 (555) 123-CLAUDE",
       location: "Delhi, India",
-      summary: "**Highly skilled Senior Software Engineer** with **5+ years of experience** developing scalable web applications using **React, Node.js, and cloud technologies**. Proven track record of leading cross-functional teams and delivering high-quality software solutions that drive business growth."
+      summary:
+        "**Highly skilled Senior Software Engineer** with **5+ years of experience** developing scalable web applications using **React, Node.js, and cloud technologies**. Proven track record of leading cross-functional teams and delivering high-quality software solutions that drive business growth.",
     },
     experience: [
       {
@@ -142,8 +180,8 @@ export default function EnhancedResume() {
         achievements: [
           "Led development of microservices architecture serving **1M+ users**, **reducing API response time by 40%**",
           "Mentored **3 junior developers** and conducted code reviews **improving team productivity by 25%**",
-          "Implemented CI/CD pipelines using **Docker and AWS**, reducing deployment time from **2 hours to 15 minutes**"
-        ]
+          "Implemented CI/CD pipelines using **Docker and AWS**, reducing deployment time from **2 hours to 15 minutes**",
+        ],
       },
       {
         id: 2,
@@ -153,33 +191,42 @@ export default function EnhancedResume() {
         achievements: [
           "Built and maintained React-based dashboard used by **10,000+ daily active users**",
           "Developed REST APIs handling **100K+ requests per day** with **99.9% uptime**",
-          "Collaborated with design team to implement responsive UI components improving **user satisfaction by 30%**"
-        ]
-      }
+          "Collaborated with design team to implement responsive UI components improving **user satisfaction by 30%**",
+        ],
+      },
     ],
     skills: [
-      "JavaScript", "TypeScript", "React", "Node.js", "Python", "AWS", "Docker", "PostgreSQL", "MongoDB", "Git"
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "Node.js",
+      "Python",
+      "AWS",
+      "Docker",
+      "PostgreSQL",
+      "MongoDB",
+      "Git",
     ],
     education: [
       {
         id: 1,
         degree: "Bachelor of Science in Computer Science",
         school: "University of California, Berkeley",
-        year: "2020"
-      }
+        year: "2020",
+      },
     ],
     certifications: [
       {
         id: 1,
         name: "AWS Certified Developer",
         issuer: "Amazon Web Services",
-        year: "2023"
-      }
+        year: "2023",
+      },
     ],
     languages: [
       { id: 1, name: "English", level: "Fluent" },
-      { id: 2, name: "Spanish", level: "Conversational" }
-    ]
+      { id: 2, name: "Spanish", level: "Conversational" },
+    ],
   });
 
   const aiImprovements = [
@@ -187,26 +234,27 @@ export default function EnhancedResume() {
       type: "enhancement",
       title: "Quantified Achievements",
       description: "Added specific metrics and numbers to demonstrate impact",
-      count: 8
+      count: 8,
     },
     {
       type: "optimization",
       title: "ATS Keywords",
-      description: "Optimized for Applicant Tracking Systems with relevant keywords",
-      count: 15
+      description:
+        "Optimized for Applicant Tracking Systems with relevant keywords",
+      count: 15,
     },
     {
       type: "improvement",
       title: "Action Verbs",
       description: "Enhanced bullet points with powerful action verbs",
-      count: 12
+      count: 12,
     },
     {
       type: "enhancement",
       title: "Professional Summary",
       description: "Crafted compelling summary highlighting key strengths",
-      count: 1
-    }
+      count: 1,
+    },
   ];
 
   const handleEdit = (field) => {
@@ -224,27 +272,27 @@ export default function EnhancedResume() {
   };
 
   const handleAddToSection = (sectionName) => {
-    setResumeData(prev => {
+    setResumeData((prev) => {
       const newData = { ...prev };
 
       switch (sectionName) {
-        case 'experience':
+        case "experience":
           const newExp = {
             id: Date.now(),
             company: "New Company",
             position: "New Position",
             duration: "2024 - Present",
-            achievements: ["New achievement"]
+            achievements: ["New achievement"],
           };
           newData.experience.push(newExp);
           break;
 
-        case 'education':
+        case "education":
           const newEdu = {
             id: Date.now(),
             degree: "New Degree",
             school: "New School",
-            year: "2024"
+            year: "2024",
           };
           // Ensure education is always an array
           if (!Array.isArray(newData.education)) {
@@ -253,26 +301,26 @@ export default function EnhancedResume() {
           newData.education.push(newEdu);
           break;
 
-        case 'certifications':
+        case "certifications":
           const newCert = {
             id: Date.now(),
             name: "New Certification",
             issuer: "New Issuer",
-            year: "2024"
+            year: "2024",
           };
           newData.certifications.push(newCert);
           break;
 
-        case 'languages':
+        case "languages":
           const newLang = {
             id: Date.now(),
             name: "New Language",
-            level: "Beginner"
+            level: "Beginner",
           };
           newData.languages.push(newLang);
           break;
 
-        case 'skills':
+        case "skills":
           newData.skills.push("New Skill");
           break;
       }
@@ -282,21 +330,29 @@ export default function EnhancedResume() {
   };
 
   const handleRemoveFromSection = (sectionName, id) => {
-    setResumeData(prev => {
+    setResumeData((prev) => {
       const newData = { ...prev };
 
       switch (sectionName) {
-        case 'experience':
-          newData.experience = newData.experience.filter(item => item.id !== id);
+        case "experience":
+          newData.experience = newData.experience.filter(
+            (item) => item.id !== id
+          );
           break;
-        case 'education':
-          newData.education = newData.education.filter(item => item.id !== id);
+        case "education":
+          newData.education = newData.education.filter(
+            (item) => item.id !== id
+          );
           break;
-        case 'certifications':
-          newData.certifications = newData.certifications.filter(item => item.id !== id);
+        case "certifications":
+          newData.certifications = newData.certifications.filter(
+            (item) => item.id !== id
+          );
           break;
-        case 'languages':
-          newData.languages = newData.languages.filter(item => item.id !== id);
+        case "languages":
+          newData.languages = newData.languages.filter(
+            (item) => item.id !== id
+          );
           break;
       }
 
@@ -314,11 +370,11 @@ export default function EnhancedResume() {
   };
 
   const handlePrev = () => {
-    const template = searchParams.get('template');
+    const template = searchParams.get("template");
     if (template) {
-      router.push('/template-selection?' + searchParams.toString());
+      router.push("/template-selection?" + searchParams.toString());
     } else {
-      router.push('/loading-screen?' + searchParams.toString());
+      router.push("/loading-screen?" + searchParams.toString());
     }
   };
 
@@ -335,9 +391,9 @@ export default function EnhancedResume() {
   const handleSaveEdit = () => {
     if (editingField && editingValue) {
       // Update the resume data based on the field being edited
-      setResumeData(prev => {
+      setResumeData((prev) => {
         const newData = { ...prev };
-        const fieldParts = editingField.split('.');
+        const fieldParts = editingField.split(".");
 
         if (fieldParts.length === 2) {
           newData[fieldParts[0]][fieldParts[1]] = editingValue;
@@ -369,9 +425,9 @@ export default function EnhancedResume() {
   };
 
   const handlePhotoClick = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
     input.onchange = handlePhotoUpload;
     input.click();
   };
@@ -380,10 +436,12 @@ export default function EnhancedResume() {
   const highlightEnhancements = (text, section) => {
     if (!isFromUpload) return text;
 
-    const changes = enhancedChanges.filter(change => change.section === section);
+    const changes = enhancedChanges.filter(
+      (change) => change.section === section
+    );
     let highlightedText = text;
 
-    changes.forEach(change => {
+    changes.forEach((change) => {
       if (text.includes(change.text)) {
         highlightedText = highlightedText.replace(
           change.text,
@@ -397,7 +455,10 @@ export default function EnhancedResume() {
 
   // Function to process markdown-style bold text
   const processBoldText = (text) => {
-    return text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold" style="color: #2370FF;">$1</strong>');
+    return text.replace(
+      /\*\*(.*?)\*\*/g,
+      '<strong class="font-semibold" style="color: #2370FF;">$1</strong>'
+    );
   };
 
   // Enhanced Editable text component
@@ -409,7 +470,7 @@ export default function EnhancedResume() {
     multiline = false,
     onSave = null,
     showEditIcon = true,
-    size = "xs"
+    size = "xs",
   }) => {
     const isEditing = editingField === field;
 
@@ -482,57 +543,65 @@ export default function EnhancedResume() {
   };
 
   // Editable Achievement List Component
-  const EditableAchievementList = ({ achievements, experienceId, className = "" }) => {
+  const EditableAchievementList = ({
+    achievements,
+    experienceId,
+    className = "",
+  }) => {
     const [localAchievements, setLocalAchievements] = useState(achievements);
 
     const addAchievement = () => {
       setLocalAchievements([...localAchievements, "New achievement"]);
       // Update parent data
-      setResumeData(prev => ({
+      setResumeData((prev) => ({
         ...prev,
-        experience: prev.experience.map(exp =>
+        experience: prev.experience.map((exp) =>
           exp.id === experienceId
-            ? { ...exp, achievements: [...localAchievements, "New achievement"] }
+            ? {
+                ...exp,
+                achievements: [...localAchievements, "New achievement"],
+              }
             : exp
-        )
+        ),
       }));
     };
 
     const updateAchievement = (index, value) => {
-      const updated = localAchievements.map((ach, i) => i === index ? value : ach);
+      const updated = localAchievements.map((ach, i) =>
+        i === index ? value : ach
+      );
       setLocalAchievements(updated);
-      setResumeData(prev => ({
+      setResumeData((prev) => ({
         ...prev,
-        experience: prev.experience.map(exp =>
-          exp.id === experienceId
-            ? { ...exp, achievements: updated }
-            : exp
-        )
+        experience: prev.experience.map((exp) =>
+          exp.id === experienceId ? { ...exp, achievements: updated } : exp
+        ),
       }));
     };
 
     const removeAchievement = (index) => {
       const updated = localAchievements.filter((_, i) => i !== index);
       setLocalAchievements(updated);
-      setResumeData(prev => ({
+      setResumeData((prev) => ({
         ...prev,
-        experience: prev.experience.map(exp =>
-          exp.id === experienceId
-            ? { ...exp, achievements: updated }
-            : exp
-        )
+        experience: prev.experience.map((exp) =>
+          exp.id === experienceId ? { ...exp, achievements: updated } : exp
+        ),
       }));
     };
 
     return (
       <div className={`space-y-2 ${className}`}>
         {localAchievements.map((achievement, index) => (
-          <div key={index} className="flex items-start gap-2 group bg-gray-50 hover:bg-gray-100 p-2 rounded-md transition-colors">
+          <div
+            key={index}
+            className="flex items-start gap-2 group bg-gray-50 hover:bg-gray-100 p-2 rounded-md transition-colors"
+          >
             <span className="text-xs mt-1 text-gray-600 font-bold">•</span>
             <div className="flex-1">
               <EditableText
                 field={`achievement_${experienceId}_${index}`}
-                value={achievement.replace(/\*\*(.*?)\*\*/g, '$1')}
+                value={achievement.replace(/\*\*(.*?)\*\*/g, "$1")}
                 className="break-words w-full"
                 multiline={2}
                 onSave={(value) => updateAchievement(index, value)}
@@ -563,18 +632,18 @@ export default function EnhancedResume() {
   const getTemplateDimensions = (templateId) => {
     // Standard A4 portrait dimensions (210mm x 297mm = 8.27" x 11.69")
     // Using aspect ratio of approximately 0.707 (height/width)
-    return { aspectRatio: '0.707', orientation: 'portrait', columns: 2 };
+    return { aspectRatio: "0.707", orientation: "portrait", columns: 2 };
   };
 
   // Function to check if template supports photos
   const templateSupportsPhoto = (templateId) => {
-    return ['saanvi-patel-1', 'saanvi-patel-3'].includes(templateId);
+    return ["saanvi-patel-1", "saanvi-patel-3"].includes(templateId);
   };
 
   // Static template render function for preview mode (non-editable)
   const renderStaticTemplate = (templateData, firstName, lastName) => {
     switch (selectedTemplate) {
-      case 'saanvi-patel-1':
+      case "saanvi-patel-1":
         return (
           <div className="h-full flex bg-white p-4 text-sm leading-relaxed overflow-hidden">
             {/* Left Sidebar - Dark Blue */}
@@ -602,7 +671,9 @@ export default function EnhancedResume() {
               </div>
 
               <div className="mb-3">
-                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">CONTACT</div>
+                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">
+                  CONTACT
+                </div>
                 <div className="text-xs text-gray-300 space-y-1">
                   <div className="break-all flex items-center gap-1">
                     📧 {templateData.email}
@@ -610,7 +681,9 @@ export default function EnhancedResume() {
                   <div className="break-words flex items-center gap-1">
                     📱 {templateData.phone}
                   </div>
-                  <div className="break-all">🌐 linkedin.com/in/{firstName.toLowerCase()}</div>
+                  <div className="break-all">
+                    🌐 linkedin.com/in/{firstName.toLowerCase()}
+                  </div>
                   <div className="break-words flex items-center gap-1">
                     📍 {templateData.location}
                   </div>
@@ -618,10 +691,15 @@ export default function EnhancedResume() {
               </div>
 
               <div className="mb-3">
-                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">SKILLS</div>
+                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">
+                  SKILLS
+                </div>
                 <div className="text-xs text-gray-300 space-y-1">
                   {templateData.skills.slice(0, 8).map((skill, index) => (
-                    <div key={index} className="break-words flex items-center gap-1">
+                    <div
+                      key={index}
+                      className="break-words flex items-center gap-1"
+                    >
                       • {skill}
                     </div>
                   ))}
@@ -629,7 +707,9 @@ export default function EnhancedResume() {
               </div>
 
               <div className="mb-4">
-                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">LANGUAGES</div>
+                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">
+                  LANGUAGES
+                </div>
                 <div className="text-xs text-gray-300 space-y-1">
                   <div>• English (Fluent)</div>
                   <div>• Spanish (Conversational)</div>
@@ -637,7 +717,9 @@ export default function EnhancedResume() {
               </div>
 
               <div className="mb-4">
-                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">CERTIFICATIONS</div>
+                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">
+                  CERTIFICATIONS
+                </div>
                 <div className="text-xs text-gray-300 space-y-1">
                   <div>• Professional Development</div>
                   <div>• Industry Certification</div>
@@ -646,7 +728,9 @@ export default function EnhancedResume() {
               </div>
 
               <div>
-                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">INTERESTS</div>
+                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">
+                  INTERESTS
+                </div>
                 <div className="text-xs text-gray-300 space-y-1">
                   <div>• Professional Growth</div>
                   <div>• Team Collaboration</div>
@@ -658,17 +742,24 @@ export default function EnhancedResume() {
             {/* Main Content Area */}
             <div className="w-2/3 p-3 overflow-y-auto">
               <div className="mb-3">
-                <div className="font-bold text-slate-700 mb-2 text-xs uppercase tracking-wide border-b border-slate-300 pb-1">PROFESSIONAL SUMMARY</div>
+                <div className="font-bold text-slate-700 mb-2 text-xs uppercase tracking-wide border-b border-slate-300 pb-1">
+                  PROFESSIONAL SUMMARY
+                </div>
                 <div className="text-xs text-gray-600 leading-relaxed break-words">
-                  {templateData.summary.replace(/\*\*(.*?)\*\*/g, '$1')}
+                  {templateData.summary.replace(/\*\*(.*?)\*\*/g, "$1")}
                 </div>
               </div>
 
               <div className="mb-4">
-                <div className="font-bold text-slate-700 mb-3 text-xs uppercase tracking-wide border-b border-slate-300 pb-2">WORK EXPERIENCE</div>
+                <div className="font-bold text-slate-700 mb-3 text-xs uppercase tracking-wide border-b border-slate-300 pb-2">
+                  WORK EXPERIENCE
+                </div>
                 <div className="text-xs text-gray-600 space-y-4">
                   {templateData.experience.map((exp, index) => (
-                    <div key={exp.id || index} className="bg-white p-3 rounded-lg border border-gray-200">
+                    <div
+                      key={exp.id || index}
+                      className="bg-white p-3 rounded-lg border border-gray-200"
+                    >
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex-1 space-y-1">
                           <div className="font-semibold text-gray-800 text-xs break-words">
@@ -684,9 +775,11 @@ export default function EnhancedResume() {
                       <div className="mt-2 space-y-2">
                         {exp.achievements.map((achievement, i) => (
                           <div key={i} className="flex items-start gap-2">
-                            <span className="text-xs mt-1 text-gray-600 font-bold">•</span>
+                            <span className="text-xs mt-1 text-gray-600 font-bold">
+                              •
+                            </span>
                             <div className="text-xs text-gray-600 break-words">
-                              {achievement.replace(/\*\*(.*?)\*\*/g, '$1')}
+                              {achievement.replace(/\*\*(.*?)\*\*/g, "$1")}
                             </div>
                           </div>
                         ))}
@@ -697,10 +790,18 @@ export default function EnhancedResume() {
               </div>
 
               <div className="mb-4">
-                <div className="font-bold text-slate-700 mb-3 text-xs uppercase tracking-wide border-b border-slate-300 pb-2">EDUCATION</div>
+                <div className="font-bold text-slate-700 mb-3 text-xs uppercase tracking-wide border-b border-slate-300 pb-2">
+                  EDUCATION
+                </div>
                 <div className="text-xs text-gray-600 space-y-3">
-                  {(Array.isArray(templateData.education) ? templateData.education : [templateData.education]).map((edu, index) => (
-                    <div key={edu.id || index} className="bg-white p-3 rounded-lg border border-gray-200">
+                  {(Array.isArray(templateData.education)
+                    ? templateData.education
+                    : [templateData.education]
+                  ).map((edu, index) => (
+                    <div
+                      key={edu.id || index}
+                      className="bg-white p-3 rounded-lg border border-gray-200"
+                    >
                       <div className="flex-1 space-y-1">
                         <div className="font-semibold text-gray-800 text-xs">
                           {edu.degree}
@@ -717,7 +818,9 @@ export default function EnhancedResume() {
               </div>
 
               <div>
-                <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide border-b border-slate-300 pb-1">KEY ACHIEVEMENTS</div>
+                <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide border-b border-slate-300 pb-1">
+                  KEY ACHIEVEMENTS
+                </div>
                 <div className="text-xs text-gray-600 space-y-1">
                   <div>🏆 Outstanding Performance Recognition</div>
                   <div>🏆 Team Leadership Excellence</div>
@@ -728,7 +831,7 @@ export default function EnhancedResume() {
           </div>
         );
 
-      case 'saanvi-patel-2':
+      case "saanvi-patel-2":
         return (
           <div className="h-full p-4 text-sm leading-relaxed bg-white overflow-y-auto overflow-x-hidden">
             {/* Header */}
@@ -740,39 +843,54 @@ export default function EnhancedResume() {
                 {templateData.title}
               </div>
               <div className="text-xs text-gray-500 mt-1 break-all flex justify-center items-center gap-1">
-                {templateData.location} • {templateData.phone} • {templateData.email}
+                {templateData.location} • {templateData.phone} •{" "}
+                {templateData.email}
               </div>
             </div>
 
             {/* Professional Summary */}
             <div className="mb-3">
-              <div className="font-bold text-slate-700 mb-2 text-xs uppercase tracking-wide">PROFESSIONAL SUMMARY</div>
+              <div className="font-bold text-slate-700 mb-2 text-xs uppercase tracking-wide">
+                PROFESSIONAL SUMMARY
+              </div>
               <div className="text-xs text-gray-600 leading-relaxed break-words">
-                {templateData.summary.replace(/\*\*(.*?)\*\*/g, '$1')}
+                {templateData.summary.replace(/\*\*(.*?)\*\*/g, "$1")}
               </div>
             </div>
 
             {/* Core Competencies */}
             <div className="mb-3">
-              <div className="font-bold text-slate-700 mb-2 text-xs uppercase tracking-wide">CORE COMPETENCIES</div>
+              <div className="font-bold text-slate-700 mb-2 text-xs uppercase tracking-wide">
+                CORE COMPETENCIES
+              </div>
               <div className="text-xs text-gray-600 grid grid-cols-2 gap-x-2 gap-y-1">
                 {templateData.skills.map((skill, index) => (
-                  <div key={index} className="break-words">• {skill}</div>
+                  <div key={index} className="break-words">
+                    • {skill}
+                  </div>
                 ))}
               </div>
             </div>
 
             {/* Professional Experience */}
             <div className="mb-4">
-              <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide">PROFESSIONAL EXPERIENCE</div>
+              <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide">
+                PROFESSIONAL EXPERIENCE
+              </div>
               <div className="text-xs text-gray-600 space-y-3">
                 {templateData.experience.map((exp, index) => (
                   <div key={index}>
-                    <div className="font-semibold text-gray-800 text-sm">{exp.position}</div>
-                    <div className="font-medium text-gray-600">{exp.company} • {exp.duration}</div>
+                    <div className="font-semibold text-gray-800 text-sm">
+                      {exp.position}
+                    </div>
+                    <div className="font-medium text-gray-600">
+                      {exp.company} • {exp.duration}
+                    </div>
                     <div className="mt-1 space-y-1">
                       {exp.achievements.map((achievement, i) => (
-                        <div key={i}>• {achievement.replace(/\*\*(.*?)\*\*/g, '$1')}</div>
+                        <div key={i}>
+                          • {achievement.replace(/\*\*(.*?)\*\*/g, "$1")}
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -782,12 +900,21 @@ export default function EnhancedResume() {
 
             {/* Education */}
             <div className="mb-4">
-              <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide">EDUCATION</div>
+              <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide">
+                EDUCATION
+              </div>
               <div className="text-xs text-gray-600">
-                {(Array.isArray(templateData.education) ? templateData.education : [templateData.education]).map((edu, index) => (
+                {(Array.isArray(templateData.education)
+                  ? templateData.education
+                  : [templateData.education]
+                ).map((edu, index) => (
                   <div key={index}>
-                    <div className="font-semibold text-gray-800 text-sm">{edu.degree}</div>
-                    <div className="text-gray-600">{edu.school} • {edu.year}</div>
+                    <div className="font-semibold text-gray-800 text-sm">
+                      {edu.degree}
+                    </div>
+                    <div className="text-gray-600">
+                      {edu.school} • {edu.year}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -795,7 +922,9 @@ export default function EnhancedResume() {
 
             {/* Key Achievements */}
             <div className="mb-4">
-              <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide">KEY ACHIEVEMENTS</div>
+              <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide">
+                KEY ACHIEVEMENTS
+              </div>
               <div className="text-xs text-gray-600 space-y-1">
                 <div>🏆 Excellence in Performance and Results</div>
                 <div>🏆 Leadership and Team Development</div>
@@ -804,9 +933,13 @@ export default function EnhancedResume() {
             </div>
 
             <div>
-              <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide">ADDITIONAL INFORMATION</div>
+              <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide">
+                ADDITIONAL INFORMATION
+              </div>
               <div className="text-xs text-gray-600 space-y-1">
-                <div>• Available for immediate start and flexible scheduling</div>
+                <div>
+                  • Available for immediate start and flexible scheduling
+                </div>
                 <div>• Strong analytical and problem-solving capabilities</div>
                 <div>• Excellent communication and interpersonal skills</div>
               </div>
@@ -814,7 +947,7 @@ export default function EnhancedResume() {
           </div>
         );
 
-      case 'saanvi-patel-3':
+      case "saanvi-patel-3":
         return (
           <div className="h-full flex bg-white overflow-hidden">
             {/* Left Column - Green Sidebar */}
@@ -833,12 +966,18 @@ export default function EnhancedResume() {
                     </div>
                   )}
                 </div>
-                <div className="font-bold text-xs leading-none break-words">{templateData.name}</div>
-                <div className="text-xs mt-1 font-medium opacity-90 break-words">{templateData.title.toUpperCase()}</div>
+                <div className="font-bold text-xs leading-none break-words">
+                  {templateData.name}
+                </div>
+                <div className="text-xs mt-1 font-medium opacity-90 break-words">
+                  {templateData.title.toUpperCase()}
+                </div>
               </div>
 
               <div className="mb-2">
-                <div className="text-white font-bold mb-1 text-xs uppercase tracking-wide">CONTACT</div>
+                <div className="text-white font-bold mb-1 text-xs uppercase tracking-wide">
+                  CONTACT
+                </div>
                 <div className="text-xs space-y-1">
                   <div className="flex items-center gap-1 break-all">
                     <span>📧</span> {templateData.email}
@@ -856,9 +995,14 @@ export default function EnhancedResume() {
               </div>
 
               <div className="mb-3">
-                <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">EDUCATION</div>
+                <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">
+                  EDUCATION
+                </div>
                 <div className="text-[5px]">
-                  {(Array.isArray(templateData.education) ? templateData.education : [templateData.education]).map((edu, index) => (
+                  {(Array.isArray(templateData.education)
+                    ? templateData.education
+                    : [templateData.education]
+                  ).map((edu, index) => (
                     <div key={index}>
                       <div className="font-semibold">{edu.degree}</div>
                       <div className="opacity-90">{edu.school}</div>
@@ -869,7 +1013,9 @@ export default function EnhancedResume() {
               </div>
 
               <div className="mb-3">
-                <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">SKILLS</div>
+                <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">
+                  SKILLS
+                </div>
                 <div className="text-[5px] space-y-0.5">
                   {templateData.skills.map((skill, index) => (
                     <div key={index}>• {skill}</div>
@@ -878,7 +1024,9 @@ export default function EnhancedResume() {
               </div>
 
               <div>
-                <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">LANGUAGES</div>
+                <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">
+                  LANGUAGES
+                </div>
                 <div className="text-[5px] space-y-0.5">
                   <div>• English (Fluent)</div>
                   <div>• Spanish (Conversational)</div>
@@ -889,22 +1037,32 @@ export default function EnhancedResume() {
             {/* Right Column - Main Content */}
             <div className="w-3/5 p-2 text-xs overflow-y-auto">
               <div className="mb-2">
-                <div className="font-bold text-emerald-700 mb-1 text-xs uppercase tracking-wide">PROFESSIONAL SUMMARY</div>
+                <div className="font-bold text-emerald-700 mb-1 text-xs uppercase tracking-wide">
+                  PROFESSIONAL SUMMARY
+                </div>
                 <div className="text-xs text-gray-600 leading-relaxed break-words">
-                  {templateData.summary.replace(/\*\*(.*?)\*\*/g, '$1')}
+                  {templateData.summary.replace(/\*\*(.*?)\*\*/g, "$1")}
                 </div>
               </div>
 
               <div className="mb-2">
-                <div className="font-bold text-emerald-700 mb-1 text-[7px] uppercase tracking-wide">PROFESSIONAL EXPERIENCE</div>
+                <div className="font-bold text-emerald-700 mb-1 text-[7px] uppercase tracking-wide">
+                  PROFESSIONAL EXPERIENCE
+                </div>
                 <div className="text-[5px] text-gray-600">
                   {templateData.experience.map((exp, index) => (
                     <div key={index} className="mb-1.5">
-                      <div className="font-semibold text-gray-800">{exp.position}</div>
-                      <div className="font-medium text-emerald-600">{exp.company} • {exp.duration}</div>
+                      <div className="font-semibold text-gray-800">
+                        {exp.position}
+                      </div>
+                      <div className="font-medium text-emerald-600">
+                        {exp.company} • {exp.duration}
+                      </div>
                       <div className="mt-0.5 space-y-0.5">
                         {exp.achievements.map((achievement, i) => (
-                          <div key={i}>• {achievement.replace(/\*\*(.*?)\*\*/g, '$1')}</div>
+                          <div key={i}>
+                            • {achievement.replace(/\*\*(.*?)\*\*/g, "$1")}
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -913,7 +1071,9 @@ export default function EnhancedResume() {
               </div>
 
               <div className="mb-2">
-                <div className="font-bold text-emerald-700 mb-1 text-[7px] uppercase tracking-wide">KEY ACHIEVEMENTS</div>
+                <div className="font-bold text-emerald-700 mb-1 text-[7px] uppercase tracking-wide">
+                  KEY ACHIEVEMENTS
+                </div>
                 <div className="text-[5px] text-gray-600 space-y-0.5">
                   <div>🏆 Outstanding Performance Award</div>
                   <div>🏆 Team Leadership Excellence</div>
@@ -922,7 +1082,9 @@ export default function EnhancedResume() {
               </div>
 
               <div>
-                <div className="font-bold text-emerald-700 mb-1 text-[7px] uppercase tracking-wide">ADDITIONAL INFO</div>
+                <div className="font-bold text-emerald-700 mb-1 text-[7px] uppercase tracking-wide">
+                  ADDITIONAL INFO
+                </div>
                 <div className="text-[5px] text-gray-600 space-y-0.5">
                   <div>• Available for flexible scheduling</div>
                   <div>• Strong analytical and problem-solving skills</div>
@@ -933,42 +1095,63 @@ export default function EnhancedResume() {
           </div>
         );
 
-      case 'template-4':
+      case "template-4":
         return (
           <div className="h-full p-3 text-xs bg-gray-50 leading-tight overflow-y-auto overflow-x-hidden">
             <div className="text-center mb-2 border-b-2 border-blue-600 pb-1">
-              <div className="font-bold text-sm text-gray-800 tracking-wider break-words">{templateData.name.toUpperCase()}</div>
-              <div className="text-blue-600 font-semibold text-xs mt-0.5 break-words">{templateData.title.toUpperCase()}</div>
-              <div className="text-xs text-gray-500 mt-1 break-all">{templateData.email} • {templateData.phone} • {templateData.location}</div>
+              <div className="font-bold text-sm text-gray-800 tracking-wider break-words">
+                {templateData.name.toUpperCase()}
+              </div>
+              <div className="text-blue-600 font-semibold text-xs mt-0.5 break-words">
+                {templateData.title.toUpperCase()}
+              </div>
+              <div className="text-xs text-gray-500 mt-1 break-all">
+                {templateData.email} • {templateData.phone} •{" "}
+                {templateData.location}
+              </div>
             </div>
 
             <div className="space-y-2">
               <div>
-                <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-xs uppercase tracking-wide">PROFESSIONAL SUMMARY</div>
+                <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-xs uppercase tracking-wide">
+                  PROFESSIONAL SUMMARY
+                </div>
                 <div className="text-xs text-gray-600 leading-relaxed break-words">
-                  {templateData.summary.replace(/\*\*(.*?)\*\*/g, '$1')}
+                  {templateData.summary.replace(/\*\*(.*?)\*\*/g, "$1")}
                 </div>
               </div>
 
               <div>
-                <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-xs uppercase tracking-wide">TECHNICAL SKILLS</div>
+                <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-xs uppercase tracking-wide">
+                  TECHNICAL SKILLS
+                </div>
                 <div className="text-xs text-gray-600 grid grid-cols-2 gap-x-2">
                   {templateData.skills.map((skill, index) => (
-                    <div key={index} className="break-words">• {skill}</div>
+                    <div key={index} className="break-words">
+                      • {skill}
+                    </div>
                   ))}
                 </div>
               </div>
 
               <div>
-                <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-[6px] uppercase tracking-wide">EXPERIENCE</div>
+                <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-[6px] uppercase tracking-wide">
+                  EXPERIENCE
+                </div>
                 <div className="text-[5px] text-gray-600 space-y-1">
                   {templateData.experience.map((exp, index) => (
                     <div key={index}>
-                      <div className="font-semibold text-gray-800">{exp.position}</div>
-                      <div className="font-medium text-blue-600">{exp.company} • {exp.duration}</div>
+                      <div className="font-semibold text-gray-800">
+                        {exp.position}
+                      </div>
+                      <div className="font-medium text-blue-600">
+                        {exp.company} • {exp.duration}
+                      </div>
                       <div className="mt-0.5 space-y-0.5">
                         {exp.achievements.map((achievement, i) => (
-                          <div key={i}>• {achievement.replace(/\*\*(.*?)\*\*/g, '$1')}</div>
+                          <div key={i}>
+                            • {achievement.replace(/\*\*(.*?)\*\*/g, "$1")}
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -977,12 +1160,21 @@ export default function EnhancedResume() {
               </div>
 
               <div>
-                <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-[6px] uppercase tracking-wide">EDUCATION</div>
+                <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-[6px] uppercase tracking-wide">
+                  EDUCATION
+                </div>
                 <div className="text-[5px] text-gray-600">
-                  {(Array.isArray(templateData.education) ? templateData.education : [templateData.education]).map((edu, index) => (
+                  {(Array.isArray(templateData.education)
+                    ? templateData.education
+                    : [templateData.education]
+                  ).map((edu, index) => (
                     <div key={index}>
-                      <div className="font-semibold text-gray-800">{edu.degree}</div>
-                      <div className="text-gray-600">{edu.school} • {edu.year}</div>
+                      <div className="font-semibold text-gray-800">
+                        {edu.degree}
+                      </div>
+                      <div className="text-gray-600">
+                        {edu.school} • {edu.year}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -991,43 +1183,64 @@ export default function EnhancedResume() {
           </div>
         );
 
-      case 'template-5':
-      case 'template-6':
+      case "template-5":
+      case "template-6":
         return (
           <div className="h-full p-3 text-xs bg-white leading-tight overflow-y-auto overflow-x-hidden">
             <div className="text-center mb-2 border-b-2 border-gray-800 pb-1">
-              <div className="font-bold text-sm text-gray-800 tracking-wider break-words">{templateData.name.toUpperCase()}</div>
-              <div className="text-gray-600 text-xs mt-0.5 font-medium break-words">{templateData.title.toUpperCase()}</div>
-              <div className="text-xs text-gray-500 mt-1 break-all">{templateData.email} • {templateData.phone} • {templateData.location}</div>
+              <div className="font-bold text-sm text-gray-800 tracking-wider break-words">
+                {templateData.name.toUpperCase()}
+              </div>
+              <div className="text-gray-600 text-xs mt-0.5 font-medium break-words">
+                {templateData.title.toUpperCase()}
+              </div>
+              <div className="text-xs text-gray-500 mt-1 break-all">
+                {templateData.email} • {templateData.phone} •{" "}
+                {templateData.location}
+              </div>
             </div>
 
             <div className="space-y-2">
               <div>
-                <div className="font-bold text-gray-800 mb-0.5 text-xs uppercase tracking-wide">PROFESSIONAL SUMMARY</div>
+                <div className="font-bold text-gray-800 mb-0.5 text-xs uppercase tracking-wide">
+                  PROFESSIONAL SUMMARY
+                </div>
                 <div className="text-xs text-gray-600 leading-relaxed break-words">
-                  {templateData.summary.replace(/\*\*(.*?)\*\*/g, '$1')}
+                  {templateData.summary.replace(/\*\*(.*?)\*\*/g, "$1")}
                 </div>
               </div>
 
               <div>
-                <div className="font-bold text-gray-800 mb-0.5 text-xs uppercase tracking-wide">CORE COMPETENCIES</div>
+                <div className="font-bold text-gray-800 mb-0.5 text-xs uppercase tracking-wide">
+                  CORE COMPETENCIES
+                </div>
                 <div className="text-xs text-gray-600 grid grid-cols-2 gap-x-2">
                   {templateData.skills.map((skill, index) => (
-                    <div key={index} className="break-words">• {skill}</div>
+                    <div key={index} className="break-words">
+                      • {skill}
+                    </div>
                   ))}
                 </div>
               </div>
 
               <div>
-                <div className="font-bold text-gray-800 mb-0.5 text-[6px] uppercase tracking-wide">PROFESSIONAL EXPERIENCE</div>
+                <div className="font-bold text-gray-800 mb-0.5 text-[6px] uppercase tracking-wide">
+                  PROFESSIONAL EXPERIENCE
+                </div>
                 <div className="text-[5px] text-gray-600 space-y-1">
                   {templateData.experience.map((exp, index) => (
                     <div key={index}>
-                      <div className="font-semibold text-gray-800">{exp.position}</div>
-                      <div className="font-medium text-gray-600">{exp.company} • {exp.duration}</div>
+                      <div className="font-semibold text-gray-800">
+                        {exp.position}
+                      </div>
+                      <div className="font-medium text-gray-600">
+                        {exp.company} • {exp.duration}
+                      </div>
                       <div className="mt-0.5 space-y-0.5">
                         {exp.achievements.map((achievement, i) => (
-                          <div key={i}>• {achievement.replace(/\*\*(.*?)\*\*/g, '$1')}</div>
+                          <div key={i}>
+                            • {achievement.replace(/\*\*(.*?)\*\*/g, "$1")}
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -1036,12 +1249,21 @@ export default function EnhancedResume() {
               </div>
 
               <div>
-                <div className="font-bold text-gray-800 mb-0.5 text-[6px] uppercase tracking-wide">EDUCATION</div>
+                <div className="font-bold text-gray-800 mb-0.5 text-[6px] uppercase tracking-wide">
+                  EDUCATION
+                </div>
                 <div className="text-[5px] text-gray-600">
-                  {(Array.isArray(templateData.education) ? templateData.education : [templateData.education]).map((edu, index) => (
+                  {(Array.isArray(templateData.education)
+                    ? templateData.education
+                    : [templateData.education]
+                  ).map((edu, index) => (
                     <div key={index}>
-                      <div className="font-semibold text-gray-800">{edu.degree}</div>
-                      <div className="text-gray-600">{edu.school} • {edu.year}</div>
+                      <div className="font-semibold text-gray-800">
+                        {edu.degree}
+                      </div>
+                      <div className="text-gray-600">
+                        {edu.school} • {edu.year}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -1066,13 +1288,13 @@ export default function EnhancedResume() {
       summary: resumeData.personalInfo.summary,
       experience: resumeData.experience,
       skills: resumeData.skills,
-      education: resumeData.education
+      education: resumeData.education,
     };
 
     // Get first and last name for templates that need them separately
-    const nameParts = templateData.name.split(' ');
-    const firstName = nameParts[0] || '';
-    const lastName = nameParts.slice(1).join(' ') || '';
+    const nameParts = templateData.name.split(" ");
+    const firstName = nameParts[0] || "";
+    const lastName = nameParts.slice(1).join(" ") || "";
 
     // For preview mode, render static content without EditableText components
     if (isPreview) {
@@ -1080,7 +1302,7 @@ export default function EnhancedResume() {
     }
 
     switch (selectedTemplate) {
-      case 'saanvi-patel-1':
+      case "saanvi-patel-1":
         return (
           <div className="h-full flex bg-white p-4 text-sm leading-relaxed overflow-hidden">
             {/* Left Sidebar - Dark Blue */}
@@ -1108,10 +1330,12 @@ export default function EnhancedResume() {
                     field="personalInfo.name"
                     value={templateData.name}
                     className="text-white"
-                    onSave={(value) => setResumeData(prev => ({
-                      ...prev,
-                      personalInfo: { ...prev.personalInfo, name: value }
-                    }))}
+                    onSave={(value) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        personalInfo: { ...prev.personalInfo, name: value },
+                      }))
+                    }
                   />
                 </div>
                 <div className="text-xs text-gray-300 mt-1 font-medium break-words">
@@ -1119,73 +1343,105 @@ export default function EnhancedResume() {
                     field="personalInfo.title"
                     value={templateData.title}
                     className="text-gray-300"
-                    onSave={(value) => setResumeData(prev => ({
-                      ...prev,
-                      personalInfo: { ...prev.personalInfo, title: value }
-                    }))}
+                    onSave={(value) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        personalInfo: { ...prev.personalInfo, title: value },
+                      }))
+                    }
                   />
                 </div>
               </div>
 
               <div className="mb-3">
-                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">CONTACT</div>
+                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">
+                  CONTACT
+                </div>
                 <div className="text-xs text-gray-300 space-y-1">
                   <div className="break-all flex items-center gap-1">
-                    📧 <EditableText
+                    📧{" "}
+                    <EditableText
                       field="personalInfo.email"
                       value={templateData.email}
                       className="text-gray-300"
-                      onSave={(value) => setResumeData(prev => ({
-                        ...prev,
-                        personalInfo: { ...prev.personalInfo, email: value }
-                      }))}
+                      onSave={(value) =>
+                        setResumeData((prev) => ({
+                          ...prev,
+                          personalInfo: { ...prev.personalInfo, email: value },
+                        }))
+                      }
                     />
                   </div>
                   <div className="break-words flex items-center gap-1">
-                    📱 <EditableText
+                    📱{" "}
+                    <EditableText
                       field="personalInfo.phone"
                       value={templateData.phone}
                       className="text-gray-300"
-                      onSave={(value) => setResumeData(prev => ({
-                        ...prev,
-                        personalInfo: { ...prev.personalInfo, phone: value }
-                      }))}
+                      onSave={(value) =>
+                        setResumeData((prev) => ({
+                          ...prev,
+                          personalInfo: { ...prev.personalInfo, phone: value },
+                        }))
+                      }
                     />
                   </div>
-                  <div className="break-all">🌐 linkedin.com/in/{firstName.toLowerCase()}</div>
+                  <div className="break-all">
+                    🌐 linkedin.com/in/{firstName.toLowerCase()}
+                  </div>
                   <div className="break-words flex items-center gap-1">
-                    📍 <EditableText
+                    📍{" "}
+                    <EditableText
                       field="personalInfo.location"
                       value={templateData.location}
                       className="text-gray-300"
-                      onSave={(value) => setResumeData(prev => ({
-                        ...prev,
-                        personalInfo: { ...prev.personalInfo, location: value }
-                      }))}
+                      onSave={(value) =>
+                        setResumeData((prev) => ({
+                          ...prev,
+                          personalInfo: {
+                            ...prev.personalInfo,
+                            location: value,
+                          },
+                        }))
+                      }
                     />
                   </div>
                 </div>
               </div>
 
               <div className="mb-3">
-                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">SKILLS</div>
+                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">
+                  SKILLS
+                </div>
                 <div className="text-xs text-gray-300 space-y-1">
                   {templateData.skills.slice(0, 8).map((skill, index) => (
-                    <div key={index} className="break-words flex items-center gap-1 group">
-                      • <EditableText
+                    <div
+                      key={index}
+                      className="break-words flex items-center gap-1 group"
+                    >
+                      •{" "}
+                      <EditableText
                         field={`skills.${index}`}
                         value={skill}
                         className="text-gray-300 flex-1"
                         onSave={(value) => {
                           const newSkills = [...templateData.skills];
                           newSkills[index] = value;
-                          setResumeData(prev => ({ ...prev, skills: newSkills }));
+                          setResumeData((prev) => ({
+                            ...prev,
+                            skills: newSkills,
+                          }));
                         }}
                       />
                       <button
                         onClick={() => {
-                          const newSkills = templateData.skills.filter((_, i) => i !== index);
-                          setResumeData(prev => ({ ...prev, skills: newSkills }));
+                          const newSkills = templateData.skills.filter(
+                            (_, i) => i !== index
+                          );
+                          setResumeData((prev) => ({
+                            ...prev,
+                            skills: newSkills,
+                          }));
                         }}
                         className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300"
                       >
@@ -1194,7 +1450,7 @@ export default function EnhancedResume() {
                     </div>
                   ))}
                   <button
-                    onClick={() => handleAddToSection('skills')}
+                    onClick={() => handleAddToSection("skills")}
                     className="flex items-center gap-1 text-xs text-blue-300 hover:text-blue-200 hover:bg-blue-800 hover:bg-opacity-20 mt-1 px-2 py-1 rounded transition-colors"
                   >
                     <Plus className="h-3 w-3" />
@@ -1204,7 +1460,9 @@ export default function EnhancedResume() {
               </div>
 
               <div className="mb-4">
-                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">LANGUAGES</div>
+                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">
+                  LANGUAGES
+                </div>
                 <div className="text-xs text-gray-300 space-y-1">
                   <div>• English (Fluent)</div>
                   <div>• Spanish (Conversational)</div>
@@ -1212,7 +1470,9 @@ export default function EnhancedResume() {
               </div>
 
               <div className="mb-4">
-                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">CERTIFICATIONS</div>
+                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">
+                  CERTIFICATIONS
+                </div>
                 <div className="text-xs text-gray-300 space-y-1">
                   <div>• Professional Development</div>
                   <div>• Industry Certification</div>
@@ -1221,7 +1481,9 @@ export default function EnhancedResume() {
               </div>
 
               <div>
-                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">INTERESTS</div>
+                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">
+                  INTERESTS
+                </div>
                 <div className="text-xs text-gray-300 space-y-1">
                   <div>• Professional Growth</div>
                   <div>• Team Collaboration</div>
@@ -1233,26 +1495,35 @@ export default function EnhancedResume() {
             {/* Main Content Area */}
             <div className="w-2/3 p-3 overflow-y-auto">
               <div className="mb-3">
-                <div className="font-bold text-slate-700 mb-2 text-xs uppercase tracking-wide border-b border-slate-300 pb-1">PROFESSIONAL SUMMARY</div>
+                <div className="font-bold text-slate-700 mb-2 text-xs uppercase tracking-wide border-b border-slate-300 pb-1">
+                  PROFESSIONAL SUMMARY
+                </div>
                 <div className="text-xs text-gray-600 leading-relaxed break-words">
                   <EditableText
                     field="personalInfo.summary"
-                    value={templateData.summary.replace(/\*\*(.*?)\*\*/g, '$1')}
+                    value={templateData.summary.replace(/\*\*(.*?)\*\*/g, "$1")}
                     className="text-gray-600"
                     multiline={4}
-                    onSave={(value) => setResumeData(prev => ({
-                      ...prev,
-                      personalInfo: { ...prev.personalInfo, summary: value }
-                    }))}
+                    onSave={(value) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        personalInfo: { ...prev.personalInfo, summary: value },
+                      }))
+                    }
                   />
                 </div>
               </div>
 
               <div className="mb-4">
-                <div className="font-bold text-slate-700 mb-3 text-xs uppercase tracking-wide border-b border-slate-300 pb-2">WORK EXPERIENCE</div>
+                <div className="font-bold text-slate-700 mb-3 text-xs uppercase tracking-wide border-b border-slate-300 pb-2">
+                  WORK EXPERIENCE
+                </div>
                 <div className="text-xs text-gray-600 space-y-4">
                   {templateData.experience.map((exp, index) => (
-                    <div key={exp.id || index} className="group bg-white p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">
+                    <div
+                      key={exp.id || index}
+                      className="group bg-white p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors"
+                    >
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex-1 space-y-1">
                           <div className="font-semibold text-gray-800 text-xs break-words">
@@ -1260,12 +1531,16 @@ export default function EnhancedResume() {
                               field={`experience.${exp.id}.position`}
                               value={exp.position}
                               className="text-gray-800"
-                              onSave={(value) => setResumeData(prev => ({
-                                ...prev,
-                                experience: prev.experience.map(e =>
-                                  e.id === exp.id ? { ...e, position: value } : e
-                                )
-                              }))}
+                              onSave={(value) =>
+                                setResumeData((prev) => ({
+                                  ...prev,
+                                  experience: prev.experience.map((e) =>
+                                    e.id === exp.id
+                                      ? { ...e, position: value }
+                                      : e
+                                  ),
+                                }))
+                              }
                             />
                           </div>
                           <div className="font-medium text-gray-600 text-xs break-words flex items-center gap-2">
@@ -1273,29 +1548,39 @@ export default function EnhancedResume() {
                               field={`experience.${exp.id}.company`}
                               value={exp.company}
                               className="text-gray-600"
-                              onSave={(value) => setResumeData(prev => ({
-                                ...prev,
-                                experience: prev.experience.map(e =>
-                                  e.id === exp.id ? { ...e, company: value } : e
-                                )
-                              }))}
+                              onSave={(value) =>
+                                setResumeData((prev) => ({
+                                  ...prev,
+                                  experience: prev.experience.map((e) =>
+                                    e.id === exp.id
+                                      ? { ...e, company: value }
+                                      : e
+                                  ),
+                                }))
+                              }
                             />
                             <span className="text-gray-400">•</span>
                             <EditableText
                               field={`experience.${exp.id}.duration`}
                               value={exp.duration}
                               className="text-gray-600"
-                              onSave={(value) => setResumeData(prev => ({
-                                ...prev,
-                                experience: prev.experience.map(e =>
-                                  e.id === exp.id ? { ...e, duration: value } : e
-                                )
-                              }))}
+                              onSave={(value) =>
+                                setResumeData((prev) => ({
+                                  ...prev,
+                                  experience: prev.experience.map((e) =>
+                                    e.id === exp.id
+                                      ? { ...e, duration: value }
+                                      : e
+                                  ),
+                                }))
+                              }
                             />
                           </div>
                         </div>
                         <button
-                          onClick={() => handleRemoveFromSection('experience', exp.id)}
+                          onClick={() =>
+                            handleRemoveFromSection("experience", exp.id)
+                          }
                           className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded ml-2 transition-all"
                           title="Remove experience"
                         >
@@ -1310,7 +1595,7 @@ export default function EnhancedResume() {
                     </div>
                   ))}
                   <button
-                    onClick={() => handleAddToSection('experience')}
+                    onClick={() => handleAddToSection("experience")}
                     className="flex items-center gap-2 text-xs text-blue-600 hover:text-blue-800 hover:bg-blue-50 mt-4 px-4 py-2 rounded-md border border-blue-300 hover:border-blue-500 transition-all shadow-sm w-full justify-center"
                   >
                     <Plus className="h-4 w-4" />
@@ -1320,10 +1605,18 @@ export default function EnhancedResume() {
               </div>
 
               <div className="mb-4">
-                <div className="font-bold text-slate-700 mb-3 text-xs uppercase tracking-wide border-b border-slate-300 pb-2">EDUCATION</div>
+                <div className="font-bold text-slate-700 mb-3 text-xs uppercase tracking-wide border-b border-slate-300 pb-2">
+                  EDUCATION
+                </div>
                 <div className="text-xs text-gray-600 space-y-3">
-                  {(Array.isArray(templateData.education) ? templateData.education : [templateData.education]).map((edu, index) => (
-                    <div key={edu.id || index} className="group bg-white p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">
+                  {(Array.isArray(templateData.education)
+                    ? templateData.education
+                    : [templateData.education]
+                  ).map((edu, index) => (
+                    <div
+                      key={edu.id || index}
+                      className="group bg-white p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors"
+                    >
                       <div className="flex items-start justify-between">
                         <div className="flex-1 space-y-1">
                           <div className="font-semibold text-gray-800 text-xs">
@@ -1331,12 +1624,18 @@ export default function EnhancedResume() {
                               field={`education.${edu.id || index}.degree`}
                               value={edu.degree}
                               className="text-gray-800"
-                              onSave={(value) => setResumeData(prev => ({
-                                ...prev,
-                                education: Array.isArray(prev.education)
-                                  ? prev.education.map(e => e.id === edu.id ? { ...e, degree: value } : e)
-                                  : [{ ...prev.education, degree: value }]
-                              }))}
+                              onSave={(value) =>
+                                setResumeData((prev) => ({
+                                  ...prev,
+                                  education: Array.isArray(prev.education)
+                                    ? prev.education.map((e) =>
+                                        e.id === edu.id
+                                          ? { ...e, degree: value }
+                                          : e
+                                      )
+                                    : [{ ...prev.education, degree: value }],
+                                }))
+                              }
                             />
                           </div>
                           <div className="text-gray-600 flex items-center gap-2">
@@ -1344,41 +1643,56 @@ export default function EnhancedResume() {
                               field={`education.${edu.id || index}.school`}
                               value={edu.school}
                               className="text-gray-600"
-                              onSave={(value) => setResumeData(prev => ({
-                                ...prev,
-                                education: Array.isArray(prev.education)
-                                  ? prev.education.map(e => e.id === edu.id ? { ...e, school: value } : e)
-                                  : [{ ...prev.education, school: value }]
-                              }))}
+                              onSave={(value) =>
+                                setResumeData((prev) => ({
+                                  ...prev,
+                                  education: Array.isArray(prev.education)
+                                    ? prev.education.map((e) =>
+                                        e.id === edu.id
+                                          ? { ...e, school: value }
+                                          : e
+                                      )
+                                    : [{ ...prev.education, school: value }],
+                                }))
+                              }
                             />
                             <span className="text-gray-400">•</span>
                             <EditableText
                               field={`education.${edu.id || index}.year`}
                               value={edu.year}
                               className="text-gray-600"
-                              onSave={(value) => setResumeData(prev => ({
-                                ...prev,
-                                education: Array.isArray(prev.education)
-                                  ? prev.education.map(e => e.id === edu.id ? { ...e, year: value } : e)
-                                  : [{ ...prev.education, year: value }]
-                              }))}
+                              onSave={(value) =>
+                                setResumeData((prev) => ({
+                                  ...prev,
+                                  education: Array.isArray(prev.education)
+                                    ? prev.education.map((e) =>
+                                        e.id === edu.id
+                                          ? { ...e, year: value }
+                                          : e
+                                      )
+                                    : [{ ...prev.education, year: value }],
+                                }))
+                              }
                             />
                           </div>
                         </div>
-                        {Array.isArray(templateData.education) && templateData.education.length > 1 && (
-                          <button
-                            onClick={() => handleRemoveFromSection('education', edu.id)}
-                            className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded ml-2 transition-all"
-                            title="Remove education"
-                          >
-                            <X className="h-3 w-3" />
-                          </button>
-                        )}
+                        {Array.isArray(templateData.education) &&
+                          templateData.education.length > 1 && (
+                            <button
+                              onClick={() =>
+                                handleRemoveFromSection("education", edu.id)
+                              }
+                              className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded ml-2 transition-all"
+                              title="Remove education"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          )}
                       </div>
                     </div>
                   ))}
                   <button
-                    onClick={() => handleAddToSection('education')}
+                    onClick={() => handleAddToSection("education")}
                     className="flex items-center gap-2 text-xs text-blue-600 hover:text-blue-800 hover:bg-blue-50 mt-3 px-4 py-2 rounded-md border border-blue-300 hover:border-blue-500 transition-all shadow-sm w-full justify-center"
                   >
                     <Plus className="h-4 w-4" />
@@ -1388,7 +1702,9 @@ export default function EnhancedResume() {
               </div>
 
               <div>
-                <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide border-b border-slate-300 pb-1">KEY ACHIEVEMENTS</div>
+                <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide border-b border-slate-300 pb-1">
+                  KEY ACHIEVEMENTS
+                </div>
                 <div className="text-xs text-gray-600 space-y-1">
                   <div>🏆 Outstanding Performance Recognition</div>
                   <div>🏆 Team Leadership Excellence</div>
@@ -1399,7 +1715,7 @@ export default function EnhancedResume() {
           </div>
         );
 
-      case 'saanvi-patel-2':
+      case "saanvi-patel-2":
         return (
           <div className="h-full p-4 text-sm leading-relaxed bg-white overflow-y-auto overflow-x-hidden">
             {/* Header */}
@@ -1409,10 +1725,12 @@ export default function EnhancedResume() {
                   field="personalInfo.name_template2"
                   value={templateData.name}
                   className="text-slate-700"
-                  onSave={(value) => setResumeData(prev => ({
-                    ...prev,
-                    personalInfo: { ...prev.personalInfo, name: value }
-                  }))}
+                  onSave={(value) =>
+                    setResumeData((prev) => ({
+                      ...prev,
+                      personalInfo: { ...prev.personalInfo, name: value },
+                    }))
+                  }
                 />
               </div>
               <div className="text-sm text-gray-600 mt-1 font-medium break-words">
@@ -1420,10 +1738,12 @@ export default function EnhancedResume() {
                   field="personalInfo.title_template2"
                   value={templateData.title}
                   className="text-gray-600"
-                  onSave={(value) => setResumeData(prev => ({
-                    ...prev,
-                    personalInfo: { ...prev.personalInfo, title: value }
-                  }))}
+                  onSave={(value) =>
+                    setResumeData((prev) => ({
+                      ...prev,
+                      personalInfo: { ...prev.personalInfo, title: value },
+                    }))
+                  }
                 />
               </div>
               <div className="text-xs text-gray-500 mt-1 break-all flex justify-center items-center gap-1">
@@ -1431,72 +1751,94 @@ export default function EnhancedResume() {
                   field="personalInfo.location_template2"
                   value={templateData.location}
                   className="text-gray-500"
-                  onSave={(value) => setResumeData(prev => ({
-                    ...prev,
-                    personalInfo: { ...prev.personalInfo, location: value }
-                  }))}
+                  onSave={(value) =>
+                    setResumeData((prev) => ({
+                      ...prev,
+                      personalInfo: { ...prev.personalInfo, location: value },
+                    }))
+                  }
                 />
                 •
                 <EditableText
                   field="personalInfo.phone_template2"
                   value={templateData.phone}
                   className="text-gray-500"
-                  onSave={(value) => setResumeData(prev => ({
-                    ...prev,
-                    personalInfo: { ...prev.personalInfo, phone: value }
-                  }))}
+                  onSave={(value) =>
+                    setResumeData((prev) => ({
+                      ...prev,
+                      personalInfo: { ...prev.personalInfo, phone: value },
+                    }))
+                  }
                 />
                 •
                 <EditableText
                   field="personalInfo.email_template2"
                   value={templateData.email}
                   className="text-gray-500"
-                  onSave={(value) => setResumeData(prev => ({
-                    ...prev,
-                    personalInfo: { ...prev.personalInfo, email: value }
-                  }))}
+                  onSave={(value) =>
+                    setResumeData((prev) => ({
+                      ...prev,
+                      personalInfo: { ...prev.personalInfo, email: value },
+                    }))
+                  }
                 />
               </div>
             </div>
 
             {/* Professional Summary */}
             <div className="mb-3">
-              <div className="font-bold text-slate-700 mb-2 text-xs uppercase tracking-wide">PROFESSIONAL SUMMARY</div>
+              <div className="font-bold text-slate-700 mb-2 text-xs uppercase tracking-wide">
+                PROFESSIONAL SUMMARY
+              </div>
               <div className="text-xs text-gray-600 leading-relaxed break-words">
                 <EditableText
                   field="personalInfo.summary_template2"
-                  value={templateData.summary.replace(/\*\*(.*?)\*\*/g, '$1')}
+                  value={templateData.summary.replace(/\*\*(.*?)\*\*/g, "$1")}
                   className="text-gray-600"
                   multiline={4}
-                  onSave={(value) => setResumeData(prev => ({
-                    ...prev,
-                    personalInfo: { ...prev.personalInfo, summary: value }
-                  }))}
+                  onSave={(value) =>
+                    setResumeData((prev) => ({
+                      ...prev,
+                      personalInfo: { ...prev.personalInfo, summary: value },
+                    }))
+                  }
                 />
               </div>
             </div>
 
             {/* Core Competencies */}
             <div className="mb-3">
-              <div className="font-bold text-slate-700 mb-2 text-xs uppercase tracking-wide">CORE COMPETENCIES</div>
+              <div className="font-bold text-slate-700 mb-2 text-xs uppercase tracking-wide">
+                CORE COMPETENCIES
+              </div>
               <div className="text-xs text-gray-600 grid grid-cols-2 gap-x-2 gap-y-1">
                 {templateData.skills.map((skill, index) => (
-                  <div key={index} className="break-words">• {skill}</div>
+                  <div key={index} className="break-words">
+                    • {skill}
+                  </div>
                 ))}
               </div>
             </div>
 
             {/* Professional Experience */}
             <div className="mb-4">
-              <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide">PROFESSIONAL EXPERIENCE</div>
+              <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide">
+                PROFESSIONAL EXPERIENCE
+              </div>
               <div className="text-xs text-gray-600 space-y-3">
                 {templateData.experience.map((exp, index) => (
                   <div key={index}>
-                    <div className="font-semibold text-gray-800 text-sm">{exp.position}</div>
-                    <div className="font-medium text-gray-600">{exp.company} • {exp.duration}</div>
+                    <div className="font-semibold text-gray-800 text-sm">
+                      {exp.position}
+                    </div>
+                    <div className="font-medium text-gray-600">
+                      {exp.company} • {exp.duration}
+                    </div>
                     <div className="mt-1 space-y-1">
                       {exp.achievements.map((achievement, i) => (
-                        <div key={i}>• {achievement.replace(/\*\*(.*?)\*\*/g, '$1')}</div>
+                        <div key={i}>
+                          • {achievement.replace(/\*\*(.*?)\*\*/g, "$1")}
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -1506,16 +1848,25 @@ export default function EnhancedResume() {
 
             {/* Education */}
             <div className="mb-4">
-              <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide">EDUCATION</div>
+              <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide">
+                EDUCATION
+              </div>
               <div className="text-xs text-gray-600">
-                <div className="font-semibold text-gray-800 text-sm">{templateData.education.degree}</div>
-                <div className="text-gray-600">{templateData.education.school} • {templateData.education.year}</div>
+                <div className="font-semibold text-gray-800 text-sm">
+                  {templateData.education.degree}
+                </div>
+                <div className="text-gray-600">
+                  {templateData.education.school} •{" "}
+                  {templateData.education.year}
+                </div>
               </div>
             </div>
 
             {/* Key Achievements */}
             <div className="mb-4">
-              <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide">KEY ACHIEVEMENTS</div>
+              <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide">
+                KEY ACHIEVEMENTS
+              </div>
               <div className="text-xs text-gray-600 space-y-1">
                 <div>🏆 Excellence in Performance and Results</div>
                 <div>🏆 Leadership and Team Development</div>
@@ -1524,9 +1875,13 @@ export default function EnhancedResume() {
             </div>
 
             <div>
-              <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide">ADDITIONAL INFORMATION</div>
+              <div className="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wide">
+                ADDITIONAL INFORMATION
+              </div>
               <div className="text-xs text-gray-600 space-y-1">
-                <div>• Available for immediate start and flexible scheduling</div>
+                <div>
+                  • Available for immediate start and flexible scheduling
+                </div>
                 <div>• Strong analytical and problem-solving capabilities</div>
                 <div>• Excellent communication and interpersonal skills</div>
               </div>
@@ -1534,7 +1889,7 @@ export default function EnhancedResume() {
           </div>
         );
 
-      case 'saanvi-patel-3':
+      case "saanvi-patel-3":
         return (
           <div className="h-full flex bg-white overflow-hidden">
             {/* Left Column - Green Sidebar */}
@@ -1557,12 +1912,18 @@ export default function EnhancedResume() {
                     </div>
                   )}
                 </div>
-                <div className="font-bold text-xs leading-none break-words">{templateData.name}</div>
-                <div className="text-xs mt-1 font-medium opacity-90 break-words">{templateData.title.toUpperCase()}</div>
+                <div className="font-bold text-xs leading-none break-words">
+                  {templateData.name}
+                </div>
+                <div className="text-xs mt-1 font-medium opacity-90 break-words">
+                  {templateData.title.toUpperCase()}
+                </div>
               </div>
 
               <div className="mb-2">
-                <div className="text-white font-bold mb-1 text-xs uppercase tracking-wide">CONTACT</div>
+                <div className="text-white font-bold mb-1 text-xs uppercase tracking-wide">
+                  CONTACT
+                </div>
                 <div className="text-xs space-y-1">
                   <div className="flex items-center gap-1 break-all">
                     <span>📧</span> {templateData.email}
@@ -1580,16 +1941,26 @@ export default function EnhancedResume() {
               </div>
 
               <div className="mb-3">
-                <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">EDUCATION</div>
+                <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">
+                  EDUCATION
+                </div>
                 <div className="text-[5px]">
-                  <div className="font-semibold">{templateData.education.degree}</div>
-                  <div className="opacity-90">{templateData.education.school}</div>
-                  <div className="opacity-90">{templateData.education.year}</div>
+                  <div className="font-semibold">
+                    {templateData.education.degree}
+                  </div>
+                  <div className="opacity-90">
+                    {templateData.education.school}
+                  </div>
+                  <div className="opacity-90">
+                    {templateData.education.year}
+                  </div>
                 </div>
               </div>
 
               <div className="mb-3">
-                <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">SKILLS</div>
+                <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">
+                  SKILLS
+                </div>
                 <div className="text-[5px] space-y-0.5">
                   {templateData.skills.map((skill, index) => (
                     <div key={index}>• {skill}</div>
@@ -1598,7 +1969,9 @@ export default function EnhancedResume() {
               </div>
 
               <div>
-                <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">LANGUAGES</div>
+                <div className="text-white font-bold mb-1.5 text-[6px] uppercase tracking-wide">
+                  LANGUAGES
+                </div>
                 <div className="text-[5px] space-y-0.5">
                   <div>• English (Fluent)</div>
                   <div>• Spanish (Conversational)</div>
@@ -1609,22 +1982,32 @@ export default function EnhancedResume() {
             {/* Right Column - Main Content */}
             <div className="w-3/5 p-2 text-xs overflow-y-auto">
               <div className="mb-2">
-                <div className="font-bold text-emerald-700 mb-1 text-xs uppercase tracking-wide">PROFESSIONAL SUMMARY</div>
+                <div className="font-bold text-emerald-700 mb-1 text-xs uppercase tracking-wide">
+                  PROFESSIONAL SUMMARY
+                </div>
                 <div className="text-xs text-gray-600 leading-relaxed break-words">
-                  {templateData.summary.replace(/\*\*(.*?)\*\*/g, '$1')}
+                  {templateData.summary.replace(/\*\*(.*?)\*\*/g, "$1")}
                 </div>
               </div>
 
               <div className="mb-2">
-                <div className="font-bold text-emerald-700 mb-1 text-[7px] uppercase tracking-wide">PROFESSIONAL EXPERIENCE</div>
+                <div className="font-bold text-emerald-700 mb-1 text-[7px] uppercase tracking-wide">
+                  PROFESSIONAL EXPERIENCE
+                </div>
                 <div className="text-[5px] text-gray-600">
                   {templateData.experience.map((exp, index) => (
                     <div key={index} className="mb-1.5">
-                      <div className="font-semibold text-gray-800">{exp.position}</div>
-                      <div className="font-medium text-emerald-600">{exp.company} • {exp.duration}</div>
+                      <div className="font-semibold text-gray-800">
+                        {exp.position}
+                      </div>
+                      <div className="font-medium text-emerald-600">
+                        {exp.company} • {exp.duration}
+                      </div>
                       <div className="mt-0.5 space-y-0.5">
                         {exp.achievements.map((achievement, i) => (
-                          <div key={i}>• {achievement.replace(/\*\*(.*?)\*\*/g, '$1')}</div>
+                          <div key={i}>
+                            • {achievement.replace(/\*\*(.*?)\*\*/g, "$1")}
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -1633,7 +2016,9 @@ export default function EnhancedResume() {
               </div>
 
               <div className="mb-2">
-                <div className="font-bold text-emerald-700 mb-1 text-[7px] uppercase tracking-wide">KEY ACHIEVEMENTS</div>
+                <div className="font-bold text-emerald-700 mb-1 text-[7px] uppercase tracking-wide">
+                  KEY ACHIEVEMENTS
+                </div>
                 <div className="text-[5px] text-gray-600 space-y-0.5">
                   <div>🏆 Outstanding Performance Award</div>
                   <div>🏆 Team Leadership Excellence</div>
@@ -1642,7 +2027,9 @@ export default function EnhancedResume() {
               </div>
 
               <div>
-                <div className="font-bold text-emerald-700 mb-1 text-[7px] uppercase tracking-wide">ADDITIONAL INFO</div>
+                <div className="font-bold text-emerald-700 mb-1 text-[7px] uppercase tracking-wide">
+                  ADDITIONAL INFO
+                </div>
                 <div className="text-[5px] text-gray-600 space-y-0.5">
                   <div>• Available for flexible scheduling</div>
                   <div>• Strong analytical and problem-solving skills</div>
@@ -1653,42 +2040,63 @@ export default function EnhancedResume() {
           </div>
         );
 
-      case 'template-4':
+      case "template-4":
         return (
           <div className="h-full p-3 text-xs bg-gray-50 leading-tight overflow-y-auto overflow-x-hidden">
             <div className="text-center mb-2 border-b-2 border-blue-600 pb-1">
-              <div className="font-bold text-sm text-gray-800 tracking-wider break-words">{templateData.name.toUpperCase()}</div>
-              <div className="text-blue-600 font-semibold text-xs mt-0.5 break-words">{templateData.title.toUpperCase()}</div>
-              <div className="text-xs text-gray-500 mt-1 break-all">{templateData.email} • {templateData.phone} • {templateData.location}</div>
+              <div className="font-bold text-sm text-gray-800 tracking-wider break-words">
+                {templateData.name.toUpperCase()}
+              </div>
+              <div className="text-blue-600 font-semibold text-xs mt-0.5 break-words">
+                {templateData.title.toUpperCase()}
+              </div>
+              <div className="text-xs text-gray-500 mt-1 break-all">
+                {templateData.email} • {templateData.phone} •{" "}
+                {templateData.location}
+              </div>
             </div>
 
             <div className="space-y-2">
               <div>
-                <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-xs uppercase tracking-wide">PROFESSIONAL SUMMARY</div>
+                <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-xs uppercase tracking-wide">
+                  PROFESSIONAL SUMMARY
+                </div>
                 <div className="text-xs text-gray-600 leading-relaxed break-words">
-                  {templateData.summary.replace(/\*\*(.*?)\*\*/g, '$1')}
+                  {templateData.summary.replace(/\*\*(.*?)\*\*/g, "$1")}
                 </div>
               </div>
 
               <div>
-                <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-xs uppercase tracking-wide">TECHNICAL SKILLS</div>
+                <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-xs uppercase tracking-wide">
+                  TECHNICAL SKILLS
+                </div>
                 <div className="text-xs text-gray-600 grid grid-cols-2 gap-x-2">
                   {templateData.skills.map((skill, index) => (
-                    <div key={index} className="break-words">• {skill}</div>
+                    <div key={index} className="break-words">
+                      • {skill}
+                    </div>
                   ))}
                 </div>
               </div>
 
               <div>
-                <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-[6px] uppercase tracking-wide">EXPERIENCE</div>
+                <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-[6px] uppercase tracking-wide">
+                  EXPERIENCE
+                </div>
                 <div className="text-[5px] text-gray-600 space-y-1">
                   {templateData.experience.map((exp, index) => (
                     <div key={index}>
-                      <div className="font-semibold text-gray-800">{exp.position}</div>
-                      <div className="font-medium text-blue-600">{exp.company} • {exp.duration}</div>
+                      <div className="font-semibold text-gray-800">
+                        {exp.position}
+                      </div>
+                      <div className="font-medium text-blue-600">
+                        {exp.company} • {exp.duration}
+                      </div>
                       <div className="mt-0.5 space-y-0.5">
                         {exp.achievements.map((achievement, i) => (
-                          <div key={i}>• {achievement.replace(/\*\*(.*?)\*\*/g, '$1')}</div>
+                          <div key={i}>
+                            • {achievement.replace(/\*\*(.*?)\*\*/g, "$1")}
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -1697,53 +2105,81 @@ export default function EnhancedResume() {
               </div>
 
               <div>
-                <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-[6px] uppercase tracking-wide">EDUCATION</div>
+                <div className="font-bold text-gray-800 border-b border-blue-600 mb-1 text-[6px] uppercase tracking-wide">
+                  EDUCATION
+                </div>
                 <div className="text-[5px] text-gray-600">
-                  <div className="font-semibold text-gray-800">{templateData.education.degree}</div>
-                  <div className="text-gray-600">{templateData.education.school} • {templateData.education.year}</div>
+                  <div className="font-semibold text-gray-800">
+                    {templateData.education.degree}
+                  </div>
+                  <div className="text-gray-600">
+                    {templateData.education.school} •{" "}
+                    {templateData.education.year}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         );
 
-      case 'template-5':
-      case 'template-6':
+      case "template-5":
+      case "template-6":
         return (
           <div className="h-full p-3 text-xs bg-white leading-tight overflow-y-auto overflow-x-hidden">
             <div className="text-center mb-2 border-b-2 border-gray-800 pb-1">
-              <div className="font-bold text-sm text-gray-800 tracking-wider break-words">{templateData.name.toUpperCase()}</div>
-              <div className="text-gray-600 text-xs mt-0.5 font-medium break-words">{templateData.title.toUpperCase()}</div>
-              <div className="text-xs text-gray-500 mt-1 break-all">{templateData.email} • {templateData.phone} • {templateData.location}</div>
+              <div className="font-bold text-sm text-gray-800 tracking-wider break-words">
+                {templateData.name.toUpperCase()}
+              </div>
+              <div className="text-gray-600 text-xs mt-0.5 font-medium break-words">
+                {templateData.title.toUpperCase()}
+              </div>
+              <div className="text-xs text-gray-500 mt-1 break-all">
+                {templateData.email} • {templateData.phone} •{" "}
+                {templateData.location}
+              </div>
             </div>
 
             <div className="space-y-2">
               <div>
-                <div className="font-bold text-gray-800 mb-0.5 text-xs uppercase tracking-wide">PROFESSIONAL SUMMARY</div>
+                <div className="font-bold text-gray-800 mb-0.5 text-xs uppercase tracking-wide">
+                  PROFESSIONAL SUMMARY
+                </div>
                 <div className="text-xs text-gray-600 leading-relaxed break-words">
-                  {templateData.summary.replace(/\*\*(.*?)\*\*/g, '$1')}
+                  {templateData.summary.replace(/\*\*(.*?)\*\*/g, "$1")}
                 </div>
               </div>
 
               <div>
-                <div className="font-bold text-gray-800 mb-0.5 text-xs uppercase tracking-wide">CORE COMPETENCIES</div>
+                <div className="font-bold text-gray-800 mb-0.5 text-xs uppercase tracking-wide">
+                  CORE COMPETENCIES
+                </div>
                 <div className="text-xs text-gray-600 grid grid-cols-2 gap-x-2">
                   {templateData.skills.map((skill, index) => (
-                    <div key={index} className="break-words">• {skill}</div>
+                    <div key={index} className="break-words">
+                      • {skill}
+                    </div>
                   ))}
                 </div>
               </div>
 
               <div>
-                <div className="font-bold text-gray-800 mb-0.5 text-[6px] uppercase tracking-wide">PROFESSIONAL EXPERIENCE</div>
+                <div className="font-bold text-gray-800 mb-0.5 text-[6px] uppercase tracking-wide">
+                  PROFESSIONAL EXPERIENCE
+                </div>
                 <div className="text-[5px] text-gray-600 space-y-1">
                   {templateData.experience.map((exp, index) => (
                     <div key={index}>
-                      <div className="font-semibold text-gray-800">{exp.position}</div>
-                      <div className="font-medium text-gray-600">{exp.company} • {exp.duration}</div>
+                      <div className="font-semibold text-gray-800">
+                        {exp.position}
+                      </div>
+                      <div className="font-medium text-gray-600">
+                        {exp.company} • {exp.duration}
+                      </div>
                       <div className="mt-0.5 space-y-0.5">
                         {exp.achievements.map((achievement, i) => (
-                          <div key={i}>• {achievement.replace(/\*\*(.*?)\*\*/g, '$1')}</div>
+                          <div key={i}>
+                            • {achievement.replace(/\*\*(.*?)\*\*/g, "$1")}
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -1752,10 +2188,17 @@ export default function EnhancedResume() {
               </div>
 
               <div>
-                <div className="font-bold text-gray-800 mb-0.5 text-[6px] uppercase tracking-wide">EDUCATION</div>
+                <div className="font-bold text-gray-800 mb-0.5 text-[6px] uppercase tracking-wide">
+                  EDUCATION
+                </div>
                 <div className="text-[5px] text-gray-600">
-                  <div className="font-semibold text-gray-800">{templateData.education.degree}</div>
-                  <div className="text-gray-600">{templateData.education.school} • {templateData.education.year}</div>
+                  <div className="font-semibold text-gray-800">
+                    {templateData.education.degree}
+                  </div>
+                  <div className="text-gray-600">
+                    {templateData.education.school} •{" "}
+                    {templateData.education.year}
+                  </div>
                 </div>
               </div>
             </div>
@@ -1763,7 +2206,7 @@ export default function EnhancedResume() {
         );
 
       default:
-        return renderTemplate('saanvi-patel-1');
+        return renderTemplate("saanvi-patel-1");
     }
   };
 
@@ -1786,7 +2229,9 @@ export default function EnhancedResume() {
                 <span className="hidden sm:inline">Back</span>
               </Button>
               <div className="h-6 w-px bg-gray-300 hidden sm:block"></div>
-              <h1 className="text-base lg:text-lg font-semibold text-gray-900">Resume Builder</h1>
+              <h1 className="text-base lg:text-lg font-semibold text-gray-900">
+                Resume Builder
+              </h1>
             </div>
 
             <div className="flex items-center gap-2 lg:gap-3">
@@ -1805,9 +2250,23 @@ export default function EnhancedResume() {
                 <Eye className="h-3 w-3 lg:h-4 lg:w-4" />
                 <span className="hidden sm:inline">Preview</span>
               </Button>
-              <Button onClick={handleDownload} className="bg-blue-600 hover:bg-blue-700 text-white gap-1 lg:gap-2 text-xs lg:text-sm" size="sm">
+              <Button
+                onClick={handleDownload}
+                className="bg-blue-600 hover:bg-blue-700 text-white gap-1 lg:gap-2 text-xs lg:text-sm"
+                size="sm"
+              >
                 <Download className="h-3 w-3 lg:h-4 lg:w-4" />
                 <span className="hidden sm:inline">Download</span>
+              </Button>
+              <Button
+                onClick={() => {
+                  router.push("/job-search");
+                }}
+                className="bg-blue-600 hover:bg-blue-700 text-white gap-1 lg:gap-2 text-xs lg:text-sm"
+                size="sm"
+              >
+                <Download className="h-3 w-3 lg:h-4 lg:w-4" />
+                <span className="hidden sm:inline">Generate</span>
               </Button>
             </div>
           </div>
@@ -1815,10 +2274,21 @@ export default function EnhancedResume() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6">
-        <div className={`grid grid-cols-1 ${sidebarCollapsed ? 'lg:grid-cols-1' : 'md:grid-cols-3 lg:grid-cols-3'} gap-4 lg:gap-6 transition-all duration-300`}>
-
+        <div
+          className={`grid grid-cols-1 ${
+            sidebarCollapsed
+              ? "lg:grid-cols-1"
+              : "md:grid-cols-3 lg:grid-cols-3"
+          } gap-4 lg:gap-6 transition-all duration-300`}
+        >
           {/* Left Sidebar - Resume Sections */}
-          <div className={`${sidebarCollapsed ? 'hidden lg:block lg:w-12' : 'col-span-1 md:col-span-1 lg:col-span-1'} order-2 md:order-1 lg:order-1 transition-all duration-300`}>
+          <div
+            className={`${
+              sidebarCollapsed
+                ? "hidden lg:block lg:w-12"
+                : "col-span-1 md:col-span-1 lg:col-span-1"
+            } order-2 md:order-1 lg:order-1 transition-all duration-300`}
+          >
             {sidebarCollapsed ? (
               <div className="bg-white shadow-sm border border-gray-200 rounded-lg p-2">
                 <button
@@ -1846,84 +2316,93 @@ export default function EnhancedResume() {
                     </button>
                   </div>
                 </CardHeader>
-              <CardContent className="space-y-2 lg:space-y-3">
-                <ResumeSection
-                  title="Profile Photo"
-                  icon={<Camera className="h-4 w-4" />}
-                  isCompleted={!!profilePhoto}
-                  onClick={handlePhotoClick}
-                />
-                <ResumeSection
-                  title="Personal Info"
-                  icon={<User className="h-4 w-4" />}
-                  isCompleted={true}
-                  onClick={() => handleSectionClick('personalInfo')}
-                  onAdd={() => handleAddToSection('personalInfo')}
-                />
-                <ResumeSection
-                  title="Professional Summary"
-                  icon={<Star className="h-4 w-4" />}
-                  isCompleted={true}
-                  onClick={() => handleSectionClick('summary')}
-                />
-                <ResumeSection
-                  title="Work Experience"
-                  icon={<Zap className="h-4 w-4" />}
-                  isCompleted={true}
-                  onClick={() => handleSectionClick('experience')}
-                  onAdd={() => handleAddToSection('experience')}
-                />
-                <ResumeSection
-                  title="Skills"
-                  icon={<Target className="h-4 w-4" />}
-                  isCompleted={true}
-                  onClick={() => handleSectionClick('skills')}
-                  onAdd={() => handleAddToSection('skills')}
-                />
-                <ResumeSection
-                  title="Education"
-                  icon={<FileText className="h-4 w-4" />}
-                  isCompleted={true}
-                  onClick={() => handleSectionClick('education')}
-                  onAdd={() => handleAddToSection('education')}
-                />
-                <ResumeSection
-                  title="Certifications"
-                  icon={<Star className="h-4 w-4" />}
-                  isCompleted={true}
-                  onClick={() => handleSectionClick('certifications')}
-                  onAdd={() => handleAddToSection('certifications')}
-                />
-                <ResumeSection
-                  title="Languages"
-                  icon={<Target className="h-4 w-4" />}
-                  isCompleted={true}
-                  onClick={() => handleSectionClick('languages')}
-                  onAdd={() => handleAddToSection('languages')}
-                />
-              </CardContent>
-            </Card>
+                <CardContent className="space-y-2 lg:space-y-3">
+                  <ResumeSection
+                    title="Profile Photo"
+                    icon={<Camera className="h-4 w-4" />}
+                    isCompleted={!!profilePhoto}
+                    onClick={handlePhotoClick}
+                  />
+                  <ResumeSection
+                    title="Personal Info"
+                    icon={<User className="h-4 w-4" />}
+                    isCompleted={true}
+                    onClick={() => handleSectionClick("personalInfo")}
+                    onAdd={() => handleAddToSection("personalInfo")}
+                  />
+                  <ResumeSection
+                    title="Professional Summary"
+                    icon={<Star className="h-4 w-4" />}
+                    isCompleted={true}
+                    onClick={() => handleSectionClick("summary")}
+                  />
+                  <ResumeSection
+                    title="Work Experience"
+                    icon={<Zap className="h-4 w-4" />}
+                    isCompleted={true}
+                    onClick={() => handleSectionClick("experience")}
+                    onAdd={() => handleAddToSection("experience")}
+                  />
+                  <ResumeSection
+                    title="Skills"
+                    icon={<Target className="h-4 w-4" />}
+                    isCompleted={true}
+                    onClick={() => handleSectionClick("skills")}
+                    onAdd={() => handleAddToSection("skills")}
+                  />
+                  <ResumeSection
+                    title="Education"
+                    icon={<FileText className="h-4 w-4" />}
+                    isCompleted={true}
+                    onClick={() => handleSectionClick("education")}
+                    onAdd={() => handleAddToSection("education")}
+                  />
+                  <ResumeSection
+                    title="Certifications"
+                    icon={<Star className="h-4 w-4" />}
+                    isCompleted={true}
+                    onClick={() => handleSectionClick("certifications")}
+                    onAdd={() => handleAddToSection("certifications")}
+                  />
+                  <ResumeSection
+                    title="Languages"
+                    icon={<Target className="h-4 w-4" />}
+                    isCompleted={true}
+                    onClick={() => handleSectionClick("languages")}
+                    onAdd={() => handleAddToSection("languages")}
+                  />
+                </CardContent>
+              </Card>
             )}
-
             {/* ATS Score Card */}
             <Card className="mt-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-blue-600 mb-2">94%</div>
-                <div className="text-sm font-medium text-blue-800 mb-1">ATS Compatibility</div>
+                <div className="text-sm font-medium text-blue-800 mb-1">
+                  ATS Compatibility
+                </div>
                 <div className="text-xs text-blue-600">Excellent score!</div>
                 <div className="mt-4 flex justify-center">
                   <div className="w-full bg-blue-200 rounded-full h-2">
-                    <div className="bg-blue-600 h-2 rounded-full" style={{width: '94%'}}></div>
+                    <div
+                      className="bg-blue-600 h-2 rounded-full"
+                      style={{ width: "94%" }}
+                    ></div>
                   </div>
                 </div>
               </CardContent>
             </Card>
             )
-          
           </div>
 
           {/* Center - Resume Preview */}
-          <div className={`${sidebarCollapsed ? 'lg:col-span-1' : 'col-span-1 md:col-span-2 lg:col-span-2'} order-1 md:order-2 lg:order-2 transition-all duration-300`}>
+          <div
+            className={`${
+              sidebarCollapsed
+                ? "lg:col-span-1"
+                : "col-span-1 md:col-span-2 lg:col-span-2"
+            } order-1 md:order-2 lg:order-2 transition-all duration-300`}
+          >
             <Card className="bg-white shadow-sm border border-gray-200">
               <CardHeader className="pb-3 lg:pb-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -1931,11 +2410,19 @@ export default function EnhancedResume() {
                     Resume Preview
                   </CardTitle>
                   <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" className="gap-1 text-xs">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="gap-1 text-xs"
+                    >
                       <Wand2 className="h-3 w-3" />
                       AI Enhance
                     </Button>
-                    <Button variant="outline" size="sm" className="gap-1 text-xs">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="gap-1 text-xs"
+                    >
                       <Settings className="h-3 w-3" />
                       Templates
                     </Button>
@@ -1948,11 +2435,11 @@ export default function EnhancedResume() {
                   <div
                     className="bg-white border border-gray-200 shadow-lg mx-auto overflow-hidden"
                     style={{
-                      aspectRatio: '0.707',
-                      maxWidth: '100%',
-                      width: '100%',
-                      minHeight: isMobile ? '400px' : '600px',
-                      maxHeight: isMobile ? '500px' : '850px'
+                      aspectRatio: "0.707",
+                      maxWidth: "100%",
+                      width: "100%",
+                      minHeight: isMobile ? "400px" : "600px",
+                      maxHeight: isMobile ? "500px" : "850px",
                     }}
                   >
                     <div className="h-full overflow-y-auto overflow-x-hidden">
@@ -1982,18 +2469,25 @@ export default function EnhancedResume() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {aiImprovements.map((improvement, index) => (
-                    <div key={index} className="bg-white p-4 rounded-lg border border-green-100">
+                    <div
+                      key={index}
+                      className="bg-white p-4 rounded-lg border border-green-100"
+                    >
                       <div className="flex items-center gap-2 mb-2">
                         <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
-                          {improvement.type === 'enhancement' ? (
+                          {improvement.type === "enhancement" ? (
                             <CheckCircle className="h-4 w-4 text-green-600" />
                           ) : (
                             <AlertCircle className="h-4 w-4 text-blue-600" />
                           )}
                         </div>
-                        <span className="font-medium text-sm">{improvement.title}</span>
+                        <span className="font-medium text-sm">
+                          {improvement.title}
+                        </span>
                       </div>
-                      <p className="text-xs text-gray-600 mb-2">{improvement.description}</p>
+                      <p className="text-xs text-gray-600 mb-2">
+                        {improvement.description}
+                      </p>
                       <Badge variant="secondary" className="text-xs">
                         {improvement.count} improvements
                       </Badge>
@@ -2011,7 +2505,9 @@ export default function EnhancedResume() {
             <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
               {/* Modal Header */}
               <div className="flex items-center justify-between p-4 border-b border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-900">Resume Preview</h2>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Resume Preview
+                </h2>
                 <div className="flex items-center gap-2">
                   <Button
                     variant="outline"
@@ -2037,11 +2533,11 @@ export default function EnhancedResume() {
                   <div
                     className="bg-white border border-gray-200 shadow-lg mx-auto"
                     style={{
-                      aspectRatio: '0.707',
-                      maxWidth: '100%',
-                      width: '100%',
-                      minHeight: '600px',
-                      maxHeight: '800px'
+                      aspectRatio: "0.707",
+                      maxWidth: "100%",
+                      width: "100%",
+                      minHeight: "600px",
+                      maxHeight: "800px",
                     }}
                   >
                     <div className="h-full overflow-y-auto overflow-x-hidden">
@@ -2066,22 +2562,32 @@ const ResumeSection = ({ title, icon, isCompleted, onClick, onAdd }) => {
         onClick={onClick}
         className="flex items-center gap-2 sm:gap-3 p-3 md:p-2 lg:p-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 cursor-pointer transition-all duration-200"
       >
-        <div className={`w-7 h-7 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-          isCompleted ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'
-        }`}>
+        <div
+          className={`w-7 h-7 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+            isCompleted
+              ? "bg-green-100 text-green-600"
+              : "bg-gray-100 text-gray-400"
+          }`}
+        >
           {React.cloneElement(icon, { className: "h-3 w-3 sm:h-4 sm:w-4" })}
         </div>
         <div className="flex-1 min-w-0">
-          <div className="font-medium text-sm md:text-xs lg:text-sm text-gray-900 truncate">{title}</div>
-          <div className={`text-xs hidden sm:block ${
-            isCompleted ? 'text-green-600' : 'text-gray-500'
-          }`}>
-            {isCompleted ? 'Completed' : 'Incomplete'}
+          <div className="font-medium text-sm md:text-xs lg:text-sm text-gray-900 truncate">
+            {title}
+          </div>
+          <div
+            className={`text-xs hidden sm:block ${
+              isCompleted ? "text-green-600" : "text-gray-500"
+            }`}
+          >
+            {isCompleted ? "Completed" : "Incomplete"}
           </div>
         </div>
-        <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
-          isCompleted ? 'bg-green-500' : 'bg-gray-300'
-        }`}></div>
+        <div
+          className={`w-2 h-2 rounded-full flex-shrink-0 ${
+            isCompleted ? "bg-green-500" : "bg-gray-300"
+          }`}
+        ></div>
       </div>
       {onAdd && (
         <button
@@ -2092,7 +2598,16 @@ const ResumeSection = ({ title, icon, isCompleted, onClick, onAdd }) => {
           className="w-full mt-1 flex items-center justify-center gap-1 p-2 md:p-1 text-xs text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors opacity-0 group-hover:opacity-100"
         >
           <Plus className="h-3 w-3" />
-          <span className="hidden sm:inline">Add {title.includes('Experience') ? 'Experience' : title.includes('Education') ? 'Education' : title.includes('Skills') ? 'Skill' : 'Item'}</span>
+          <span className="hidden sm:inline">
+            Add{" "}
+            {title.includes("Experience")
+              ? "Experience"
+              : title.includes("Education")
+              ? "Education"
+              : title.includes("Skills")
+              ? "Skill"
+              : "Item"}
+          </span>
           <span className="sm:hidden">Add</span>
         </button>
       )}
