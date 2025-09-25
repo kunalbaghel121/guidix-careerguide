@@ -20,6 +20,7 @@ import {
   Flame,
   Award
 } from "lucide-react";
+import { DashboardLayout } from "@/components/layout/dashboard-layout";
 
 export default function ResumeReviewPage() {
   const router = useRouter();
@@ -109,7 +110,8 @@ export default function ResumeReviewPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-3">
+    <DashboardLayout>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-3">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-24 h-24 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-40 animate-pulse"></div>
@@ -348,6 +350,7 @@ export default function ResumeReviewPage() {
           animation-delay: 4s;
         }
       `}</style>
-    </div>
+      </div>
+    </DashboardLayout>
   );
 }

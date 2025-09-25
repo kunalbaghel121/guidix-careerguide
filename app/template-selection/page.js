@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowRight, ArrowLeft, Crown, Star, User, Users, Palette } from "lucide-react";
+import { DashboardLayout } from "@/components/layout/dashboard-layout";
 
 export default function TemplateSelection() {
   const [selectedTemplate, setSelectedTemplate] = useState("saanvi-patel-1");
@@ -147,7 +148,7 @@ export default function TemplateSelection() {
   };
 
   return (
-    <>
+    <DashboardLayout>
       <style jsx>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(20px); }
@@ -160,15 +161,15 @@ export default function TemplateSelection() {
           transform: translateY(-2px);
         }
       `}</style>
-      <div className="min-h-screen" style={{background: 'linear-gradient(135deg, #F4F8FF 0%, #E9F1FF 100%)'}}>
+      <div className="min-h-screen" style={{background: 'linear-gradient(135deg, var(--brand-secondary-lightest) 0%, var(--brand-secondary-light) 100%)'}}>
         <div className="max-w-7xl mx-auto px-4 py-8">
 
         {/* Header */}
         <div className="text-center mb-8 lg:mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 lg:w-20 lg:h-20 rounded-3xl shadow-lg mb-4 lg:mb-6" style={{background: 'linear-gradient(135deg, #2370FF, #79C7FF)'}}>
+          <div className="inline-flex items-center justify-center w-16 h-16 lg:w-20 lg:h-20 rounded-3xl shadow-lg mb-4 lg:mb-6" style={{background: 'linear-gradient(135deg, var(--brand-primary), var(--brand-accent-bright))'}}>
             <Palette className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
           </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4" style={{color: '#2370FF'}}>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4" style={{color: 'var(--brand-primary)'}}>
             Templates that absolutely slay ✨
           </h1>
           <p className="text-lg lg:text-xl text-gray-600 font-medium max-w-3xl mx-auto leading-relaxed px-4">
@@ -179,13 +180,13 @@ export default function TemplateSelection() {
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Filters Sidebar */}
           <div className="w-full lg:w-64 lg:flex-shrink-0">
-            <div className="bg-white rounded-2xl p-4 lg:p-6 shadow-sm border-2 transition-all duration-300 hover:shadow-md" style={{borderColor: '#D5E4FF'}}>
+            <div className="bg-white rounded-2xl p-4 lg:p-6 shadow-sm border-2 transition-all duration-300 hover:shadow-md" style={{borderColor: 'var(--brand-secondary)'}}>
               <div className="flex items-center justify-between mb-4 lg:mb-6">
-                <h2 className="text-base lg:text-lg font-semibold" style={{color: '#2370FF'}}>Filters</h2>
+                <h2 className="text-base lg:text-lg font-semibold" style={{color: 'var(--brand-primary)'}}>Filters</h2>
                 <button
                   onClick={clearFilters}
                   className="text-sm hover:underline transition-colors duration-300"
-                  style={{color: '#2370FF'}}
+                  style={{color: 'var(--brand-primary)'}}
                 >
                   Clear Filters
                 </button>
@@ -195,7 +196,7 @@ export default function TemplateSelection() {
               <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4 lg:gap-6">
                 {/* Headshot Filter */}
                 <div>
-                  <h3 className="font-semibold mb-2 lg:mb-3" style={{color: '#2370FF'}}>Headshot</h3>
+                  <h3 className="font-semibold mb-2 lg:mb-3" style={{color: 'var(--brand-primary)'}}>Headshot</h3>
                   <div className="space-y-2">
                     <label className="flex items-center">
                       <input
@@ -220,7 +221,7 @@ export default function TemplateSelection() {
 
                 {/* Columns Filter */}
                 <div>
-                  <h3 className="font-semibold mb-2 lg:mb-3" style={{color: '#2370FF'}}>Columns</h3>
+                  <h3 className="font-semibold mb-2 lg:mb-3" style={{color: 'var(--brand-primary)'}}>Columns</h3>
                   <div className="space-y-2">
                     <label className="flex items-center">
                       <input
@@ -245,7 +246,7 @@ export default function TemplateSelection() {
 
                 {/* Style Filter */}
                 <div>
-                  <h3 className="font-semibold mb-2 lg:mb-3" style={{color: '#2370FF'}}>Style</h3>
+                  <h3 className="font-semibold mb-2 lg:mb-3" style={{color: 'var(--brand-primary)'}}>Style</h3>
                   <div className="space-y-2">
                     <label className="flex items-center">
                       <input
@@ -291,11 +292,11 @@ export default function TemplateSelection() {
                     selectedTemplate === template.id ? 'shadow-xl border-4 -translate-y-1' : 'hover:shadow-md'
                   }`}
                   style={{
-                    borderColor: selectedTemplate === template.id ? '#2370FF' : '#D5E4FF'
+                    borderColor: selectedTemplate === template.id ? 'var(--brand-primary)' : 'var(--brand-secondary)'
                   }}
                 >
                   {/* Template Preview - Using standard letter size aspect ratio (8.5:11) */}
-                  <div className="relative aspect-[8.5/11] bg-white rounded-t-2xl overflow-hidden shadow-inner border" style={{borderColor: '#E9F1FF'}}>
+                  <div className="relative aspect-[8.5/11] bg-white rounded-t-2xl overflow-hidden shadow-inner border" style={{borderColor: 'var(--brand-secondary-light)'}}>
 
                     {/* Template 1: Modern Two-Column with Photo */}
                     {template.id === "saanvi-patel-1" && (
@@ -1200,7 +1201,7 @@ export default function TemplateSelection() {
                     {/* Recommended Badge */}
                     {template.isRecommended && (
                       <div className="absolute top-2 left-2">
-                        <span className="text-white text-xs px-3 py-1.5 rounded-xl font-bold shadow-lg" style={{background: 'linear-gradient(135deg, #2370FF, #79C7FF)'}}>
+                        <span className="text-white text-xs px-3 py-1.5 rounded-xl font-bold shadow-lg" style={{background: 'linear-gradient(135deg, var(--brand-primary), var(--brand-accent-bright))'}}>
                           RECOMMENDED
                         </span>
                       </div>
@@ -1209,7 +1210,7 @@ export default function TemplateSelection() {
                     {/* Selection Checkmark */}
                     {selectedTemplate === template.id && (
                       <div className="absolute top-2 right-2">
-                        <div className="w-7 h-7 rounded-full flex items-center justify-center shadow-lg" style={{background: 'linear-gradient(135deg, #2370FF, #79C7FF)'}}>
+                        <div className="w-7 h-7 rounded-full flex items-center justify-center shadow-lg" style={{background: 'linear-gradient(135deg, var(--brand-primary), var(--brand-accent-bright))'}}>
                           <span className="text-white text-sm font-bold">✓</span>
                         </div>
                       </div>
@@ -1218,7 +1219,7 @@ export default function TemplateSelection() {
 
                   {/* Template Name */}
                   <div className="p-4 md:p-6">
-                    <h3 className="font-bold text-lg md:text-xl mb-2 group-hover:text-blue-700 transition-colors" style={{color: '#2370FF'}}>{template.name}</h3>
+                    <h3 className="font-bold text-lg md:text-xl mb-2 group-hover:text-blue-700 transition-colors" style={{color: 'var(--brand-primary)'}}>{template.name}</h3>
                     <p className="text-sm md:text-base text-gray-600 font-medium leading-relaxed">{template.description}</p>
                   </div>
                 </div>
@@ -1234,15 +1235,15 @@ export default function TemplateSelection() {
             onClick={handlePrev}
             className="w-full sm:w-auto bg-white px-6 lg:px-8 py-3 lg:py-4 rounded-xl font-bold border-2 transition-all duration-300 flex items-center justify-center gap-3 hover:shadow-sm"
             style={{
-              borderColor: '#D5E4FF',
-              color: '#2370FF'
+              borderColor: 'var(--brand-secondary)',
+              color: 'var(--brand-primary)'
             }}
             onMouseEnter={(e) => {
-              e.target.style.borderColor = '#2370FF';
-              e.target.style.backgroundColor = '#F4F8FF';
+              e.target.style.borderColor = 'var(--brand-primary)';
+              e.target.style.backgroundColor = 'var(--brand-secondary-lightest)';
             }}
             onMouseLeave={(e) => {
-              e.target.style.borderColor = '#D5E4FF';
+              e.target.style.borderColor = 'var(--brand-secondary)';
               e.target.style.backgroundColor = 'white';
             }}
           >
@@ -1259,7 +1260,7 @@ export default function TemplateSelection() {
                 : 'text-white'
             }`}
             style={{
-              background: !selectedTemplate ? undefined : 'linear-gradient(135deg, #2370FF, #2B49C2)'
+              background: !selectedTemplate ? undefined : 'linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))'
             }}
           >
             Continue
@@ -1268,6 +1269,6 @@ export default function TemplateSelection() {
         </div>
       </div>
     </div>
-    </>
+    </DashboardLayout>
   );
 }
