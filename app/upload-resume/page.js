@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Upload, FileText, CheckCircle, X, Zap, Sparkles } from "lucide-react";
+import { DashboardLayout } from "@/components/layout/dashboard-layout";
 
 export default function UploadResumePage() {
   const router = useRouter();
@@ -101,7 +102,8 @@ export default function UploadResumePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4">
+    <DashboardLayout>
+      <div className="min-h-screen brand-bg-light flex items-center justify-center p-4">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
@@ -113,11 +115,11 @@ export default function UploadResumePage() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
-            <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+            <div className="w-16 h-16 brand-gradient rounded-2xl flex items-center justify-center shadow-lg">
               <Upload className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
+          <h1 className="text-4xl font-bold brand-text mb-2">
             Drop Your Resume Here! 📄
           </h1>
           <p className="text-lg text-gray-600">
@@ -126,14 +128,14 @@ export default function UploadResumePage() {
         </div>
 
         {/* Upload Card */}
-        <Card className="shadow-2xl border-2 border-dashed border-gray-300 hover:border-purple-400 transition-all duration-300">
+        <Card className="shadow-2xl border-2 border-dashed brand-hover transition-all duration-300" style={{borderColor: "var(--neutral-medium-light)"}}>
           <CardContent className="p-8">
             {!selectedFile ? (
               <div
                 className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300 ${
                   dragActive
-                    ? 'border-purple-500 bg-purple-50'
-                    : 'border-gray-300 hover:border-purple-400 hover:bg-purple-25'
+                    ? 'brand-border'
+                    : 'border-gray-300 brand-hover'
                 }`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
@@ -141,7 +143,7 @@ export default function UploadResumePage() {
                 onDrop={handleDrop}
               >
                 <div className="flex flex-col items-center space-y-4">
-                  <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center shadow-lg animate-bounce">
+                  <div className="w-20 h-20 brand-gradient rounded-full flex items-center justify-center shadow-lg animate-bounce">
                     <Upload className="h-10 w-10 text-white" />
                   </div>
 
@@ -156,7 +158,7 @@ export default function UploadResumePage() {
 
                   <Button
                     onClick={() => fileInputRef.current?.click()}
-                    className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="brand-gradient text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     <FileText className="h-4 w-4 mr-2" />
                     Choose File
@@ -261,7 +263,7 @@ export default function UploadResumePage() {
           <Button
             variant="outline"
             onClick={handleBack}
-            className="bg-white border-gray-300 hover:border-purple-400 hover:text-purple-700 transition-all duration-300 gap-2 px-6 py-2 font-semibold rounded-lg shadow-sm"
+            className="bg-white border-gray-300 brand-hover transition-all duration-300 gap-2 px-6 py-2 font-semibold rounded-lg shadow-sm"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Options
@@ -277,6 +279,7 @@ export default function UploadResumePage() {
           animation-delay: 4s;
         }
       `}</style>
-    </div>
+      </div>
+    </DashboardLayout>
   );
 }

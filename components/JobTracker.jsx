@@ -336,56 +336,39 @@ export function JobTracker() {
   }
 
   return (
-    <div className={styles.container}>
-      {/* Header */}
-      <div className={styles.header}>
-        <div>
-          <h2 className={styles.title}>Job Tracker</h2>
-          <p className={styles.subtitle}>
-            Track your job applications through every stage
-          </p>
-          {/* Debug indicator */}
-          <div className={styles.modeIndicator}>
-            <span
-              className={
-                isMobile ? styles.mobileMode : styles.desktopMode
-              }
-            >
-              {isMobile
-                ? "Mobile Interface (Move Buttons)"
-                : "Desktop Interface (Drag & Drop)"}
-            </span>
-          </div>
-        </div>
-      </div>
+    <div className="space-y-6">
 
-      {/* Search and Filter Bar */}
-      <div className={styles.searchFilterContainer}>
-        <div className={styles.searchFilterRow}>
+      {/* Minimal Search and Filter Bar */}
+      <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
           {/* Search Input */}
-          <div className={styles.searchContainer}>
-            <Search className={styles.searchIcon} />
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <Input
               type="text"
               placeholder="Search jobs..."
-              className={styles.searchInput}
+              className="pl-10 border-gray-200 focus:border-gray-300 rounded-lg"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
-          {/* Filter Toggle */}
-          <div className={styles.filterControls}>
+          {/* Filter Controls */}
+          <div className="flex items-center gap-3">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setShowFilters(!showFilters)}
-              className={styles.filterButton}
+              className="border-gray-200 hover:bg-gray-50 text-gray-600"
             >
-              <Filter className="w-4 h-4 mr-1" />
+              <Filter className="w-4 h-4 mr-2" />
               Filters
               {activeFilters.length > 0 && (
-                <Badge variant="secondary" className="ml-2">
+                <Badge
+                  variant="secondary"
+                  className="ml-2 text-xs"
+                  style={{backgroundColor: 'var(--brand-secondary)', color: 'var(--brand-primary)'}}
+                >
                   {activeFilters.length}
                 </Badge>
               )}
@@ -400,7 +383,7 @@ export function JobTracker() {
                   setSearchQuery("");
                   setActiveFilters([]);
                 }}
-                className={styles.clearButton}
+                className="text-gray-400 hover:text-gray-600"
               >
                 <X className="w-4 h-4" />
               </Button>
@@ -410,17 +393,22 @@ export function JobTracker() {
 
         {/* Filter Options */}
         {showFilters && (
-          <div className={styles.filterOptions}>
-            <div className={styles.filterTags}>
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            <div className="flex flex-wrap gap-2">
               {availableFilters.map((filter) => (
                 <Button
                   key={filter}
-                  variant={
-                    activeFilters.includes(filter) ? "default" : "outline"
-                  }
+                  variant={activeFilters.includes(filter) ? "default" : "outline"}
                   size="sm"
                   onClick={() => toggleFilter(filter)}
-                  className={styles.filterTag}
+                  className={`text-xs ${
+                    activeFilters.includes(filter)
+                      ? 'text-white border-0'
+                      : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+                  }`}
+                  style={activeFilters.includes(filter)
+                    ? {background: 'linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))'}
+                    : {}}
                 >
                   {filter}
                 </Button>
@@ -430,102 +418,163 @@ export function JobTracker() {
         )}
       </div>
 
-      {/* Results Summary */}
+      {/* Minimal Results Summary */}
       {(searchQuery || activeFilters.length > 0) && (
-        <div className={styles.resultsSummary}>
-          <p className={styles.resultsText}>
-            Showing{" "}
-            {filteredColumns.reduce((total, col) => total + col.jobs.length, 0)}{" "}
-            jobs
+        <div className="bg-blue-50 border border-blue-100 rounded-lg px-4 py-3">
+          <p className="text-sm text-blue-700">
+            <span className="font-medium">
+              {filteredColumns.reduce((total, col) => total + col.jobs.length, 0)} jobs
+            </span>
             {searchQuery && ` matching "${searchQuery}"`}
-            {activeFilters.length > 0 &&
-              ` with filters: ${activeFilters.join(", ")}`}
+            {activeFilters.length > 0 && ` with ${activeFilters.length} filter${activeFilters.length > 1 ? 's' : ''}`}
           </p>
         </div>
       )}
 
       {/* Kanban Board */}
       {isMobile ? (
-        // Mobile View: No drag and drop
-        <div className="space-y-4">
-          {filteredColumns.map((column) => (
-            <Card key={column.id} className="border border-gray-200">
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-base font-medium text-gray-900">
-                    {column.title}
-                  </CardTitle>
-                  <Badge
-                    variant="secondary"
-                    className="bg-gray-100 text-gray-700"
-                  >
-                    {column.jobs.length}
-                  </Badge>
-                </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => handleAddJob(column.id)}
-                  className="w-full mt-2 border-dashed border-gray-300 text-gray-600 hover:border-gray-400"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add job
-                </Button>
-              </CardHeader>
+        // Mobile View: Clean and minimal
+        <div className="space-y-5">
+          {filteredColumns.map((column) => {
+            const columnColors = {
+              shortlist: {
+                border: 'border-blue-200',
+                bg: 'bg-blue-50/50',
+                accent: 'var(--brand-primary)'
+              },
+              'auto-apply': {
+                border: 'border-purple-200',
+                bg: 'bg-purple-50/50',
+                accent: '#8B5CF6'
+              },
+              applied: {
+                border: 'border-amber-200',
+                bg: 'bg-amber-50/50',
+                accent: '#F59E0B'
+              },
+              interview: {
+                border: 'border-green-200',
+                bg: 'bg-green-50/50',
+                accent: '#10B981'
+              },
+              rejected: {
+                border: 'border-red-200',
+                bg: 'bg-red-50/50',
+                accent: '#EF4444'
+              }
+            };
 
-              <CardContent className="space-y-3 min-h-[100px]">
-                {column.jobs.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center py-8 text-gray-400">
-                    <div className="text-2xl mb-2">📋</div>
-                    <p className="text-sm">No jobs yet</p>
-                  </div>
-                ) : (
-                  column.jobs.map((job) => (
-                    <div key={job.id} className="relative">
-                      <JobCard
-                        job={job}
-                        onUpdate={handleUpdateJob}
-                        onDelete={handleDeleteJob}
-                        onMove={() => openMoveDialog(job)}
-                        isMobile={true}
-                      />
+            return (
+              <Card key={column.id} className={`border ${columnColors[column.id]?.border} shadow-sm`}>
+                <CardHeader className={`pb-4 ${columnColors[column.id]?.bg}`}>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-3 h-3 rounded-full"
+                        style={{backgroundColor: columnColors[column.id]?.accent}}
+                      ></div>
+                      <CardTitle className="text-lg font-semibold text-gray-800">
+                        {column.title}
+                      </CardTitle>
                     </div>
-                  ))
-                )}
-              </CardContent>
-            </Card>
-          ))}
+                    <Badge
+                      variant="secondary"
+                      className="bg-white/80 text-gray-600 text-xs px-2 py-1"
+                    >
+                      {column.jobs.length}
+                    </Badge>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleAddJob(column.id)}
+                    className="w-full mt-3 border-dashed border-gray-300 text-gray-600 hover:bg-white hover:border-gray-400 transition-all"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add job
+                  </Button>
+                </CardHeader>
+
+                <CardContent className="space-y-3 min-h-[120px] p-4">
+                  {column.jobs.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-8 text-gray-400">
+                      <div className="text-3xl mb-3 opacity-60">📋</div>
+                      <p className="text-sm font-medium text-gray-500">No jobs yet</p>
+                      <p className="text-xs text-gray-400 mt-1">Click "Add job" to get started</p>
+                    </div>
+                  ) : (
+                    column.jobs.map((job) => (
+                      <div key={job.id} className="relative">
+                        <JobCard
+                          job={job}
+                          onUpdate={handleUpdateJob}
+                          onDelete={handleDeleteJob}
+                          onMove={() => openMoveDialog(job)}
+                          isMobile={true}
+                        />
+                      </div>
+                    ))
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       ) : (
-        // Desktop/Tablet View: With drag and drop
+        // Desktop/Tablet View: Elegant drag and drop
         <DragDropContext onDragEnd={handleDragEnd}>
-          {/* Desktop View */}
           <div className="overflow-x-auto">
             <div className="flex gap-6 min-w-max pb-4">
               {filteredColumns.map((column) => {
-                const columnAccents = {
-                  shortlist: "border-t-blue-500",
-                  "auto-apply": "border-t-purple-500",
-                  applied: "border-t-yellow-500",
-                  interview: "border-t-green-500",
-                  rejected: "border-t-red-500",
+                const columnStyles = {
+                  shortlist: {
+                    accent: 'var(--brand-primary)',
+                    bg: 'var(--brand-secondary-lightest)',
+                    border: 'border-blue-100'
+                  },
+                  'auto-apply': {
+                    accent: '#8B5CF6',
+                    bg: '#F3F4F6',
+                    border: 'border-purple-100'
+                  },
+                  applied: {
+                    accent: '#F59E0B',
+                    bg: '#FFFBEB',
+                    border: 'border-amber-100'
+                  },
+                  interview: {
+                    accent: '#10B981',
+                    bg: '#ECFDF5',
+                    border: 'border-green-100'
+                  },
+                  rejected: {
+                    accent: '#EF4444',
+                    bg: '#FEF2F2',
+                    border: 'border-red-100'
+                  }
                 };
 
                 return (
                   <div key={column.id} className="w-80 flex-shrink-0">
-                    <Card
-                      className={`h-full border border-gray-200 border-t-4 ${
-                        columnAccents[column.id]
-                      }`}
-                    >
-                      <CardHeader className="pb-3 bg-gray-50/50">
+                    <Card className={`h-full border ${columnStyles[column.id]?.border} shadow-sm hover:shadow-md transition-shadow`}>
+                      {/* Column Header */}
+                      <CardHeader
+                        className="pb-4 border-b"
+                        style={{backgroundColor: columnStyles[column.id]?.bg}}
+                      >
                         <div className="flex items-center justify-between">
-                          <CardTitle className="text-base font-medium text-gray-900">
-                            {column.title}
-                          </CardTitle>
+                          <div className="flex items-center gap-3">
+                            <div
+                              className="w-4 h-4 rounded-full shadow-sm"
+                              style={{backgroundColor: columnStyles[column.id]?.accent}}
+                            ></div>
+                            <CardTitle className="text-lg font-semibold text-gray-800">
+                              {column.title}
+                            </CardTitle>
+                          </div>
                           <Badge
                             variant="secondary"
-                            className="bg-white border border-gray-200 text-gray-700"
+                            className="bg-white/80 text-gray-600 text-xs px-3 py-1 border"
                           >
                             {column.jobs.length}
                           </Badge>
@@ -534,7 +583,7 @@ export function JobTracker() {
                           size="sm"
                           variant="outline"
                           onClick={() => handleAddJob(column.id)}
-                          className="w-full mt-2 border-dashed border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-white"
+                          className="w-full mt-3 border-dashed border-gray-300 text-gray-600 hover:bg-white hover:border-gray-400 transition-all duration-200"
                         >
                           <Plus className="h-4 w-4 mr-2" />
                           Add job
@@ -546,21 +595,17 @@ export function JobTracker() {
                           <CardContent
                             {...provided.droppableProps}
                             ref={provided.innerRef}
-                            className={`space-y-3 min-h-[500px] p-4 transition-colors ${
+                            className={`space-y-3 min-h-[500px] p-4 transition-all duration-200 ${
                               snapshot.isDraggingOver
-                                ? "bg-gray-50 border-2 border-dashed border-gray-300"
+                                ? "bg-blue-50/50 border-2 border-dashed border-blue-300"
                                 : ""
                             }`}
                           >
                             {column.jobs.length === 0 ? (
                               <div className="flex flex-col items-center justify-center py-16 text-gray-400">
-                                <div className="text-4xl mb-3 opacity-50">
-                                  📋
-                                </div>
-                                <p className="text-sm font-medium">
-                                  No jobs yet
-                                </p>
-                                <p className="text-xs text-center mt-1">
+                                <div className="text-5xl mb-4 opacity-40">📋</div>
+                                <p className="text-sm font-medium text-gray-500">No jobs yet</p>
+                                <p className="text-xs text-gray-400 mt-2 text-center">
                                   Drag jobs here or click "Add job"
                                 </p>
                               </div>
@@ -576,10 +621,10 @@ export function JobTracker() {
                                       ref={provided.innerRef}
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
-                                      className={`transition-transform ${
+                                      className={`transition-all duration-200 ${
                                         snapshot.isDragging
-                                          ? "opacity-75 rotate-2 scale-105 shadow-lg"
-                                          : "hover:scale-[1.01]"
+                                          ? "opacity-90 rotate-1 scale-105 shadow-xl z-50"
+                                          : "hover:scale-[1.02] hover:shadow-md"
                                       }`}
                                     >
                                       <JobCard

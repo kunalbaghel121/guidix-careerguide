@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import {
   GraduationCap,
@@ -14,13 +14,22 @@ import {
 
 export default function EducationLevelPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [selectedYear, setSelectedYear] = useState("first");
   const [hoveredYear, setHoveredYear] = useState(null);
   const [hoveredButton, setHoveredButton] = useState(null);
+  const [path, setPath] = useState("");
+
+  useEffect(() => {
+    const pathParam = searchParams.get("path");
+    if (pathParam) {
+      setPath(pathParam);
+    }
+  }, [searchParams]);
 
   const handleContinue = () => {
     router.push(
-      `/resume-builder/ai-generator/field-selection?education=${selectedYear}`
+      `/resume-builder/ai-generator/field-selection?education=${selectedYear}&path=${path}`
     );
   };
 
@@ -29,39 +38,39 @@ export default function EducationLevelPage() {
       id: "first",
       title: "1st Year",
       subtitle: "Just getting started!",
-      emoji: "🌱"
+      icon: GraduationCap
     },
     {
       id: "second",
       title: "2nd Year",
       subtitle: "Building momentum",
-      emoji: "🚀"
+      icon: GraduationCap
     },
     {
       id: "third",
       title: "3rd Year",
       subtitle: "Getting serious",
-      emoji: "⚡"
+      icon: GraduationCap
     },
     {
       id: "fourth",
       title: "4th Year",
       subtitle: "Ready to graduate!",
-      emoji: "🎓"
+      icon: GraduationCap
     },
   ];
 
   return (
     <DashboardLayout>
-      <div className="h-screen flex items-center justify-center py-4" style={{ background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%)" }}>
+      <div className="h-screen flex items-center justify-center py-4" style={{ background: "linear-gradient(135deg, var(--neutral-lightest) 0%, #f1f5f9 50%, var(--neutral-medium-light) 100%)" }}>
         <div className="max-w-4xl mx-auto px-4 w-full">
           <div
             className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border p-4 lg:p-6"
-            style={{ borderColor: "#e2e8f0", boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.1)" }}
+            style={{ borderColor: "var(--neutral-medium-light)", boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.1)" }}
           >
             <div className="text-center space-y-4">
               <div className="relative">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto text-white shadow-lg" style={{background: 'linear-gradient(135deg, #2370FF, #1d4ed8)'}}>
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto text-white shadow-lg" style={{background: 'linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))'}}>
                   <GraduationCap className="w-8 h-8" />
                 </div>
                 <div className="absolute -top-1 -right-1">
@@ -72,16 +81,16 @@ export default function EducationLevelPage() {
               <div className="space-y-2">
                 <h1
                   className="text-2xl lg:text-3xl font-black"
-                  style={{ color: "#2370FF" }}
+                  style={{ color: "var(--brand-primary)" }}
                 >
                   What year u reppin?
                 </h1>
                 <p
                   className="text-base lg:text-lg font-semibold leading-relaxed max-w-2xl mx-auto"
-                  style={{ color: "#475569" }}
+                  style={{ color: "var(--neutral-medium-dark)" }}
                 >
                   Tell us where you're at so we can craft a resume that{" "}
-                  <span style={{ color: "#2370FF" }} className="font-black bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  <span style={{ color: "var(--brand-primary)" }} className="font-black bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                     hits different
                   </span>
                   <span className="inline-block ml-2">
@@ -111,21 +120,21 @@ export default function EducationLevelPage() {
                           : "from-white to-blue-50/50"
                       }`}
                       style={{
-                        borderColor: isSelected || isHovered ? "#2370FF" : "#e2e8f0",
+                        borderColor: isSelected || isHovered ? "var(--brand-primary)" : "var(--neutral-medium-light)",
                         boxShadow: isSelected || isHovered 
                           ? "0 25px 50px -12px rgba(35, 112, 255, 0.25)" 
                           : "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
                         background: isSelected 
-                          ? "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)"
+                          ? "linear-gradient(135deg, var(--brand-secondary-lightest) 0%, #e0f2fe 100%)"
                           : isHovered 
-                            ? "linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%)"
-                            : "linear-gradient(135deg, #ffffff 0%, #f0f9ff 20%)"
+                            ? "linear-gradient(135deg, #ffffff 0%, var(--brand-secondary-lightest) 100%)"
+                            : "linear-gradient(135deg, #ffffff 0%, var(--brand-secondary-lightest) 20%)"
                       }}
                     >
                       {/* Selection Indicator */}
                       {isSelected && (
                         <div className="absolute top-3 right-3">
-                          <div className="w-6 h-6 rounded-full text-white flex items-center justify-center shadow-md animate-in fade-in duration-300" style={{ backgroundColor: "#2370FF" }}>
+                          <div className="w-6 h-6 rounded-full text-white flex items-center justify-center shadow-md animate-in fade-in duration-300" style={{ backgroundColor: "var(--brand-primary)" }}>
                             <Check className="w-3 h-3" />
                           </div>
                         </div>
@@ -137,18 +146,18 @@ export default function EducationLevelPage() {
                         }`}
                         style={{
                           background: isSelected
-                            ? "linear-gradient(135deg, #2370FF, #1d4ed8)"
-                            : "linear-gradient(135deg, #f0f9ff, #e0f2fe)",
-                          color: isSelected ? "white" : "#2370FF"
+                            ? "linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))"
+                            : "linear-gradient(135deg, var(--brand-secondary-lightest), #e0f2fe)",
+                          color: isSelected ? "white" : "var(--brand-primary)"
                         }}
                       >
-                        <span className="text-xl">{year.emoji}</span>
+                        <year.icon className="w-6 h-6" />
                       </div>
 
                       <div className="flex items-center justify-center gap-2 mb-3">
                         <h3
                           className="text-lg font-black"
-                          style={{ color: "#2370FF" }}
+                          style={{ color: "var(--brand-primary)" }}
                         >
                           {year.title}
                         </h3>
@@ -161,7 +170,7 @@ export default function EducationLevelPage() {
 
                       <p
                         className="text-sm font-medium leading-relaxed"
-                        style={{ color: "#475569" }}
+                        style={{ color: "var(--neutral-medium-dark)" }}
                       >
                         {year.subtitle}
                       </p>
@@ -178,9 +187,9 @@ export default function EducationLevelPage() {
                 onMouseLeave={() => setHoveredButton(null)}
                 className="px-8 py-4 rounded-xl font-medium border-2 transition-all duration-300 flex items-center gap-3 text-sm group hover:shadow-lg hover:-translate-y-0.5"
                 style={{
-                  backgroundColor: hoveredButton === 'back' ? "#f0f9ff" : "#f8fafc",
-                  borderColor: hoveredButton === 'back' ? "#2370FF" : "#e2e8f0",
-                  color: hoveredButton === 'back' ? "#2370FF" : "#475569",
+                  backgroundColor: hoveredButton === 'back' ? "var(--brand-secondary-lightest)" : "var(--neutral-lightest)",
+                  borderColor: hoveredButton === 'back' ? "var(--brand-primary)" : "var(--neutral-medium-light)",
+                  color: hoveredButton === 'back' ? "var(--brand-primary)" : "var(--neutral-medium-dark)",
                 }}
               >
                 <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
@@ -194,8 +203,8 @@ export default function EducationLevelPage() {
                 className="text-white px-8 py-4 rounded-xl font-medium shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-2 text-lg hover:scale-105 hover:-translate-y-0.5"
                 style={{ 
                   background: hoveredButton === 'continue' 
-                    ? "linear-gradient(135deg, #1d4ed8, #1e40af)" 
-                    : "linear-gradient(135deg, #2370FF, #1d4ed8)",
+                    ? "linear-gradient(135deg, var(--brand-primary-dark), #1e40af)" 
+                    : "linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))",
                   boxShadow: hoveredButton === 'continue'
                     ? "0 10px 15px -3px rgba(35, 112, 255, 0.3)"
                     : "0 4px 6px -1px rgba(0, 0, 0, 0.1)"

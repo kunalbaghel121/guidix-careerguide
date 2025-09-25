@@ -23,6 +23,7 @@ import {
   GraduationCap,
   Target,
 } from "lucide-react";
+import { DashboardLayout } from "@/components/layout/dashboard-layout";
 
 export default function ResumeChoicePage() {
   const router = useRouter();
@@ -83,12 +84,13 @@ export default function ResumeChoicePage() {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center p-4"
-      style={{
-        background: "linear-gradient(135deg, #F4F8FF 0%, #E9F1FF 100%)",
-      }}
-    >
+    <DashboardLayout>
+      <div
+        className="min-h-screen flex items-center justify-center p-4"
+        style={{
+          background: "linear-gradient(135deg, #F4F8FF 0%, #E9F1FF 100%)",
+        }}
+      >
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
@@ -360,6 +362,7 @@ export default function ResumeChoicePage() {
           animation-delay: 4s;
         }
       `}</style>
-    </div>
+      </div>
+    </DashboardLayout>
   );
 }
