@@ -186,13 +186,13 @@ export default function ResumeConfirmationPage() {
 
   return (
     <DashboardLayout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 py-8">
+      <div className="min-h-screen py-8" style={{ background: "linear-gradient(135deg, var(--brand-secondary-lightest) 0%, var(--brand-secondary-light) 100%)" }}>
         <div className="max-w-6xl mx-auto px-4">
 
           {/* Main Container - Fixed */}
           <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/30 p-8 relative">
             {/* Subtle inner glow */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-transparent to-purple-50/30 rounded-3xl pointer-events-none -z-10"></div>
+            <div className="absolute inset-0 rounded-3xl pointer-events-none -z-10" style={{ background: "linear-gradient(135deg, var(--brand-secondary-lightest) 0%, var(--brand-secondary) 20%, transparent 100%)" }}></div>
 
             {/* Modern Header */}
             <div className="text-center mb-8 relative z-10">
@@ -202,10 +202,10 @@ export default function ResumeConfirmationPage() {
                        style={{ background: "linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))" }}>
                     <CheckCircle className="h-8 w-8 text-white" />
                   </div>
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-400 to-purple-600 opacity-20 blur-lg scale-110"></div>
+                  <div className="absolute inset-0 rounded-2xl opacity-20 blur-lg scale-110" style={{ background: "linear-gradient(135deg, var(--brand-primary), var(--brand-accent))" }}></div>
                 </div>
                 <div>
-                  <h1 className="text-3xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+                  <h1 className="text-3xl font-black mb-2" style={{ color: "var(--brand-primary)" }}>
                     Almost Ready!
                   </h1>
                   <p className="text-gray-600 font-medium">Review and customize your selections</p>
@@ -220,12 +220,12 @@ export default function ResumeConfirmationPage() {
                   </div>
                   <span className="text-xs font-semibold text-green-600">Type</span>
                 </div>
-                <div className="w-8 h-0.5 bg-gradient-to-r from-green-500 to-blue-500 rounded-full"></div>
+                <div className="w-8 h-0.5 rounded-full" style={{ background: "linear-gradient(to right, #10b981, var(--brand-primary))" }}></div>
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center shadow-md text-white text-xs font-bold">
+                  <div className="w-6 h-6 rounded-full flex items-center justify-center shadow-md text-white text-xs font-bold" style={{ background: "var(--brand-primary)" }}>
                     2
                   </div>
-                  <span className="text-xs font-semibold text-blue-600">Setup</span>
+                  <span className="text-xs font-semibold" style={{ color: "var(--brand-primary)" }}>Setup</span>
                 </div>
                 <div className="w-8 h-0.5 bg-gray-200 rounded-full"></div>
                 <div className="flex items-center gap-2">
@@ -242,7 +242,11 @@ export default function ResumeConfirmationPage() {
 
               {/* Career Path - Enhanced */}
               <div className="group">
-                <div className="bg-gradient-to-br from-blue-50/80 to-indigo-50/80 backdrop-blur-sm rounded-2xl p-5 border border-blue-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
+                <div className="backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
+                     style={{
+                       background: "linear-gradient(135deg, var(--brand-secondary-light), var(--brand-secondary))",
+                       border: `1px solid var(--brand-secondary-medium)`
+                     }}>
                   <div className="flex items-center gap-4 mb-4">
                     <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
                          style={{ background: "linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))" }}>
@@ -257,8 +261,11 @@ export default function ResumeConfirmationPage() {
                     <select
                       value={selections.career}
                       onChange={(e) => handleFieldChange('career', e.target.value)}
-                      className="w-full appearance-none bg-white/90 backdrop-blur-sm border border-blue-200 rounded-xl px-4 py-3 pr-10 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400 cursor-pointer shadow-sm transition-all"
-                      style={{ color: "var(--brand-primary)" }}
+                      className="w-full appearance-none bg-white/90 backdrop-blur-sm rounded-xl px-4 py-3 pr-10 text-sm font-semibold focus:outline-none focus:ring-2 cursor-pointer shadow-sm transition-all"
+                      style={{
+                        color: "var(--brand-primary)",
+                        border: `1px solid var(--brand-secondary-medium)`
+                      }}
                     >
                       {careerOptions.map(option => (
                         <option key={option.id} value={option.id}>
@@ -266,16 +273,20 @@ export default function ResumeConfirmationPage() {
                         </option>
                       ))}
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400 pointer-events-none" />
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: "var(--brand-primary)" }} />
                   </div>
                 </div>
               </div>
 
               {/* Education Level - Enhanced */}
               <div className="group">
-                <div className="bg-gradient-to-br from-green-50/80 to-emerald-50/80 backdrop-blur-sm rounded-2xl p-5 border border-green-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
+                <div className="backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
+                     style={{
+                       background: "linear-gradient(135deg, var(--brand-secondary-light), var(--brand-secondary))",
+                       border: `1px solid var(--brand-secondary-medium)`
+                     }}>
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg" style={{ background: "linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))" }}>
                       <GraduationCap className="w-6 h-6 text-white" />
                     </div>
                     <div>
@@ -287,7 +298,11 @@ export default function ResumeConfirmationPage() {
                     <select
                       value={selections.education}
                       onChange={(e) => handleFieldChange('education', e.target.value)}
-                      className="w-full appearance-none bg-white/90 backdrop-blur-sm border border-green-200 rounded-xl px-4 py-3 pr-10 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-400 cursor-pointer shadow-sm transition-all text-green-700"
+                      className="w-full appearance-none bg-white/90 backdrop-blur-sm rounded-xl px-4 py-3 pr-10 text-sm font-semibold focus:outline-none focus:ring-2 cursor-pointer shadow-sm transition-all"
+                      style={{
+                        color: "var(--brand-primary)",
+                        border: `1px solid var(--brand-secondary-medium)`
+                      }}
                     >
                       {yearOptions.map(option => (
                         <option key={option.id} value={option.id}>
@@ -295,16 +310,20 @@ export default function ResumeConfirmationPage() {
                         </option>
                       ))}
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-400 pointer-events-none" />
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: "var(--brand-primary)" }} />
                   </div>
                 </div>
               </div>
 
               {/* Fields Counter - Enhanced */}
               <div className="group">
-                <div className="bg-gradient-to-br from-purple-50/80 to-violet-50/80 backdrop-blur-sm rounded-2xl p-5 border border-purple-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
+                <div className="backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
+                     style={{
+                       background: "linear-gradient(135deg, var(--brand-secondary-light), var(--brand-secondary))",
+                       border: `1px solid var(--brand-secondary-medium)`
+                     }}>
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center shadow-lg">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg" style={{ background: "linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))" }}>
                       <Monitor className="w-6 h-6 text-white" />
                     </div>
                     <div>
@@ -313,13 +332,16 @@ export default function ResumeConfirmationPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="text-3xl font-black bg-gradient-to-r from-purple-600 to-violet-600 bg-clip-text text-transparent">
+                    <div className="text-3xl font-black" style={{ color: "var(--brand-primary)" }}>
                       {selections.fields.length}/3
                     </div>
                     <div className="flex-1 bg-gray-200 rounded-full h-2 overflow-hidden">
                       <div
-                        className="bg-gradient-to-r from-purple-500 to-violet-600 h-full rounded-full transition-all duration-500 shadow-sm"
-                        style={{ width: `${(selections.fields.length / 3) * 100}%` }}
+                        className="h-full rounded-full transition-all duration-500 shadow-sm"
+                        style={{
+                          background: "linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))",
+                          width: `${(selections.fields.length / 3) * 100}%`
+                        }}
                       ></div>
                     </div>
                   </div>
@@ -328,14 +350,14 @@ export default function ResumeConfirmationPage() {
             </div>
 
             {/* Enhanced Engineering Fields Section */}
-            <div className="bg-gradient-to-br from-purple-50/50 via-violet-50/30 to-indigo-50/50 rounded-3xl p-6 border border-purple-200/30 shadow-lg mb-6 relative">
+            <div className="rounded-3xl p-6 shadow-lg mb-6 relative" style={{ background: "linear-gradient(135deg, var(--brand-secondary-lightest), var(--brand-secondary-light))", border: `1px solid var(--brand-secondary-medium)` }}>
               <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent rounded-3xl pointer-events-none"></div>
 
               <div className="grid lg:grid-cols-4 gap-6 relative">
                 {/* Selected Fields - Enhanced */}
                 <div className="lg:col-span-3">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center shadow-lg">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg" style={{ background: "linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))" }}>
                       <Monitor className="w-5 h-5 text-white" />
                     </div>
                     <div>
@@ -351,9 +373,10 @@ export default function ResumeConfirmationPage() {
                       return (
                         <div
                           key={fieldId}
-                          className="group inline-flex items-center gap-3 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-xl border border-purple-200/50 shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105"
+                          className="group inline-flex items-center gap-3 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-xl shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105"
+                          style={{ border: `1px solid var(--brand-secondary-medium)` }}
                         >
-                          <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center shadow-sm">
+                          <div className="w-6 h-6 rounded-lg flex items-center justify-center shadow-sm" style={{ background: "linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))" }}>
                             <FieldIcon className="w-3 h-3 text-white" />
                           </div>
                           <span className="font-semibold text-gray-800 text-sm">{field.name}</span>
@@ -389,14 +412,21 @@ export default function ResumeConfirmationPage() {
                     className={`group w-full h-full min-h-[120px] flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed transition-all duration-300 ${
                       selections.fields.length >= 3
                         ? 'bg-gray-50 border-gray-300 text-gray-400 cursor-not-allowed'
-                        : 'bg-white/80 backdrop-blur-sm border-purple-300 text-purple-600 hover:border-purple-400 hover:bg-purple-50/50 hover:scale-[1.02] shadow-sm hover:shadow-md'
+                        : 'bg-white/80 backdrop-blur-sm hover:scale-[1.02] shadow-sm hover:shadow-md'
                     }`}
+                    style={{
+                      borderColor: selections.fields.length >= 3 ? '#d1d5db' : 'var(--brand-secondary-medium)',
+                      color: selections.fields.length >= 3 ? '#9ca3af' : 'var(--brand-primary)'
+                    }}
                   >
                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
                       selections.fields.length >= 3
                         ? 'bg-gray-200'
-                        : 'bg-purple-100 group-hover:bg-purple-200 group-hover:scale-110'
-                    }`}>
+                        : 'group-hover:scale-110'
+                    }`}
+                    style={{
+                      background: selections.fields.length >= 3 ? '#e5e7eb' : 'var(--brand-secondary)'
+                    }}>
                       <Plus className="w-6 h-6" />
                     </div>
                     <div className="text-center">
@@ -418,9 +448,9 @@ export default function ResumeConfirmationPage() {
 
             {/* Enhanced Search Panel */}
             {isDropdownOpen && (
-              <div className="mt-4 bg-white/98 backdrop-blur-xl rounded-2xl border border-purple-200/50 shadow-2xl p-6 relative z-30">
-                <div className="flex items-center gap-3 mb-4 p-3 bg-gradient-to-r from-purple-50 to-violet-50 rounded-xl border border-purple-100">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center">
+              <div className="mt-4 bg-white/98 backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative z-30" style={{ border: `1px solid var(--brand-secondary-medium)` }}>
+                <div className="flex items-center gap-3 mb-4 p-3 rounded-xl border" style={{ background: "linear-gradient(135deg, var(--brand-secondary-lightest), var(--brand-secondary-light))", borderColor: "var(--brand-secondary)" }}>
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))" }}>
                     <Search className="w-4 h-4 text-white" />
                   </div>
                   <input
@@ -451,23 +481,42 @@ export default function ResumeConfirmationPage() {
                           className={`group flex items-center gap-3 px-4 py-3 text-left rounded-xl transition-all duration-200 ${
                             isDisabled
                               ? 'opacity-40 cursor-not-allowed bg-gray-50'
-                              : 'hover:bg-gradient-to-r hover:from-purple-50 hover:to-violet-50 hover:shadow-md border border-transparent hover:border-purple-200'
+                              : 'hover:shadow-md border border-transparent'
                           }`}
+                          style={{
+                            background: isDisabled ? '#f9fafb' : 'transparent'
+                          }}
+                          onMouseEnter={(e) => {
+                            if (!isDisabled) {
+                              e.target.style.background = "linear-gradient(135deg, var(--brand-secondary-lightest), var(--brand-secondary-light))";
+                              e.target.style.borderColor = "var(--brand-secondary-medium)";
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            if (!isDisabled) {
+                              e.target.style.background = "transparent";
+                              e.target.style.borderColor = "transparent";
+                            }
+                          }}
                         >
                           <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                             isDisabled
                               ? 'bg-gray-200 text-gray-400'
-                              : 'bg-purple-100 text-purple-600 group-hover:bg-purple-200 group-hover:scale-110 transition-all'
-                          }`}>
+                              : 'group-hover:scale-110 transition-all'
+                          }`}
+                          style={{
+                            background: isDisabled ? '#e5e7eb' : 'var(--brand-secondary)',
+                            color: isDisabled ? '#9ca3af' : 'var(--brand-primary)'
+                          }}>
                             <FieldIcon className="w-4 h-4" />
                           </div>
                           <span className={`font-medium ${
-                            isDisabled ? 'text-gray-400' : 'text-gray-800 group-hover:text-purple-700'
+                            isDisabled ? 'text-gray-400' : 'text-gray-800'
                           }`}>
                             {field.name}
                           </span>
                           {!isDisabled && (
-                            <Plus className="w-4 h-4 text-purple-400 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <Plus className="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: "var(--brand-primary)" }} />
                           )}
                         </button>
                       );
@@ -482,7 +531,7 @@ export default function ResumeConfirmationPage() {
               <button
                 onClick={handleProceed}
                 className="group inline-flex items-center gap-4 px-10 py-4 text-xl font-bold text-white rounded-2xl shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105 active:scale-95 relative overflow-hidden"
-                style={{ background: "linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 50%, #1e40af 100%)" }}
+                style={{ background: "linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 50%, var(--brand-primary-darker) 100%)" }}
               >
                 <div className="absolute inset-0 rounded-2xl bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <Sparkles className="w-6 h-6 group-hover:animate-pulse relative z-10" />
