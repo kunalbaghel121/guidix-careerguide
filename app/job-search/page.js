@@ -1,44 +1,7 @@
-        "use client";
+'use client'
+import React, { useState, useMemo, useEffect } from 'react'
+import { DashboardLayout } from "@/components/layout/dashboard-layout"
 
-import React, { useState, useMemo, useEffect, useRef } from "react";
-import { DashboardLayout } from "@/components/layout/dashboard-layout";
-import JobCardNew from "@/components/JobCardNew";
-import JobCardEnhanced from "@/components/JobCardEnhanced";
-
-export default function JobSearchPage() {
-  const [appliedJobs, setAppliedJobs] = useState(new Set());
-  const [showApplyBanner, setShowApplyBanner] = useState(false);
-  const [currentApplyJobId, setCurrentApplyJobId] = useState(null);
-  const [savedJobs, setSavedJobs] = useState(new Set());
-  const [dismissedJobs, setDismissedJobs] = useState(new Set());
-  const [isLoading, setIsLoading] = useState(false);
-  const [typewriterText, setTypewriterText] = useState("");
-  const [showCursor, setShowCursor] = useState(true);
-  // const [hoveredJobId, setHoveredJobId] = useState(null);
-  const [filterBy, setFilterBy] = useState("all");
-  const [sortBy, setSortBy] = useState("match");
-  const [showMatchDetails, setShowMatchDetails] = useState(new Set());
-
-  const fullText = "Hey Advika! We've curated the perfect matches—Secure the bag!";
-
-  useEffect(() => {
-    let currentIndex = 0;
-    const typewriterInterval = setInterval(() => {
-      if (currentIndex <= fullText.length) {
-        setTypewriterText(fullText.slice(0, currentIndex));
-        currentIndex++;
-      } else {
-        clearInterval(typewriterInterval);
-        setInterval(() => {
-          setShowCursor(prev => !prev);
-        }, 500);
-      }
-    }, 80);
-
-    return () => clearInterval(typewriterInterval);
-  }, []);
-
-  // Enhanced job data with match scores and AI insights
   const allJobs = [
     {
       id: 1,
@@ -59,18 +22,19 @@ export default function JobSearchPage() {
       skillsMatch: 75,
       industryMatch: 41,
       salaryMatch: 98,
-      cultureMatch: 92,
-      topPercentage: 3,
-      requirements: 520,
-      beats: 87,
-      interviewRate: 78,
-      applications: 23,
+      teamSize: "50-100",
+      linkedinUrl: "https://linkedin.com/company/flipkart",
+      foundedYear: 2007,
+      companyDescription: "Flipkart is India's leading e-commerce marketplace offering a wide range of products across categories like electronics, fashion, home & kitchen, and more.",
+      companyLogo: "https://logo.clearbit.com/flipkart.com",
+      companyWebsite: "https://www.flipkart.com/careers",
+      learningOpportunities: 90,
       isUrgent: true,
       matchDetails: {
         experience: "Perfect match for your React experience",
         skills: "75% skills overlap: React, JavaScript, TypeScript",
         salary: "Competitive package with stock options",
-        culture: "Great fit for fast-paced e-commerce environment"
+        growth: "Great match based on where you live"
       }
     },
     {
@@ -92,19 +56,19 @@ export default function JobSearchPage() {
       skillsMatch: 91,
       industryMatch: 85,
       salaryMatch: 85,
-      cultureMatch: 91,
-      topPercentage: 8,
-      requirements: 340,
-      beats: 74,
-      interviewRate: 65,
-      applications: 18,
+      teamSize: "20-50",
+      linkedinUrl: "https://linkedin.com/company/zomato",
+      foundedYear: 2008,
+      companyDescription: "Zomato is a leading food delivery and restaurant discovery platform connecting millions of customers with restaurants across India and globally.",
+      companyLogo: "https://logo.clearbit.com/zomato.com",
+      companyWebsite: "https://www.zomato.com/careers",
+      learningOpportunities: 95,
       isUrgent: false,
       matchDetails: {
         experience: "Great match for mid-level position requirements",
         skills: "91% skills overlap: React, Node.js, GraphQL",
         salary: "Within your preferred range",
-        culture: "Aligns with your preference for innovation-focused teams"
-      }
+        growth: "Great match based on where you live"      }
     },
     {
       id: 3,
@@ -125,19 +89,19 @@ export default function JobSearchPage() {
       skillsMatch: 87,
       industryMatch: 79,
       salaryMatch: 79,
-      cultureMatch: 86,
-      topPercentage: 12,
-      requirements: 280,
-      beats: 69,
-      interviewRate: 58,
-      applications: 31,
+      teamSize: "100+",
+      linkedinUrl: "https://linkedin.com/company/swiggy",
+      foundedYear: 2014,
+      companyDescription: "Swiggy is India's leading on-demand convenience platform that delivers food, groceries, and essentials to customers across 500+ cities.",
+      companyLogo: "https://logo.clearbit.com/swiggy.com",
+      companyWebsite: "https://careers.swiggy.com",
+      learningOpportunities: 88,
       isUrgent: false,
       matchDetails: {
         experience: "Good fit for full-stack role transition",
         skills: "87% overlap: React, Python, MongoDB",
         salary: "Meets salary expectations for experience level",
-        culture: "Matches your interest in scalable systems"
-      }
+        growth: "Great match based on where you live"      }
     },
     {
       id: 4,
@@ -158,19 +122,19 @@ export default function JobSearchPage() {
       skillsMatch: 82,
       industryMatch: 65,
       salaryMatch: 71,
-      cultureMatch: 81,
-      topPercentage: 18,
-      requirements: 195,
-      beats: 54,
-      interviewRate: 45,
-      applications: 42,
+      teamSize: "50-100",
+      linkedinUrl: "https://linkedin.com/company/phonepe",
+      foundedYear: 2015,
+      companyDescription: "PhonePe is India's leading digital payments platform, enabling secure and seamless transactions for millions of users across the country.",
+      companyLogo: "https://logo.clearbit.com/phonepe.com",
+      companyWebsite: "https://www.phonepe.com/careers",
+      learningOpportunities: 85,
       isUrgent: false,
       matchDetails: {
         experience: "Good match for fintech experience",
         skills: "82% overlap: React, CSS, HTML5",
         salary: "Competitive fintech salary range",
-        culture: "Good match for product-focused teams"
-      }
+        growth: "Great match based on where you live"      }
     },
     {
       id: 5,
@@ -191,811 +155,396 @@ export default function JobSearchPage() {
       skillsMatch: 76,
       industryMatch: 45,
       salaryMatch: 68,
-      cultureMatch: 72,
-      topPercentage: 25,
-      requirements: 150,
-      beats: 48,
-      interviewRate: 38,
-      applications: 67,
+      teamSize: "20-50",
+      linkedinUrl: "https://linkedin.com/company/razorpay",
+      foundedYear: 2014,
+      companyDescription: "Razorpay is a full-stack financial solutions company that enables businesses to accept, process and disburse payments with ease.",
+      companyLogo: "https://logo.clearbit.com/razorpay.com",
+      companyWebsite: "https://razorpay.com/jobs",
+      learningOpportunities: 92,
       isUrgent: false,
       matchDetails: {
         experience: "Good entry point for fintech career",
         skills: "76% overlap: JavaScript, React basics",
         salary: "Standard entry-level fintech package",
-        culture: "Good fit for collaborative development environment"
-      }
+        growth: "Great match based on where you live"      }
     }
   ];
 
-  // Filter jobs with auto-filtering based on parsed resume
-  const filteredJobs = useMemo(() => {
-    let jobs = allJobs.filter(job => {
-      if (dismissedJobs.has(job.id)) return false;
-      
-      if (filterBy === "remote") return job.remote;
-      if (filterBy === "urgent") return job.isUrgent;
-      if (filterBy === "high-match") return job.matchScore >= 85;
-      
-      return true;
-    });
+const EnhancedJobCard = ({
+  job,
+  onApply,
+  onSave,
+  onBlock,
+  isApplied,
+  isSaved,
+}) => {
+  const [isHoveringMatchScore, setIsHoveringMatchScore] = useState(false)
 
-    // Sort jobs
-    switch (sortBy) {
-      case "match":
-        jobs.sort((a, b) => b.matchScore - a.matchScore);
-        break;
-      case "recent":
-        jobs.sort((a, b) => new Date(b.posted) - new Date(a.posted));
-        break;
-      case "salary":
-        jobs.sort((a, b) => {
-          const getSalaryMax = (salary) => parseInt(salary.split('-')[1].replace(/[^0-9]/g, ''));
-          return getSalaryMax(b.salary) - getSalaryMax(a.salary);
-        });
-        break;
-      default:
-        jobs.sort((a, b) => b.matchScore - a.matchScore);
-    }
-
-    return jobs;
-  }, [dismissedJobs, filterBy, sortBy]);
-
-  const handleApply = (jobId) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setAppliedJobs(prev => new Set(prev).add(jobId));
-      setCurrentApplyJobId(jobId);
-      setShowApplyBanner(true);
-      setIsLoading(false);
-
-      setTimeout(() => {
-        setShowApplyBanner(false);
-        setCurrentApplyJobId(null);
-      }, 10000);
-    }, 1200);
-  };
-
-  const handleSaveJob = (jobId) => {
-    setSavedJobs(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(jobId)) {
-        newSet.delete(jobId);
-      } else {
-        newSet.add(jobId);
-      }
-      return newSet;
-    });
-  };
-
-  const handleDismiss = (jobId) => {
-    setDismissedJobs(prev => new Set(prev).add(jobId));
-  };
-
-  const handleShare = (job) => {
-    if (navigator.share) {
-      navigator.share({
-        title: `${job.title} at ${job.company}`,
-        text: `Check out this job: ${job.title} at ${job.company} - ${job.matchScore}% match!`,
-        url: window.location.href
-      });
-    } else {
-      navigator.clipboard.writeText(`${job.title} at ${job.company} - ${job.matchScore}% match! ${window.location.href}`);
-    }
-  };
-
-  const handleBlock = (jobId) => {
-    setDismissedJobs(prev => new Set(prev).add(jobId));
-  };
-
-  const handleAskOrion = (jobId) => {
-    const job = allJobs.find(j => j.id === jobId);
-    alert(`Orion says: This ${job.title} position at ${job.company} is a great match based on your skills and experience level!`);
-  };
-
-  const handleToggleMatchDetails = (jobId) => {
-    setShowMatchDetails(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(jobId)) {
-        newSet.delete(jobId);
-      } else {
-        newSet.add(jobId);
-      }
-      return newSet;
-    });
-  };
-
-  const getMatchScoreColor = (score) => {
-    if (score >= 90) return "#6366F1";
-    if (score >= 80) return "#10B981";
-    if (score >= 70) return "#F59E0B";
-    return "#EF4444";
-  };
-
-  const getMatchScoreBg = (score) => {
-    if (score >= 90) return "#EEF2FF";
-    if (score >= 80) return "#ECFDF5";
-    if (score >= 70) return "#FEF3C7";
-    return "#FEE2E2";
-  };
-
-  const getMatchLabel = (score) => {
-    if (score >= 90) return "Perfect Match";
-    if (score >= 80) return "Excellent Match";
-    if (score >= 70) return "Good Match";
-    return "Fair Match";
-  };
-
-  // Enhanced Job Card Component
-  const EnhancedJobCard = ({ job, onApply, onSave, onBlock, onAskOrion, isApplied, isSaved }) => {
-    const isShowingMatchDetails = showMatchDetails.has(job.id);
-    return (
-      <div
-        className="bg-white rounded-2xl border shadow-sm"
-        style={{ borderColor: "#E5E7EB" }}
-      >
-        {/* Urgent Badge */}
-        {job.isUrgent && (
-          <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-3 py-1 rounded-full font-medium z-10">
-            🔥 Urgent
-          </div>
-        )}
-
-        <div className="p-6">
-          <div>
-            {!isShowingMatchDetails ? (
-              <>
-                {/* Normal Card Content */}
-                {/* Top Section: Job Info + Match Score */}
-            <div className="flex justify-between items-start mb-6">
+  return (
+    <div
+      className="bg-gradient-to-br from-white to-blue-50 rounded-lg border border-blue-200 shadow-md relative transition-all duration-300 ease-in-out hover:shadow-lg hover:border-blue-300"
+      style={{ minHeight: '220px', marginBottom: '1rem' }}
+      onMouseLeave={() => setIsHoveringMatchScore(false)}
+    >
+      {job.isUrgent && (
+        <div className="absolute -top-2 -right-2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-3 py-1 rounded-full font-medium z-10 shadow-lg animate-pulse">
+          🔥 Urgent
+        </div>
+      )}
+      <div className="p-3">
+        {!isHoveringMatchScore ? (
+          <>
+            {/* Default content */}
+            <div className="flex justify-between items-start mb-4">
               <div className="flex-1">
-                {/* Time and Early Applicant Badge */}
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="text-sm text-gray-500">{job.posted}</span>
-                  <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded font-medium">
-                    Be an early applicant
+                <div className="flex items-center gap-2 mb-2 text-gray-500 text-xs">
+                  <span>{job.posted}</span>
+                  <span className="bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 px-2 py-0.5 rounded-full font-medium shadow-sm">
+                    ⭐ Be an early applicant
                   </span>
                 </div>
-
-                {/* Job Title */}
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                  {job.title}
-                </h3>
-
-                {/* Company Info */}
-                <div className="text-gray-600 mb-4">
-                  <span className="font-medium">{job.company}</span>
-                  <span className="mx-1">/</span>
-                  <span>{job.companyType}</span>
+                <h3 className="text-lg font-extrabold bg-gradient-to-r from-blue-700 to-blue-500 bg-clip-text text-transparent mb-1">{job.title}</h3>
+                <div className="flex items-center gap-3 mb-3">
+                  <img src={job.companyLogo} alt={`${job.company} logo`} className="w-8 h-8 rounded object-cover" />
+                  <div className="text-gray-600 font-semibold text-sm">
+                    <span>{job.company}</span>
+                    <span className="mx-1">/</span>
+                    <span>{job.companyType}</span>
+                  </div>
+                  <a href={job.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 transition-colors" title="View LinkedIn Profile">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                  </a>
                 </div>
-
-                {/* Location and Job Details */}
-                <div className="grid grid-cols-2 gap-y-2 text-sm text-gray-600">
-                  <div className="flex items-center gap-2">
-                    <span>📍</span>
-                    <span>{job.location}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span>💼</span>
-                    <span>{job.type}</span>         
-  </div>
-                  <div className="flex items-center gap-2">
-                    <span>🏠</span>
-                    <span>{job.remote ? "Remote" : "Onsite"}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span>📊</span>
-                    <span>{job.level}</span>
-                  </div>
+                <p className="text-gray-600 text-[11px] mb-2 line-clamp-2">{job.companyDescription}</p>
+                <div className="grid grid-cols-2 gap-y-1 text-[11px] text-gray-600">
+                  <div className="flex items-center gap-1"><span>📍</span><span>{job.location}</span></div>
+                  <div className="flex items-center gap-1"><span>💼</span><span>{job.type}</span></div>
+                  <div className="flex items-center gap-1"><span>🏠</span><span>{job.remote ? 'Remote' : 'Onsite'}</span></div>
+                  <div className="flex items-center gap-1"><span>📊</span><span>{job.level}</span></div>
                 </div>
               </div>
-
-              {/* Match Score Section - Dark Green Card */}
-              <div className="ml-6">
+              <div className="ml-4">
                 <div
-                  className="bg-gray-900 text-white rounded-2xl p-4 w-40 cursor-pointer transition-all duration-200 hover:bg-gray-800"
-                  onClick={() => handleToggleMatchDetails(job.id)}
+                  className="bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 text-white rounded-xl p-3 w-28 h-24 cursor-pointer transition-all duration-200 hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600 hover:shadow-xl relative flex flex-col items-center justify-center shadow-lg border border-emerald-300/20"
+                  onMouseEnter={() => setIsHoveringMatchScore(true)}
+                  onMouseLeave={() => setIsHoveringMatchScore(false)}
                 >
-                  {/* Match Score Circle */}
-                  <div className="flex justify-center mb-3">
-                    <div className="relative w-16 h-16">
-                      <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 64 64">
-                        <circle
-                          cx="32"
-                          cy="32"
-                          r="28"
-                          stroke="rgba(255,255,255,0.2)"
-                          strokeWidth="4"
-                          fill="none"
-                        />
-                        <circle
-                          cx="32"
-                          cy="32"
-                          r="28"
-                          stroke="#10B981"
-                          strokeWidth="4"
-                          fill="none"
-                          strokeDasharray={`${(job.matchScore / 100) * 175.929} 175.929`}
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-lg font-bold text-white">
-                          {job.matchScore}%
-                        </span>
-                      </div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-2xl"></div>
+
+                  {/* Circular Progress */}
+                  <div className="relative flex items-center justify-center">
+                    <svg className="w-10 h-10 transform -rotate-90" viewBox="0 0 64 64">
+                      <circle cx="32" cy="32" r="26" stroke="rgba(255,255,255,0.15)" strokeWidth="3" fill="none" />
+                      <circle
+                        cx="32"
+                        cy="32"
+                        r="26"
+                        stroke="rgba(255,255,255,0.9)"
+                        strokeWidth="3"
+                        fill="none"
+                        strokeDasharray={`${(job.matchScore / 100) * 163.363} 163.363`}
+                        strokeLinecap="round"
+                        className="drop-shadow-sm"
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-sm font-extrabold text-white drop-shadow-sm leading-none">{job.matchScore}%</span>
                     </div>
                   </div>
 
-                  {/* Match Label */}
-                  <div className="text-center">
-                    <div className="text-sm font-bold text-white mb-1">
-                      STRONG MATCH
+                  {/* Match Label Below Circle */}
+                  <div className="mt-1 text-center text-white/90 font-bold text-[8px] tracking-wider uppercase drop-shadow-sm px-1">
+                    {job.matchLabel}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center justify-end pt-2 border-t border-blue-100 mt-2">
+              <div className="flex items-center gap-2">
+                <button onClick={() => onBlock(job.id)} className="p-1.5 rounded-lg" title="Dismiss">
+                  <svg width="18" height="18" fill="none" className="text-gray-400">
+                    <path d="M6 6L14 14M6 14L14 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                </button>
+                <button onClick={() => onSave(job.id)} className={`p-1.5 rounded-lg ${isSaved ? "text-yellow-500 bg-yellow-50" : "text-gray-400"}`} title="Save Job">
+                  <svg width="18" height="18" fill="none">
+                    <path d="M5 3V17L10 13L15 17V3H5Z" stroke="currentColor" strokeWidth="2" fill={isSaved ? "currentColor" : "none"} />
+                  </svg>
+                </button>
+                <button onClick={() => onApply(job.id)} disabled={isApplied} className={`px-5 py-1.5 rounded-lg font-bold text-xs transition-all ${isApplied ? "bg-green-500 text-white cursor-not-allowed" : "bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl transform hover:scale-105"}`}>
+                  {isApplied ? "APPLIED" : "APPLY NOW"}
+                </button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="space-y-3 min-h-[200px]">
+            {/* Match details content */}
+            <div className="flex justify-between items-start mb-2">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2 text-xs text-gray-500">
+                  <span>{job.posted}</span>
+                  <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded font-medium">
+                    Match Analysis
+                  </span>
+                </div>
+                <h3 className="text-lg font-extrabold bg-gradient-to-r from-blue-700 to-blue-500 bg-clip-text text-transparent mb-1">{job.title}</h3>
+                <div className="flex items-center gap-3 mb-3">
+                  <img src={job.companyLogo} alt={`${job.company} logo`} className="w-8 h-8 rounded object-cover" />
+                  <div className="text-gray-600 font-semibold">{job.company}</div>
+                  <a href={job.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 transition-colors" title="View LinkedIn Profile">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.222 0h.003z"/>
+                    </svg>
+                  </a>
+                </div>
+                <p className="text-gray-600 text-[11px] mb-2 line-clamp-2">{job.companyDescription}</p>
+              </div>
+              <div className="ml-4">
+                <div className="bg-gradient-to-br from-slate-700 via-slate-600 to-slate-800 text-white rounded-xl p-3 w-28 h-24 relative flex flex-col items-center justify-center shadow-lg border border-slate-500/20">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-2xl"></div>
+
+                  {/* Circular Progress */}
+                  <div className="relative flex items-center justify-center">
+                    <svg className="w-10 h-10 transform -rotate-90" viewBox="0 0 64 64">
+                      <circle cx="32" cy="32" r="26" stroke="rgba(255,255,255,0.15)" strokeWidth="3" fill="none" />
+                      <circle
+                        cx="32"
+                        cy="32"
+                        r="26"
+                        stroke="rgba(255,255,255,0.85)"
+                        strokeWidth="3"
+                        fill="none"
+                        strokeDasharray={`${(job.matchScore / 100) * 163.363} 163.363`}
+                        strokeLinecap="round"
+                        className="drop-shadow-sm"
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-sm font-extrabold text-white drop-shadow-sm leading-none">{job.matchScore}%</span>
                     </div>
+                  </div>
+
+                  {/* Match Label Below Circle */}
+                  <div className="mt-1 text-center text-white/90 font-bold text-[8px] tracking-wider uppercase drop-shadow-sm px-1">
+                    {job.matchLabel}
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Bottom Section - Applicants + Actions */}
-            <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-              <div className="text-sm text-gray-500">
-                Less than {job.applicants} applicants
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { label: "Skills Match", value: job.skillsMatch, color: "green", desc: job.matchDetails.skills },
+                { label: "Experience Match", value: job.experienceMatch, color: "blue", desc: job.matchDetails.experience },
+                { label: "Salary Match", value: job.salaryMatch, color: "purple", desc: job.matchDetails.salary },
+                { label: "Location match", value: job.learningOpportunities, color: "orange", desc: job.matchDetails.growth }
+              ].map(({ label, value, color, desc }) => (
+                <div key={label} className="bg-gray-50 rounded-xl p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-medium text-gray-600">{label}</span>
+                    <span className={`text-xs font-bold text-${color}-600`}>{value}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-1">
+                    <div className={`h-1 rounded-full bg-${color}-500`} style={{ width: `${value}%` }} />
+                  </div>
+                  <p className="text-[11px] text-gray-600 mt-1">{desc}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Company Insights */}
+            <div className="bg-indigo-50 rounded-xl p-3 border border-indigo-200 text-xs">
+              <span className="font-bold text-indigo-900">🏢 Company Insights</span>
+              <div className="grid grid-cols-2 gap-3 mt-2">
+                <div>
+                  <span className="text-gray-600">Team Size:</span> <span className="font-bold text-indigo-600 ml-1">{job.teamSize}</span> <span className="text-gray-600"> engineers</span>
+                </div>
+                <div>
+                  <span className="text-gray-600">Founded:</span> <span className="font-bold text-green-600 ml-1">{job.foundedYear}</span>
+                </div>
+                <div>
+                  <span className="text-gray-600">Industry:</span> <span className="font-bold text-purple-600 ml-1">{job.companyType.split(' · ')[0]}</span>
+                </div>
+                <div>
+                  <span className="text-gray-600">Salary Range:</span> <span className="font-bold text-blue-600 ml-1">{job.salary}</span>
+                </div>
               </div>
-              
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => onBlock(job.id)}
-                  className="p-2 rounded-lg"
-                  title="Dismiss"
-                >
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="text-gray-400">
-                    <path d="M6 6L14 14M6 14L14 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </div>
+
+            <div className="flex items-center justify-end pt-4 border-t border-gray-100">
+              <div className="flex items-center gap-2">
+                <button onClick={() => onBlock(job.id)} className="p-1.5 rounded-lg" title="Dismiss">
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" className="text-gray-400">
+                    <path d="M6 6L14 14M6 14L14 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                   </svg>
                 </button>
-                
-                <button
-                  onClick={() => onSave(job.id)}
-                  className={`p-2 rounded-lg ${
-                    isSaved ? 'text-yellow-500 bg-yellow-50' : 'text-gray-400'
-                  }`}
-                  title="Save Job"
-                >
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M5 3V17L10 13L15 17V3H5Z" stroke="currentColor" strokeWidth="2" fill={isSaved ? 'currentColor' : 'none'}/>
+                <button onClick={() => onSave(job.id)} className={`p-1.5 rounded-lg ${isSaved ? "text-yellow-500 bg-yellow-50" : "text-gray-400"}`} title="Save Job">
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                    <path d="M5 3V17L10 13L15 17V3H5Z" stroke="currentColor" strokeWidth="2" fill={isSaved ? "currentColor" : "none"} />
                   </svg>
                 </button>
-                
-                
-                <button
-                  onClick={() => onApply(job.id)}
-                  disabled={isApplied}
-                  className={`px-6 py-2 rounded-lg font-bold text-sm ${
-                    isApplied
-                      ? 'bg-green-500 text-white cursor-not-allowed'
-                      : 'bg-emerald-400 text-black'
-                  }`}
-                >
-                  {isApplied ? 'APPLIED' : 'APPLY NOW'}
+                <button onClick={() => onApply(job.id)} disabled={isApplied} className={`px-5 py-1.5 rounded-lg font-bold text-xs transition-all ${isApplied ? "bg-green-500 text-white cursor-not-allowed" : "bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl transform hover:scale-105"}`}>
+                  {isApplied ? "APPLIED" : "APPLY NOW"}
                 </button>
               </div>
             </div>
-              </>
-            ) : (
-              /* Match Details Content */
-              <div className="space-y-6">
-                {/* Header */}
-                <div className="flex justify-between items-start mb-6">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="text-sm text-gray-500">{job.posted}</span>
-                      <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded font-medium">
-                        Match Analysis
-                      </span>
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                      {job.title}
-                    </h3>
-                    <div className="text-gray-600 mb-4">
-                      <span className="font-medium">{job.company}</span>
-                    </div>
-                  </div>
-
-                  {/* Match Score Section - Same as before */}
-                  <div className="ml-6">
-                    <div
-                      className="bg-gray-900 text-white rounded-2xl p-4 w-40 cursor-pointer transition-all duration-200 hover:bg-gray-800"
-                      onClick={() => handleToggleMatchDetails(job.id)}
-                    >
-                      <div className="flex justify-center mb-3">
-                        <div className="relative w-16 h-16">
-                          <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 64 64">
-                            <circle
-                              cx="32"
-                              cy="32"
-                              r="28"
-                              stroke="rgba(255,255,255,0.2)"
-                              strokeWidth="4"
-                              fill="none"
-                            />
-                            <circle
-                              cx="32"
-                              cy="32"
-                              r="28"
-                              stroke="#10B981"
-                              strokeWidth="4"
-                              fill="none"
-                              strokeDasharray={`${(job.matchScore / 100) * 175.929} 175.929`}
-                              strokeLinecap="round"
-                            />
-                          </svg>
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-lg font-bold text-white">
-                              {job.matchScore}%
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-white mb-1">
-                          STRONG MATCH
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Match Details Grid */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-gray-50 rounded-xl p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-600">Skills Match</span>
-                      <span className="text-sm font-bold text-green-600">{job.skillsMatch}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-green-500 h-2 rounded-full"
-                        style={{width: `${job.skillsMatch}%`}}
-                      ></div>
-                    </div>
-                    <p className="text-xs text-gray-600 mt-2">{job.matchDetails.skills}</p>
-                  </div>
-
-                  <div className="bg-gray-50 rounded-xl p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-600">Experience Match</span>
-                      <span className="text-sm font-bold text-blue-600">{job.experienceMatch}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-blue-500 h-2 rounded-full"
-                        style={{width: `${job.experienceMatch}%`}}
-                      ></div>
-                    </div>
-                    <p className="text-xs text-gray-600 mt-2">{job.matchDetails.experience}</p>
-                  </div>
-
-                  <div className="bg-gray-50 rounded-xl p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-600">Salary Match</span>
-                      <span className="text-sm font-bold text-purple-600">{job.salaryMatch}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-purple-500 h-2 rounded-full"
-                        style={{width: `${job.salaryMatch}%`}}
-                      ></div>
-                    </div>
-                    <p className="text-xs text-gray-600 mt-2">{job.matchDetails.salary}</p>
-                  </div>
-
-                  <div className="bg-gray-50 rounded-xl p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-600">Culture Match</span>
-                      <span className="text-sm font-bold text-orange-600">{job.cultureMatch}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-orange-500 h-2 rounded-full"
-                        style={{width: `${job.cultureMatch}%`}}
-                      ></div>
-                    </div>
-                    <p className="text-xs text-gray-600 mt-2">{job.matchDetails.culture}</p>
-                  </div>
-                </div>
-
-                {/* Overall Match Insights */}
-                <div className="bg-indigo-50 rounded-xl p-4 border border-indigo-200">
-                  <h4 className="font-bold text-indigo-900 mb-2">🎯 Match Insights</h4>
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <span className="text-gray-600">You beat</span>
-                      <span className="font-bold text-indigo-600 ml-1">{job.beats}%</span>
-                      <span className="text-gray-600"> of applicants</span>
-                    </div>
-                    <div>
-                      <span className="text-gray-600">Interview rate:</span>
-                      <span className="font-bold text-green-600 ml-1">{job.interviewRate}%</span>
-                    </div>
-                    <div>
-                      <span className="text-gray-600">Top</span>
-                      <span className="font-bold text-purple-600 ml-1">{job.topPercentage}%</span>
-                      <span className="text-gray-600"> candidate</span>
-                    </div>
-                    <div>
-                      <span className="text-gray-600">Requirements met:</span>
-                      <span className="font-bold text-blue-600 ml-1">{job.requirements}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Actions */}
-                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                  <div className="text-sm text-gray-500">
-                    Less than {job.applicants} applicants
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={() => onBlock(job.id)}
-                      className="p-2 rounded-lg"
-                      title="Dismiss"
-                    >
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="text-gray-400">
-                        <path d="M6 6L14 14M6 14L14 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                      </svg>
-                    </button>
-
-                    <button
-                      onClick={() => onSave(job.id)}
-                      className={`p-2 rounded-lg ${
-                        isSaved ? 'text-yellow-500 bg-yellow-50' : 'text-gray-400'
-                      }`}
-                      title="Save Job"
-                    >
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M5 3V17L10 13L15 17V3H5Z" stroke="currentColor" strokeWidth="2" fill={isSaved ? 'currentColor' : 'none'}/>
-                      </svg>
-                    </button>
-
-                    <button
-                      onClick={() => onApply(job.id)}
-                      disabled={isApplied}
-                      className={`px-6 py-2 rounded-lg font-bold text-sm ${
-                        isApplied
-                          ? 'bg-green-500 text-white cursor-not-allowed'
-                          : 'bg-emerald-400 text-black'
-                      }`}
-                    >
-                      {isApplied ? 'APPLIED' : 'APPLY NOW'}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
-
-        </div>
-      </div>
-    );
-  };
-
-  // Loading states for engaging UX
-  const LoadingCard = () => (
-    <div className="animate-pulse bg-white rounded-2xl shadow-sm border p-6" style={{ borderColor: "#E5E7EB" }}>
-      <div className="flex justify-between items-start mb-4">
-        <div className="flex-1">
-          <div className="h-6 bg-gray-200 rounded w-3/4 mb-3"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
-          <div className="h-4 bg-gray-200 rounded w-2/3 mb-4"></div>
-                   
-<div className="flex gap-4 mb-4">
-            <div className="h-12 bg-gray-200 rounded-lg w-20"></div>
-            <div className="h-12 bg-gray-200 rounded-lg w-20"></div>
-            <div className="h-12 bg-gray-200 rounded-lg w-20"></div>
-          </div>
-        </div>
-        <div className="h-16 w-16 bg-gray-200 rounded-full"></div>
-      </div>
-      <div className="flex gap-3 pt-4 border-t border-gray-100">
-        <div className="h-12 bg-gray-200 rounded-xl flex-1"></div>
-        <div className="h-12 w-12 bg-gray-200 rounded-xl"></div>
-        <div className="h-12 w-12 bg-gray-200 rounded-xl"></div>
-        <div className="h-12 w-12 bg-gray-200 rounded-xl"></div>
+        )}
       </div>
     </div>
-  );
+  )
+}
+
+
+export default function JobSearchPage() {
+  const [appliedJobs, setAppliedJobs] = useState(new Set())
+  const [savedJobs, setSavedJobs] = useState(new Set())
+  const [dismissedJobs, setDismissedJobs] = useState(new Set())
+  const [showApplyBanner, setShowApplyBanner] = useState(false)
+
+  const [filterBy, setFilterBy] = useState("all")
+  const [sortBy, setSortBy] = useState("match")
+
+  // Banner typewriter effect
+  const [typewriterText, setTypewriterText] = useState("")
+  const [showCursor, setShowCursor] = useState(true)
+  const fullText = "Hey Advika! We've curated the perfect matches Secure the bag!"
+
+  useEffect(() => {
+    let currentIndex = 0
+    const interval = setInterval(() => {
+      setTypewriterText(fullText.slice(0, currentIndex))
+      currentIndex++
+      if (currentIndex > fullText.length) {
+        clearInterval(interval)
+        setShowCursor(false)
+      }
+    }, 80)
+    return () => clearInterval(interval)
+  }, [])
+
+  const filteredJobs = useMemo(() => {
+    let jobs = allJobs.filter(job => !dismissedJobs.has(job.id))
+    if (filterBy === "remote") jobs = jobs.filter(job => job.remote)
+    else if (filterBy === "urgent") jobs = jobs.filter(job => job.isUrgent)
+    else if (filterBy === "high-match") jobs = jobs.filter(job => job.matchScore >= 85)
+
+    if (sortBy === "match") jobs.sort((a, b) => b.matchScore - a.matchScore)
+    else if (sortBy === "recent") jobs.sort((a, b) => b.id - a.id)
+    else if (sortBy === "salary") {
+      const getSalaryMax = salary => {
+        const parts = salary.split("-")
+        if (parts.length === 2) return parseInt(parts[1].replace(/[^\d]/g, ""), 10)
+        return parseInt(parts[0].replace(/[^\d]/g, ""), 10)
+      }
+      jobs.sort((a, b) => getSalaryMax(b.salary) - getSalaryMax(a.salary))
+    }
+    return jobs
+  }, [filterBy, sortBy, dismissedJobs])
+
+  const handleApply = jobId => {
+    const job = allJobs.find(j => j.id === jobId)
+    if (job && job.companyWebsite) {
+      // Open company website in new tab
+      window.open(job.companyWebsite, '_blank')
+    }
+    // Mark as applied
+    setTimeout(() => {
+      setAppliedJobs(prev => new Set(prev).add(jobId))
+      setShowApplyBanner(true)
+    }, 500)
+  }
+
+  const handleSaveJob = jobId => {
+    setSavedJobs(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(jobId)) newSet.delete(jobId)
+      else newSet.add(jobId)
+      return newSet
+    })
+  }
+
+  const handleBlock = jobId => {
+    setDismissedJobs(prev => new Set(prev).add(jobId))
+  }
 
   return (
     <DashboardLayout>
-      <div className="max-w-7xl mx-auto space-y-8">
-        {/* Apply Banner */}
-        {showApplyBanner && currentApplyJobId && (
-          <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl shadow-lg border-2 border-green-200 p-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white text-xl">
-                  ✓
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-green-800">Application Submitted!</h3>
-                  <p className="text-green-600">Did you apply? Bet!</p>
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <button
-                  className="px-6 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
-                  onClick={() => setShowApplyBanner(false)}
-                >
-                  Yes
-                </button>
-                <button
-                  className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
-                  onClick={() => setShowApplyBanner(false)}
-                >
-                  No
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Header */}
-        <div className="text-center py-12 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-white to-purple-50 rounded-3xl"></div>
-          <div className="relative z-10 space-y-6">
-            <div className="relative">
-              <h1 className="text-4xl lg:text-6xl font-bold leading-tight bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                {typewriterText}
-                <span
-                  className="inline-block w-1 ml-2 bg-indigo-600"
-                  style={{
-                    animation: "blink 1s infinite",
-                    opacity: showCursor ? 1 : 0,
-                    transition: "opacity 0.1s ease-in-out"
-                  }}
-                >
-                  |
-                </span>
-              </h1>
-            </div>
-
-            <div className="w-32 h-1 mx-auto bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></div>
-
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              AI analyzed 500+ requirements and these jobs hit different
-            </p>
-
-            <div className="flex items-center justify-center gap-8 text-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-gray-600">Updated 3 hours ago</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-indigo-500 rounded-full"></div>
-                <span className="text-gray-600">Auto-filtered from resume</span>
-              </div>
-            </div>
-
-            <div className="absolute -top-4 right-8 text-6xl opacity-20">
-              🎯
-            </div>
-          </div>
-        </div>
-
-        <style jsx>{`
-          @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-          }
-        `}</style>
-
-        {/* Filters and Sort */}
-        <div className="bg-white rounded-2xl shadow-sm border p-6">
-          <div className="flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center">
-            <div className="flex gap-3 flex-wrap">
-              <button
-                onClick={() => setFilterBy("all")}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  filterBy === "all"
-                    ? "bg-indigo-600 text-white"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}
-              >
-                All Jobs ({filteredJobs.length})
-              </button>
-              <button
-                onClick={() => setFilterBy("high-match")}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  filterBy === "high-match"
-                    ? "bg-indigo-600 text-white"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}
-              >
-                🎯 85%+ Match
-              </button>
-              <button
-                onClick={() => setFilterBy("remote")}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  filterBy === "remote"
-                    ? "bg-indigo-600 text-white"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}
-              >
-                🏠 Remote
-              </button>
-              <button
-                onClick={() => setFilterBy("urgent")}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  filterBy === "urgent"
-                    ? "bg-indigo-600 text-white"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}
-              >
-                🔥 Urgent Hiring
-              </button>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-gray-600">Sort by:</span>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              >
-                <option value="match">Match Score</option>
-                <option value="recent">Most Recent</option>
-                <option value="salary">Highest Salary</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Job Results */}
-        <div className="space-y-6">
-          {isLoading ? (
-            <div className="space-y-6">
-              {[...Array(3)].map((_, i) => (
-                <LoadingCard key={i} />
-              ))}
-            </div>
-          ) : filteredJobs.length > 0 ? (
-            <>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">
-                  Perfect Matches ({filteredJobs.length})
-                </h2>
-                <div className="text-sm text-gray-500">
-                  Beats {filteredJobs.length > 0 ? Math.max(...filteredJobs.map(j => j.beats)) : 0}% of jobs
-                </div>
-              </div>
-              
-              <div className="space-y-6">
-                {filteredJobs.map((job) => (
-                  <EnhancedJobCard
-                    key={job.id}
-                    job={job}
-                    onApply={handleApply}
-                    onSave={handleSaveJob}
-                    onBlock={handleBlock}
-                    onAskOrion={handleAskOrion}
-                    isApplied={appliedJobs.has(job.id)}
-                    isSaved={savedJobs.has(job.id)}
-                  />
-                ))}
-              </div>
-            </>
-          ) : (
-            <div className="text-center py-16 bg-white rounded-2xl border">
-              <div className="text-6xl mb-4">😔</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
-                No matches found
-              </h3>
-              <p className="text-gray-600 mb-6">
-                All jobs have been dismissed – we got you
-              </p>
-              <button
-                onClick={() => setDismissedJobs(new Set())}
-                className="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold  transition-colors"
-              >
-                Show all jobs
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* AI Insights Footer */}
-        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl border-2 border-indigo-200 p-8">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-white text-xl">
-              🤖
-            </div>
-            <h2 className="text-2xl font-bold text-indigo-900">
-              AI Insights – Understanding the assignment
-            </h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-xl p-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                  👤
-                </div>
-                <h3 className="font-bold text-gray-900">Profile Analysis</h3>
-              </div>
-              <p className="text-gray-600 text-sm">
-                Based on your resume, skills, and preferences to find the perfect career fit
-              </p>
-            </div>
-            
-            <div className="bg-white rounded-xl p-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                  📊
-                </div>
-                <h3 className="font-bold text-gray-900">Market Intelligence</h3>
-              </div>
-              <p className="text-gray-600 text-sm">
-                Real-time job market data, salary trends, and demand insights
-              </p>
-            </div>
-            
-            <div className="bg-white rounded-xl p-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                  🎯
-                </div>
-                <h3 className="font-bold text-gray-900">Success Prediction</h3>
-              </div>
-              <p className="text-gray-600 text-sm">
-                ML-powered match scoring and interview rate predictions
-              </p>
-            </div>
-          </div>
-          
-          <div className="mt-6 p-4 bg-white/50 rounded-xl border border-indigo-200">
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-gray-700">AI is actively learning from your preferences</span>
-              </div>
-              <span className="text-indigo-600 font-medium">
-                {filteredJobs.length} perfect matches found
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-white rounded-xl p-6 text-center shadow-sm border">
-            <div className="text-2xl font-bold text-indigo-600 mb-1">
-              {filteredJobs.filter(j => j.matchScore >= 90).length}
-            </div>
-            <div className="text-gray-600 text-sm">Perfect Matches</div>
-          </div>
-          
-          <div className="bg-white rounded-xl p-6 text-center shadow-sm border">
-            <div className="text-2xl font-bold text-red-600 mb-1">
-              {filteredJobs.filter(j => j.isUrgent).length}
-            </div>
-            <div className="text-gray-600 text-sm">Urgent Jobs</div>
-          </div>
-          
-          <div className="bg-white rounded-xl p-6 text-center shadow-sm border">
-            <div className="text-2xl font-bold text-blue-600 mb-1">
-              {filteredJobs.filter(j => j.remote).length}
-            </div>
-            <div className="text-gray-600 text-sm">Remote Jobs</div>
-          </div>
-          
-          <div className="bg-white rounded-xl p-6 text-center shadow-sm border">
-            <div className="text-2xl font-bold text-purple-600 mb-1">
-              {appliedJobs.size}
-            </div>
-            <div className="text-gray-600 text-sm">Applications Sent</div>
-          </div>
-        </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <h1 className="text-5xl font-extrabold text-gray-900 mb-8 leading-tight">
+          {typewriterText}
+          {showCursor && <span className="animate-pulse">|</span>}
+        </h1>
       </div>
+      <div className="pt-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center mb-8">
+          <div className="flex gap-4">
+            {["all", "high-match", "remote", "urgent"].map(filter => (
+              <button
+                key={filter}
+                onClick={() => setFilterBy(filter)}
+                className={`px-4 py-2 rounded-full ${filterBy === filter ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-800"}`}
+              >
+                {{
+                  all: "All",
+                  "high-match": "85+ Match",
+                  remote: "Remote",
+                  urgent: "Urgent"
+                }[filter]}
+              </button>
+            ))}
+          </div>
+          <div>
+            <label className="text-sm font-medium text-gray-700 mr-3">Sort by</label>
+            <select
+              value={sortBy}
+              onChange={e => setSortBy(e.target.value)}
+              className="border border-gray-300 rounded-md p-2 text-black"
+            >
+              <option value="match">Match Score</option>
+              <option value="recent">Most Recent</option>
+              <option value="salary">Salary</option>
+            </select>
+          </div>
+        </div>
+
+        {filteredJobs.length === 0 ? (
+          <div className="text-center text-gray-700 py-12 bg-white rounded-2xl border border-gray-300">
+            <div className="text-5xl mb-6">😞</div>
+            <div>No jobs match your criteria</div>
+            <button
+              onClick={() => setDismissedJobs(new Set())}
+              className="mt-6 bg-indigo-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-indigo-700 transition"
+            >
+              Reset Filters
+            </button>
+          </div>
+        ) : (
+          filteredJobs.map(job => (
+            <EnhancedJobCard
+              key={job.id}
+              job={job}
+              onApply={handleApply}
+              onSave={handleSaveJob}
+              onBlock={handleBlock}
+              isApplied={appliedJobs.has(job.id)}
+              isSaved={savedJobs.has(job.id)}
+            />
+          ))
+        )}
+      </div>
+      {showApplyBanner && (
+        <div className="fixed bottom-6 right-6 bg-green-600 text-white px-6 py-4 rounded-lg shadow-lg flex items-center space-x-4">
+          <span>Successfully applied!</span>
+          <button onClick={() => setShowApplyBanner(false)} className="underline hover:text-green-200">
+            Close
+          </button>
+        </div>
+      )}
     </DashboardLayout>
-  );
+  )
 }
