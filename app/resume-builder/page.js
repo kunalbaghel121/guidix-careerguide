@@ -50,8 +50,12 @@ function ResumeCard({ resume, onEdit, onDelete, onDuplicate }) {
     <div
       className="bg-white rounded-xl border shadow-sm hover:shadow-md transition-all duration-200 group"
       style={{ borderColor: "var(--neutral-medium-light)" }}
-      onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--brand-primary)")}
-      onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--neutral-medium-light)")}
+      onMouseEnter={(e) =>
+        (e.currentTarget.style.borderColor = "var(--brand-primary)")
+      }
+      onMouseLeave={(e) =>
+        (e.currentTarget.style.borderColor = "var(--neutral-medium-light)")
+      }
     >
       <div className="p-4 lg:p-6">
         <div className="flex items-start justify-between mb-4">
@@ -59,7 +63,8 @@ function ResumeCard({ resume, onEdit, onDelete, onDuplicate }) {
             <div
               className="w-10 h-10 lg:w-12 lg:h-12 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm"
               style={{
-                background: "linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))",
+                background:
+                  "linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))",
               }}
             >
               <span className="text-lg lg:text-xl text-white">📄</span>
@@ -122,8 +127,12 @@ function ResumeCard({ resume, onEdit, onDelete, onDuplicate }) {
             <button
               onClick={() => setShowDropdown(!showDropdown)}
               className="p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 ml-2"
-              style={{ "&:hover": { backgroundColor: "var(--neutral-lightest)" } }}
-              onMouseEnter={(e) => (e.target.style.backgroundColor = "var(--neutral-lightest)")}
+              style={{
+                "&:hover": { backgroundColor: "var(--neutral-lightest)" },
+              }}
+              onMouseEnter={(e) =>
+                (e.target.style.backgroundColor = "var(--neutral-lightest)")
+              }
               onMouseLeave={(e) =>
                 (e.target.style.backgroundColor = "transparent")
               }
@@ -161,7 +170,8 @@ function ResumeCard({ resume, onEdit, onDelete, onDuplicate }) {
                     className="w-full px-4 py-2 text-left text-sm flex items-center space-x-2 transition-colors"
                     style={{ color: "var(--neutral-darker)" }}
                     onMouseEnter={(e) =>
-                      (e.target.style.backgroundColor = "var(--neutral-lightest)")
+                      (e.target.style.backgroundColor =
+                        "var(--neutral-lightest)")
                     }
                     onMouseLeave={(e) =>
                       (e.target.style.backgroundColor = "transparent")
@@ -178,7 +188,8 @@ function ResumeCard({ resume, onEdit, onDelete, onDuplicate }) {
                     className="w-full px-4 py-2 text-left text-sm flex items-center space-x-2 transition-colors"
                     style={{ color: "var(--neutral-darker)" }}
                     onMouseEnter={(e) =>
-                      (e.target.style.backgroundColor = "var(--neutral-lightest)")
+                      (e.target.style.backgroundColor =
+                        "var(--neutral-lightest)")
                     }
                     onMouseLeave={(e) =>
                       (e.target.style.backgroundColor = "transparent")
@@ -245,7 +256,8 @@ function ResumeCard({ resume, onEdit, onDelete, onDuplicate }) {
                 e.target.style.backgroundColor = "#E9F1FF";
               }}
               onMouseLeave={(e) => {
-                e.target.style.backgroundColor = "var(--brand-secondary-lightest)";
+                e.target.style.backgroundColor =
+                  "var(--brand-secondary-lightest)";
               }}
             >
               <span>✏️</span>
@@ -299,7 +311,8 @@ function EmptyState() {
     <div
       className="rounded-xl border p-8 lg:p-12 text-center"
       style={{
-        background: "linear-gradient(135deg, var(--brand-secondary-lightest) 0%, #E9F1FF 100%)",
+        background:
+          "linear-gradient(135deg, var(--brand-secondary-lightest) 0%, #E9F1FF 100%)",
         borderColor: "#D5E4FF",
       }}
     >
@@ -310,13 +323,19 @@ function EmptyState() {
       >
         No resumes yet
       </h3>
-      <p className="mb-6 max-w-md mx-auto" style={{ color: "var(--neutral-medium-dark)" }}>
+      <p
+        className="mb-6 max-w-md mx-auto"
+        style={{ color: "var(--neutral-medium-dark)" }}
+      >
         Create your first professional resume and start landing your dream job
       </p>
       <Link href="/resume-builder/ai-generator">
         <button
           className="text-white px-6 py-3 rounded-lg font-medium shadow-sm transition-all duration-300"
-          style={{ background: "linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))" }}
+          style={{
+            background:
+              "linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))",
+          }}
           onMouseEnter={(e) => (e.target.style.transform = "translateY(-1px)")}
           onMouseLeave={(e) => (e.target.style.transform = "translateY(0)")}
         >
@@ -405,7 +424,19 @@ export default function ResumeBuilderPage() {
     <DashboardLayout>
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header Section */}
-
+        <div className="bg-gradient-to-r from-[#679CFF] to-[#2370FF] rounded-xl shadow-sm text-white p-6 lg:p-8">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between">
+            <div>
+              <h1 className="text-2xl lg:text-3xl font-bold mb-2">
+                AI Job Apply
+              </h1>
+              <p className="text-pink-100 text-sm lg:text-base">
+                Automate your job applications with intelligent targeting
+              </p>
+            </div>
+            <div className="mt-4 lg:mt-0 text-4xl lg:text-6xl">📤</div>
+          </div>
+        </div>
         {/* Main Tabs */}
         <div className="w-full">
           <div
@@ -418,10 +449,17 @@ export default function ResumeBuilderPage() {
                 className="py-3 px-3 lg:px-4 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200"
                 style={{
                   backgroundColor:
-                    activeTab === "ai-prompt" ? "var(--brand-secondary-lightest)" : "transparent",
-                  color: activeTab === "ai-prompt" ? "var(--brand-primary)" : "var(--neutral-medium-dark)",
+                    activeTab === "ai-prompt"
+                      ? "var(--brand-secondary-lightest)"
+                      : "transparent",
+                  color:
+                    activeTab === "ai-prompt"
+                      ? "var(--brand-primary)"
+                      : "var(--neutral-medium-dark)",
                   border:
-                    activeTab === "ai-prompt" ? "1px solid var(--brand-primary)" : "none",
+                    activeTab === "ai-prompt"
+                      ? "1px solid var(--brand-primary)"
+                      : "none",
                   boxShadow:
                     activeTab === "ai-prompt"
                       ? "0 1px 3px rgba(35, 112, 255, 0.1)"
@@ -448,9 +486,17 @@ export default function ResumeBuilderPage() {
                 className="py-3 px-3 lg:px-4 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200"
                 style={{
                   backgroundColor:
-                    activeTab === "all" ? "var(--brand-secondary-lightest)" : "transparent",
-                  color: activeTab === "all" ? "var(--brand-primary)" : "var(--neutral-medium-dark)",
-                  border: activeTab === "all" ? "1px solid var(--brand-primary)" : "none",
+                    activeTab === "all"
+                      ? "var(--brand-secondary-lightest)"
+                      : "transparent",
+                  color:
+                    activeTab === "all"
+                      ? "var(--brand-primary)"
+                      : "var(--neutral-medium-dark)",
+                  border:
+                    activeTab === "all"
+                      ? "1px solid var(--brand-primary)"
+                      : "none",
                   boxShadow:
                     activeTab === "all"
                       ? "0 1px 3px rgba(35, 112, 255, 0.1)"
@@ -477,10 +523,17 @@ export default function ResumeBuilderPage() {
                 className="py-3 px-3 lg:px-4 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200"
                 style={{
                   backgroundColor:
-                    activeTab === "linkedin" ? "var(--brand-secondary-lightest)" : "transparent",
-                  color: activeTab === "linkedin" ? "var(--brand-primary)" : "var(--neutral-medium-dark)",
+                    activeTab === "linkedin"
+                      ? "var(--brand-secondary-lightest)"
+                      : "transparent",
+                  color:
+                    activeTab === "linkedin"
+                      ? "var(--brand-primary)"
+                      : "var(--neutral-medium-dark)",
                   border:
-                    activeTab === "linkedin" ? "1px solid var(--brand-primary)" : "none",
+                    activeTab === "linkedin"
+                      ? "1px solid var(--brand-primary)"
+                      : "none",
                   boxShadow:
                     activeTab === "linkedin"
                       ? "0 1px 3px rgba(35, 112, 255, 0.1)"
@@ -544,7 +597,8 @@ export default function ResumeBuilderPage() {
                             "0 0 0 3px rgba(35, 112, 255, 0.1)";
                         }}
                         onBlur={(e) => {
-                          e.target.style.borderColor = "var(--neutral-medium-light)";
+                          e.target.style.borderColor =
+                            "var(--neutral-medium-light)";
                           e.target.style.boxShadow = "none";
                         }}
                         value={searchQuery}
@@ -563,12 +617,14 @@ export default function ResumeBuilderPage() {
                           color: "var(--neutral-darker)",
                         }}
                         onMouseEnter={(e) => {
-                          e.target.style.backgroundColor = "var(--neutral-lightest)";
+                          e.target.style.backgroundColor =
+                            "var(--neutral-lightest)";
                           e.target.style.borderColor = "var(--brand-primary)";
                         }}
                         onMouseLeave={(e) => {
                           e.target.style.backgroundColor = "#FFFFFF";
-                          e.target.style.borderColor = "var(--neutral-medium-light)";
+                          e.target.style.borderColor =
+                            "var(--neutral-medium-light)";
                         }}
                       >
                         <svg
@@ -644,7 +700,10 @@ export default function ResumeBuilderPage() {
                     >
                       No resumes found
                     </h3>
-                    <p className="mb-4" style={{ color: "var(--neutral-medium-dark)" }}>
+                    <p
+                      className="mb-4"
+                      style={{ color: "var(--neutral-medium-dark)" }}
+                    >
                       Try adjusting your search or filter criteria
                     </p>
                     <button
@@ -652,7 +711,9 @@ export default function ResumeBuilderPage() {
                       className="font-medium transition-all duration-200"
                       style={{ color: "var(--brand-primary)" }}
                       onMouseEnter={(e) => (e.target.style.color = "#0355BE")}
-                      onMouseLeave={(e) => (e.target.style.color = "var(--brand-primary)")}
+                      onMouseLeave={(e) =>
+                        (e.target.style.color = "var(--brand-primary)")
+                      }
                     >
                       Clear search
                     </button>
@@ -852,7 +913,10 @@ export default function ResumeBuilderPage() {
                         🚧 Coming Soon
                       </span>
                     </div>
-                    <p className="mt-1" style={{ color: "var(--neutral-medium-dark)" }}>
+                    <p
+                      className="mt-1"
+                      style={{ color: "var(--neutral-medium-dark)" }}
+                    >
                       Import your LinkedIn profile to automatically generate a
                       professional resume
                     </p>
@@ -863,7 +927,8 @@ export default function ResumeBuilderPage() {
                   <div
                     className="rounded-xl border p-8 text-center"
                     style={{
-                      background: "linear-gradient(135deg, var(--brand-secondary-lightest), #E9F1FF)",
+                      background:
+                        "linear-gradient(135deg, var(--brand-secondary-lightest), #E9F1FF)",
                       borderColor: "#D5E4FF",
                     }}
                   >
@@ -885,11 +950,17 @@ export default function ResumeBuilderPage() {
                       <button
                         disabled
                         className="px-6 py-3 rounded-lg cursor-not-allowed font-medium"
-                        style={{ backgroundColor: "#C4C9D6", color: "var(--neutral-medium-dark)" }}
+                        style={{
+                          backgroundColor: "#C4C9D6",
+                          color: "var(--neutral-medium-dark)",
+                        }}
                       >
                         Connect LinkedIn Profile
                       </button>
-                      <span className="text-sm" style={{ color: "var(--neutral-medium-dark)" }}>
+                      <span
+                        className="text-sm"
+                        style={{ color: "var(--neutral-medium-dark)" }}
+                      >
                         Expected: Q2 2024
                       </span>
                     </div>

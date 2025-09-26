@@ -38,7 +38,6 @@ import {
   ChevronRight,
   Camera,
   Upload,
-  Loader2,
 } from "lucide-react";
 import { TextSelectionMenu } from "@/components/TextSelectionMenu";
 
@@ -53,7 +52,6 @@ export default function EnhancedResume() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
-  const [isGenerating, setIsGenerating] = useState(false);
 
   const isFromUpload = searchParams.get("from") === "upload";
   const isFromAI = searchParams.get("from") === "ai";
@@ -271,16 +269,6 @@ export default function EnhancedResume() {
   const handleDownload = () => {
     // Download logic would go here
     console.log("Downloading resume...");
-  };
-
-  const handleGenerate = async () => {
-    setIsGenerating(true);
-
-    // Simulate loading time (you can adjust this or remove it if not needed)
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    // Navigate to resume complete page
-    router.push("/resume-complete");
   };
 
   const handleAddToSection = (sectionName) => {
@@ -2226,43 +2214,6 @@ export default function EnhancedResume() {
     <div className="min-h-screen bg-gray-50">
       <TextSelectionMenu onEnhance={handleEnhanceText} />
 
-      {/* Full-screen Loading Overlay */}
-      {isGenerating && (
-        <div className="fixed inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 z-50 flex items-center justify-center">
-          <div className="bg-white rounded-lg p-12 shadow-2xl text-center max-w-lg mx-4 border border-blue-200">
-            <div className="mb-6">
-              <div className="w-20 h-20 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="40"
-                  height="40"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-green-600"
-                >
-                  <path d="M9 12l2 2 4-4" />
-                  <path d="M21 12c.552 0 1-.448 1-1s-.448-1-1-1-1 .448-1 1 .448 1 1 1" />
-                  <path d="M3 12c.552 0 1-.448 1-1s-.448-1-1-1-1 .448-1 1 .448 1 1 1" />
-                  <path d="M12 21c.552 0 1-.448 1-1s-.448-1-1-1-1 .448-1 1 .448 1 1 1" />
-                  <path d="M12 3c.552 0 1-.448 1-1s-.448-1-1-1-1 .448-1 1 .448 1 1 1" />
-                </svg>
-              </div>
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-3">
-              Your resume looks great!
-            </h2>
-            <p className="text-xl text-blue-600 font-semibold mb-6">
-              Now let's secure the bag! 💰
-            </p>
-            <Loader2 className="h-8 w-8 animate-spin text-blue-600 mx-auto" />
-          </div>
-        </div>
-      )}
-
       {/* Top Navigation Bar */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -2308,15 +2259,14 @@ export default function EnhancedResume() {
                 <span className="hidden sm:inline">Download</span>
               </Button>
               <Button
-                onClick={handleGenerate}
-                disabled={isGenerating}
-                className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white gap-1 lg:gap-2 text-xs lg:text-sm"
+                onClick={() => {
+                  router.push("/job-search");
+                }}
+                className="bg-blue-600 hover:bg-blue-700 text-white gap-1 lg:gap-2 text-xs lg:text-sm"
                 size="sm"
               >
-        
-                <span className="hidden sm:inline">
-                  {isGenerating ? "Finishing..." : "Finish"}
-                </span>
+                <Download className="h-3 w-3 lg:h-4 lg:w-4" />
+                <span className="hidden sm:inline">Generate</span>
               </Button>
             </div>
           </div>

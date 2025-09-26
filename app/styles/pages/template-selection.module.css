@@ -11,7 +11,7 @@
 }
 
 .header {
-  @apply text-center space-y-8 animate-fade-in;
+  @apply text-center space-y-8;
 }
 
 .iconContainer {
@@ -34,7 +34,7 @@
 }
 
 .templatesGrid {
-  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 animate-fade-in;
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10;
 }
 
 .templateCard {
@@ -119,7 +119,7 @@
 }
 
 .selectedOverlay {
-  @apply absolute inset-0 rounded-t-2xl animate-fade-in;
+  @apply absolute inset-0 rounded-t-2xl;
   background: linear-gradient(to br, rgba(35, 112, 255, 0.1), rgba(116, 162, 255, 0.15));
 }
 
@@ -184,7 +184,7 @@
 }
 
 .selectedIndicator {
-  @apply absolute top-4 left-4 animate-fade-in;
+  @apply absolute top-4 left-4;
 }
 
 .selectedIndicatorIcon {
@@ -193,7 +193,7 @@
 }
 
 .navigation {
-  @apply flex flex-col sm:flex-row justify-between items-center gap-6 pt-12 animate-fade-in;
+  @apply flex flex-col sm:flex-row justify-between items-center gap-6 pt-12;
 }
 
 .backButton {
