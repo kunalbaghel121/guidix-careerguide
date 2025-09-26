@@ -212,10 +212,11 @@ const EnhancedJobCard = ({
                     <span className="mx-1">/</span>
                     <span>{job.companyType}</span>
                   </div>
-                  <a href={job.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 transition-colors" title="View LinkedIn Profile">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  <a href={job.linkedinUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 bg-blue-600 text-white px-2 py-1 rounded-md hover:bg-blue-700 transition-colors shadow-sm" title="View LinkedIn Profile">
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.222 0h.003z"/>
                     </svg>
+                    <span className="text-[10px] font-medium">LinkedIn</span>
                   </a>
                 </div>
                 <p className="text-gray-600 text-[11px] mb-2 line-clamp-2">{job.companyDescription}</p>
@@ -295,10 +296,11 @@ const EnhancedJobCard = ({
                 <div className="flex items-center gap-3 mb-3">
                   <img src={job.companyLogo} alt={`${job.company} logo`} className="w-8 h-8 rounded object-cover" />
                   <div className="text-gray-600 font-semibold">{job.company}</div>
-                  <a href={job.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 transition-colors" title="View LinkedIn Profile">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <a href={job.linkedinUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 bg-blue-600 text-white px-2 py-1 rounded-md hover:bg-blue-700 transition-colors shadow-sm" title="View LinkedIn Profile">
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.222 0h.003z"/>
                     </svg>
+                    <span className="text-[10px] font-medium">LinkedIn</span>
                   </a>
                 </div>
                 <p className="text-gray-600 text-[11px] mb-2 line-clamp-2">{job.companyDescription}</p>
@@ -337,23 +339,49 @@ const EnhancedJobCard = ({
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              {[
-                { label: "Skills Match", value: job.skillsMatch, color: "green", desc: job.matchDetails.skills },
-                { label: "Experience Match", value: job.experienceMatch, color: "blue", desc: job.matchDetails.experience },
-                { label: "Salary Match", value: job.salaryMatch, color: "purple", desc: job.matchDetails.salary },
-                { label: "Location match", value: job.learningOpportunities, color: "orange", desc: job.matchDetails.growth }
-              ].map(({ label, value, color, desc }) => (
-                <div key={label} className="bg-gray-50 rounded-xl p-3">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-medium text-gray-600">{label}</span>
-                    <span className={`text-xs font-bold text-${color}-600`}>{value}%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-1">
-                    <div className={`h-1 rounded-full bg-${color}-500`} style={{ width: `${value}%` }} />
-                  </div>
-                  <p className="text-[11px] text-gray-600 mt-1">{desc}</p>
+              <div className="bg-gray-50 rounded-xl p-3">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-medium text-gray-600">Skills Match</span>
+                  <span className="text-xs font-bold text-green-600">{job.skillsMatch}%</span>
                 </div>
-              ))}
+                <div className="w-full bg-gray-200 rounded-full h-1">
+                  <div className="h-1 rounded-full bg-green-500" style={{ width: `${job.skillsMatch}%` }} />
+                </div>
+                <p className="text-[11px] text-gray-600 mt-1">{job.matchDetails.skills}</p>
+              </div>
+
+              <div className="bg-gray-50 rounded-xl p-3">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-medium text-gray-600">Experience Match</span>
+                  <span className="text-xs font-bold text-blue-600">{job.experienceMatch}%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-1">
+                  <div className="h-1 rounded-full bg-blue-500" style={{ width: `${job.experienceMatch}%` }} />
+                </div>
+                <p className="text-[11px] text-gray-600 mt-1">{job.matchDetails.experience}</p>
+              </div>
+
+              <div className="bg-gray-50 rounded-xl p-3">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-medium text-gray-600">Salary Match</span>
+                  <span className="text-xs font-bold text-purple-600">{job.salaryMatch}%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-1">
+                  <div className="h-1 rounded-full bg-purple-500" style={{ width: `${job.salaryMatch}%` }} />
+                </div>
+                <p className="text-[11px] text-gray-600 mt-1">{job.matchDetails.salary}</p>
+              </div>
+
+              <div className="bg-gray-50 rounded-xl p-3">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-medium text-gray-600">Location match</span>
+                  <span className="text-xs font-bold text-orange-600">{job.learningOpportunities}%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-1">
+                  <div className="h-1 rounded-full bg-orange-500" style={{ width: `${job.learningOpportunities}%` }} />
+                </div>
+                <p className="text-[11px] text-gray-600 mt-1">{job.matchDetails.growth}</p>
+              </div>
             </div>
 
             {/* Company Insights */}
