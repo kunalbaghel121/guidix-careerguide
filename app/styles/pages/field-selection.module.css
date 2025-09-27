@@ -11,7 +11,7 @@
 }
 
 .header {
-  @apply rounded-2xl text-white p-8 animate-fade-in;
+  @apply rounded-2xl text-white p-8 animate-pulse;
   background: linear-gradient(135deg, #2370FF, #2B49C2);
 }
 
@@ -37,7 +37,7 @@
 }
 
 .fieldSelection {
-  @apply bg-white rounded-2xl shadow-sm border border-gray-300 p-8 animate-fade-in;
+  @apply bg-white rounded-2xl shadow-sm border border-gray-300 p-8 animate-pulse;
 }
 
 .fieldHeader {
@@ -109,7 +109,7 @@
 }
 
 .checkmark {
-  @apply absolute top-4 right-4 animate-fade-in;
+  @apply absolute top-4 right-4 animate-pulse;
 }
 
 .checkmarkIcon {

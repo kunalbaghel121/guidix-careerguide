@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Upload, FileText, CheckCircle, X, Zap, Sparkles } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 
-export default function UploadResumePage() {
+function UploadResumePageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const fileInputRef = useRef(null);
@@ -123,7 +123,7 @@ export default function UploadResumePage() {
             Drop Your Resume Here! 📄
           </h1>
           <p className="text-lg text-gray-600">
-            Let's give your resume the glow-up it deserves ✨
+            Let&apos;s give your resume the glow-up it deserves ✨
           </p>
         </div>
 
@@ -281,5 +281,13 @@ export default function UploadResumePage() {
       `}</style>
       </div>
     </DashboardLayout>
+  );
+}
+
+export default function UploadResumePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <UploadResumePageContent />
+    </Suspense>
   );
 }

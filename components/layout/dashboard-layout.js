@@ -360,7 +360,7 @@ export function DashboardLayout({ children }) {
                 <Link
                   href={item.href}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center px-3 py-2.5 rounded-lg transition-all duration-200 group ${
+                  className={`flex items-center px-3 py-2.5 rounded-lg transition-all duration-200 ${
                     isActive(item.href)
                       ? "bg-linear-to-bl from-[#679CFF] to-[#2370FF] text-white"
                       : "text-gray-700 hover:bg-white hover:text-gray-900"

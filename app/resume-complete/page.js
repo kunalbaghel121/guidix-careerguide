@@ -26,16 +26,16 @@ export default function ResumeCompletePage() {
 
         {/* Subtitle */}
         <p className="text-xl md:text-2xl text-gray-600 mb-16 font-medium">
-          Now let's find some jobs for you
+          Now let&apos;s find some jobs for you
         </p>
 
         {/* Next Button */}
         <button
           onClick={handleNext}
-          className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95"
+          className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95"
         >
           <span>Next</span>
-          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+          <ArrowRight className="w-5 h-5 transition-transform duration-200" />
         </button>
       </div>
     </div>

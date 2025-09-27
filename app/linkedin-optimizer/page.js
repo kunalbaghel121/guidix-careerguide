@@ -73,9 +73,9 @@ export default function LinkedInOptimizerPage() {
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Optimization Tools</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {profileSections.map((section, index) => (
-              <button key={index} className="p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 text-left group">
+              <button key={index} className="p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 text-left">
                 <div className="text-2xl mb-3">{section.icon}</div>
-                <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-blue-700">{section.title}</h3>
+                <h3 className="font-semibold text-gray-900 mb-2 hover:text-blue-700">{section.title}</h3>
                 <p className="text-sm text-gray-600">{section.description}</p>
               </button>
             ))}

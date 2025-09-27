@@ -76,7 +76,7 @@ export default function Home() {
           <div className={styles.ctaCard}>
             <h3 className={styles.ctaTitle}>🎉 Ready to Build Your Perfect Resume?</h3>
             <p className={styles.ctaDescription}>
-              Join thousands who've landed their dream jobs with our AI-powered platform
+              Join thousands who&apos;ve landed their dream jobs with our AI-powered platform
             </p>
             <div className={styles.ctaButtons}>
               <Button

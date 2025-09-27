@@ -25,11 +25,11 @@
 }
 
 .templateCard {
-  @apply group bg-white/95 backdrop-blur-md border-2 border-gray-100/80 hover:border-primary/40 rounded-3xl shadow-soft hover:shadow-glow-soft transition-all duration-500 overflow-hidden;
+  @apply bg-white/95 backdrop-blur-md border-2 border-gray-100/80 hover:border-primary/40 rounded-3xl shadow-soft hover:shadow-glow-soft transition-all duration-500 overflow-hidden;
 }
 
 .templatePreview {
-  @apply relative aspect-[3/4] bg-gradient-to-br from-secondary-100/60 via-secondary-200/40 to-secondary-300/60 rounded-t-2xl overflow-hidden group-hover:bg-gradient-to-br group-hover:from-secondary-200/80 group-hover:via-secondary-300/60 group-hover:to-secondary-400/80 transition-all duration-500;
+  @apply relative aspect-[3/4] bg-gradient-to-br from-secondary-100/60 via-secondary-200/40 to-secondary-300/60 rounded-t-2xl overflow-hidden hover:bg-gradient-to-br hover:from-secondary-200/80 hover:via-secondary-300/60 hover:to-secondary-400/80 transition-all duration-500;
 }
 
 .popularBadge {
@@ -37,11 +37,11 @@
 }
 
 .previewContent {
-  @apply absolute inset-0 flex items-center justify-center group-hover:scale-110 transition-all duration-500;
+  @apply absolute inset-0 flex items-center justify-center hover:scale-110 transition-all duration-500;
 }
 
 .previewIcon {
-  @apply w-20 h-20 bg-gradient-gen-z rounded-2xl mx-auto shadow-glow group-hover:shadow-glow-strong transition-all duration-300 animate-bounce-gentle;
+  @apply w-20 h-20 bg-gradient-gen-z rounded-2xl mx-auto shadow-glow hover:shadow-glow-strong transition-all duration-300 animate-bounce-gentle;
 }
 
 .previewLine1 {
@@ -53,7 +53,7 @@
 }
 
 .previewOverlay {
-  @apply absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary-400/15 to-primary/10 rounded-t-2xl animate-fade-in;
+  @apply absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary-400/15 to-primary/10 rounded-t-2xl animate-pulse;
 }
 
 .templateInfo {
@@ -93,7 +93,7 @@
 }
 
 .footer {
-  @apply flex flex-col sm:flex-row justify-between items-center gap-6 pt-12 animate-fade-in;
+  @apply flex flex-col sm:flex-row justify-between items-center gap-6 pt-12 animate-pulse;
 }
 
 .footerLeft {
@@ -129,7 +129,7 @@
   animation: slideUp 0.6s ease-out;
 }
 
-.animate-fade-in {
+.animate-pulse {
   animation: fadeIn 0.8s ease-out;
 }
 

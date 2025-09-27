@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import {
@@ -45,7 +45,7 @@ const yearOptions = [
   { id: "fourth", title: "4th Year", icon: GraduationCap }
 ];
 
-export default function AIGeneratorPage() {
+function AIGeneratorPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -320,5 +320,13 @@ export default function AIGeneratorPage() {
         </div>
       </div>
     </DashboardLayout>
+  );
+}
+
+export default function AIGeneratorPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AIGeneratorPageContent />
+    </Suspense>
   );
 }

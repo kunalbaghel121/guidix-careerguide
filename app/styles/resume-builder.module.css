@@ -14,7 +14,7 @@
 /* Header Sections */
 .headerSection {
   background: linear-gradient(135deg, #2370FF, #2B49C2);
-  @apply rounded-2xl text-white p-8 animate-fade-in;
+  @apply rounded-2xl text-white p-8 animate-pulse;
 }
 
 .headerContent {
@@ -248,7 +248,7 @@
 }
 
 .loadingContent {
-  @apply max-w-2xl space-y-12 animate-fade-in;
+  @apply max-w-2xl space-y-12 animate-pulse;
 }
 
 .loadingIcon {

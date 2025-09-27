@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
@@ -12,7 +12,7 @@ import {
   Zap,
 } from "lucide-react";
 
-export default function EducationLevelPage() {
+function EducationLevelPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedYear, setSelectedYear] = useState("first");
@@ -89,7 +89,7 @@ export default function EducationLevelPage() {
                   className="text-base lg:text-lg font-semibold leading-relaxed max-w-2xl mx-auto"
                   style={{ color: "var(--neutral-medium-dark)" }}
                 >
-                  Tell us where you're at so we can craft a resume that{" "}
+                  Tell us where you&apos;re at so we can craft a resume that{" "}
                   <span style={{ color: "var(--brand-primary)" }} className="font-black bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                     hits different
                   </span>
@@ -111,7 +111,7 @@ export default function EducationLevelPage() {
                     onClick={() => setSelectedYear(year.id)}
                     onMouseEnter={() => setHoveredYear(year.id)}
                     onMouseLeave={() => setHoveredYear(null)}
-                    className="group cursor-pointer"
+                    className="cursor-pointer"
                   >
                     <div
                       className={`bg-gradient-to-br rounded-2xl border-2 transition-all duration-300 p-6 text-center hover:shadow-2xl hover:scale-105 hover:-translate-y-1 relative ${
@@ -141,8 +141,8 @@ export default function EducationLevelPage() {
                       )}
 
                       <div
-                        className={`w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 ${
-                          isSelected ? "text-white" : ""
+                        className={`w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4 transition-transform duration-300 ${
+                          isSelected ? "text-white" : "text-gray-600"
                         }`}
                         style={{
                           background: isSelected
@@ -185,14 +185,14 @@ export default function EducationLevelPage() {
                 href="/resume-builder/ai-generator"
                 onMouseEnter={() => setHoveredButton('back')}
                 onMouseLeave={() => setHoveredButton(null)}
-                className="px-8 py-4 rounded-xl font-medium border-2 transition-all duration-300 flex items-center gap-3 text-sm group hover:shadow-lg hover:-translate-y-0.5"
+                className="px-8 py-4 rounded-xl font-medium border-2 transition-all duration-300 flex items-center gap-3 text-sm hover:shadow-lg hover:-translate-y-0.5"
                 style={{
                   backgroundColor: hoveredButton === 'back' ? "var(--brand-secondary-lightest)" : "var(--neutral-lightest)",
                   borderColor: hoveredButton === 'back' ? "var(--brand-primary)" : "var(--neutral-medium-light)",
                   color: hoveredButton === 'back' ? "var(--brand-primary)" : "var(--neutral-medium-dark)",
                 }}
               >
-                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
+                <ArrowLeft className="w-4 h-4 transition-transform duration-300" />
                 <span>Back to Vibe Selection</span>
               </Link>
 
@@ -210,7 +210,7 @@ export default function EducationLevelPage() {
                     : "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
                 }}
               >
-                Let's Build This Resume
+                Let&apos;s Build This Resume
                 <Sparkles className="w-5 h-5 animate-bounce" />
               </button>
             </div>
@@ -218,5 +218,13 @@ export default function EducationLevelPage() {
         </div>
       </div>
     </DashboardLayout>
+  );
+}
+
+export default function EducationLevelPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <EducationLevelPageContent />
+    </Suspense>
   );
 }

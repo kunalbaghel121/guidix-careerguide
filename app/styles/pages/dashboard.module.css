@@ -7,7 +7,7 @@
 }
 
 .header {
-  @apply text-center space-y-8 animate-fade-in;
+  @apply text-center space-y-8 animate-pulse;
 }
 
 .iconContainer {
@@ -25,7 +25,7 @@
 }
 
 .featuresGrid {
-  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 animate-fade-in;
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 animate-pulse;
 }
 
 .featureCard {
@@ -51,7 +51,7 @@
 }
 
 .featureTitle {
-  @apply text-2xl font-bold text-gray-700 group-hover:text-blue-700 transition-colors;
+  @apply text-2xl font-bold text-gray-700 hover:text-blue-700 transition-colors;
 }
 
 .featureDescription {

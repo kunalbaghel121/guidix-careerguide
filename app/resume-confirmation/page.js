@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import {
@@ -114,7 +114,7 @@ const getSmartDefaults = () => ({
   fields: ["cse"] // Changed to array for multi-select
 });
 
-export default function ResumeConfirmationPage() {
+function ResumeConfirmationPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -241,8 +241,8 @@ export default function ResumeConfirmationPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
 
               {/* Career Path - Enhanced */}
-              <div className="group">
-                <div className="backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
+              <div className="mb-6">
+                <div className="backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                      style={{
                        background: "linear-gradient(135deg, var(--brand-secondary-light), var(--brand-secondary))",
                        border: `1px solid var(--brand-secondary-medium)`
@@ -254,7 +254,7 @@ export default function ResumeConfirmationPage() {
                     </div>
                     <div>
                       <h3 className="font-bold text-gray-900 mb-1">Career Goal</h3>
-                      <p className="text-xs text-gray-600">What you're targeting</p>
+                      <p className="text-xs text-gray-600">What you&apos;re targeting</p>
                     </div>
                   </div>
                   <div className="relative">
@@ -279,8 +279,8 @@ export default function ResumeConfirmationPage() {
               </div>
 
               {/* Education Level - Enhanced */}
-              <div className="group">
-                <div className="backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
+              <div className="mb-6">
+                <div className="backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                      style={{
                        background: "linear-gradient(135deg, var(--brand-secondary-light), var(--brand-secondary))",
                        border: `1px solid var(--brand-secondary-medium)`
@@ -316,8 +316,8 @@ export default function ResumeConfirmationPage() {
               </div>
 
               {/* Fields Counter - Enhanced */}
-              <div className="group">
-                <div className="backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
+              <div className="mb-6">
+                <div className="backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                      style={{
                        background: "linear-gradient(135deg, var(--brand-secondary-light), var(--brand-secondary))",
                        border: `1px solid var(--brand-secondary-medium)`
@@ -373,7 +373,7 @@ export default function ResumeConfirmationPage() {
                       return (
                         <div
                           key={fieldId}
-                          className="group inline-flex items-center gap-3 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-xl shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105"
+                          className="inline-flex items-center gap-3 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-xl shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105"
                           style={{ border: `1px solid var(--brand-secondary-medium)` }}
                         >
                           <div className="w-6 h-6 rounded-lg flex items-center justify-center shadow-sm" style={{ background: "linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark))" }}>
@@ -382,7 +382,7 @@ export default function ResumeConfirmationPage() {
                           <span className="font-semibold text-gray-800 text-sm">{field.name}</span>
                           <button
                             onClick={() => handleFieldRemove(fieldId)}
-                            className="w-5 h-5 rounded-full bg-red-100 hover:bg-red-200 flex items-center justify-center transition-all group-hover:scale-110 ml-1"
+                            className="w-5 h-5 rounded-full bg-red-100 hover:bg-red-200 flex items-center justify-center transition-all ml-1"
                           >
                             <X className="w-2.5 h-2.5 text-red-600" />
                           </button>
@@ -409,10 +409,10 @@ export default function ResumeConfirmationPage() {
                     type="button"
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                     disabled={selections.fields.length >= 3}
-                    className={`group w-full h-full min-h-[120px] flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed transition-all duration-300 ${
+                    className={`w-full h-full min-h-[120px] flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed transition-all duration-300 ${
                       selections.fields.length >= 3
                         ? 'bg-gray-50 border-gray-300 text-gray-400 cursor-not-allowed'
-                        : 'bg-white/80 backdrop-blur-sm hover:scale-[1.02] shadow-sm hover:shadow-md'
+                        : 'bg-white/80 backdrop-blur-sm hover:scale-105 shadow-sm hover:shadow-md'
                     }`}
                     style={{
                       borderColor: selections.fields.length >= 3 ? '#d1d5db' : 'var(--brand-secondary-medium)',
@@ -422,7 +422,7 @@ export default function ResumeConfirmationPage() {
                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
                       selections.fields.length >= 3
                         ? 'bg-gray-200'
-                        : 'group-hover:scale-110'
+                        : 'hover:scale-110'
                     }`}
                     style={{
                       background: selections.fields.length >= 3 ? '#e5e7eb' : 'var(--brand-secondary)'
@@ -478,7 +478,7 @@ export default function ResumeConfirmationPage() {
                           key={fieldId}
                           onClick={() => handleFieldAdd(fieldId)}
                           disabled={isDisabled}
-                          className={`group flex items-center gap-3 px-4 py-3 text-left rounded-xl transition-all duration-200 ${
+                          className={`flex items-center gap-3 px-4 py-3 text-left rounded-xl transition-all duration-200 ${
                             isDisabled
                               ? 'opacity-40 cursor-not-allowed bg-gray-50'
                               : 'hover:shadow-md border border-transparent'
@@ -502,7 +502,7 @@ export default function ResumeConfirmationPage() {
                           <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                             isDisabled
                               ? 'bg-gray-200 text-gray-400'
-                              : 'group-hover:scale-110 transition-all'
+                              : 'transition-all'
                           }`}
                           style={{
                             background: isDisabled ? '#e5e7eb' : 'var(--brand-secondary)',
@@ -516,7 +516,7 @@ export default function ResumeConfirmationPage() {
                             {field.name}
                           </span>
                           {!isDisabled && (
-                            <Plus className="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: "var(--brand-primary)" }} />
+                            <Plus className="w-4 h-4 ml-auto opacity-0 transition-opacity" style={{ color: "var(--brand-primary)" }} />
                           )}
                         </button>
                       );
@@ -530,13 +530,13 @@ export default function ResumeConfirmationPage() {
             <div className="mt-8 text-center">
               <button
                 onClick={handleProceed}
-                className="group inline-flex items-center gap-4 px-10 py-4 text-xl font-bold text-white rounded-2xl shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105 active:scale-95 relative overflow-hidden"
+                className="inline-flex items-center gap-4 px-10 py-4 text-xl font-bold text-white rounded-2xl shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105 active:scale-95 relative overflow-hidden"
                 style={{ background: "linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 50%, var(--brand-primary-darker) 100%)" }}
               >
-                <div className="absolute inset-0 rounded-2xl bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <Sparkles className="w-6 h-6 group-hover:animate-pulse relative z-10" />
+                <div className="absolute inset-0 rounded-2xl bg-white/10 opacity-0 transition-opacity duration-300"></div>
+                <Sparkles className="w-6 h-6 relative z-10" />
                 <span className="relative z-10">Build My Perfect Resume</span>
-                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-200 relative z-10" />
+                <ArrowRight className="w-6 h-6 transition-transform duration-200 relative z-10" />
               </button>
 
               <div className="flex items-center justify-center gap-2 mt-4 text-sm text-gray-600">
@@ -548,5 +548,13 @@ export default function ResumeConfirmationPage() {
         </div>
       </div>
     </DashboardLayout>
+  );
+}
+
+export default function ResumeConfirmationPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResumeConfirmationPageContent />
+    </Suspense>
   );
 }

@@ -56,4 +56,4 @@ export default function EnhancedResume() {
 
   const isFromUpload = searchParams.get("from") === "upload";
   const isFromAI = searchParams.get("from") === "ai";
-  const selectedTemplate = searchParams.get("template") || "saanvi-patel-1";
+  const selectedTemplate = searchParams.get("template") ?? "saanvi-patel-1";

@@ -11,7 +11,7 @@
 }
 
 .header {
-  @apply rounded-2xl text-white p-8 animate-fade-in;
+  @apply rounded-2xl text-white p-8 animate-pulse;
   background: linear-gradient(135deg, #2370FF, #2B49C2);
 }
 
@@ -37,7 +37,7 @@
 }
 
 .optionsSection {
-  @apply bg-white rounded-2xl shadow-sm border border-gray-300 p-8 animate-fade-in;
+  @apply bg-white rounded-2xl shadow-sm border border-gray-300 p-8 animate-pulse;
 }
 
 .optionsHeader {

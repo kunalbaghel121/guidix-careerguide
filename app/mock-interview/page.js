@@ -79,10 +79,10 @@ export default function MockInterviewPage() {
             {interviewTypes.map((interview, index) => (
               <button
                 key={index}
-                className="p-4 border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-all duration-200 text-left group"
+                className="p-4 border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-all duration-200 text-left"
               >
                 <div className="text-2xl mb-3">{interview.icon}</div>
-                <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-orange-700">
+                <h3 className="font-semibold text-gray-900 mb-2 hover:text-orange-700">
                   {interview.type}
                 </h3>
                 <p className="text-sm text-gray-600 mb-2">

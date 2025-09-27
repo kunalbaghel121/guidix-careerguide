@@ -11,7 +11,7 @@
 }
 
 .header {
-  @apply rounded-2xl text-white p-8 animate-fade-in;
+  @apply rounded-2xl text-white p-8 animate-pulse;
   background: linear-gradient(135deg, #2370FF, #2B49C2);
 }
 
@@ -38,7 +38,7 @@
 }
 
 .educationSelection {
-  @apply bg-white rounded-2xl shadow-sm p-8 animate-fade-in;
+  @apply bg-white rounded-2xl shadow-sm p-8 animate-pulse;
   border: 1px solid #E1E4EB;
 }
 
@@ -106,7 +106,7 @@
 }
 
 .checkmark {
-  @apply absolute top-4 right-4 animate-fade-in;
+  @apply absolute top-4 right-4 animate-pulse;
 }
 
 .checkmarkIcon {

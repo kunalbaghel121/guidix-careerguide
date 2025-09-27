@@ -11,7 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   Download,
@@ -42,7 +42,14 @@ import {
 } from "lucide-react";
 import { TextSelectionMenu } from "@/components/TextSelectionMenu";
 
-export default function EnhancedResume() {
+// Custom styles for editable fields
+const customStyles = `
+  .editable-field:hover .edit-icon {
+    opacity: 1 !important;
+  }
+`;
+
+function EnhancedResumeContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(null);
@@ -540,13 +547,13 @@ export default function EnhancedResume() {
 
     return (
       <span
-        className={`cursor-pointer hover:bg-blue-50 hover:border hover:border-blue-300 hover:shadow-md px-2 py-1 rounded-md transition-all duration-200 inline-flex items-center gap-2 group relative min-h-[24px] ${className}`}
+        className={`cursor-pointer hover:bg-blue-50 hover:border hover:border-blue-300 hover:shadow-md px-2 py-1 rounded-md transition-all duration-200 inline-flex items-center gap-2 editable-field relative min-h-[24px] ${className}`}
         onClick={() => handleEditField(field, value)}
         title="Click to edit"
       >
         <span className="flex-1">{value || placeholder}</span>
-        <Edit3 className="h-3 w-3 opacity-0 group-hover:opacity-70 transition-opacity text-blue-600 flex-shrink-0" />
-        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">
+        <Edit3 className="h-3 w-3 opacity-0 transition-opacity text-blue-600 flex-shrink-0 edit-icon" />
+        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1 rounded-md opacity-0 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">
           Click to edit
           <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
         </div>
@@ -607,7 +614,7 @@ export default function EnhancedResume() {
         {localAchievements.map((achievement, index) => (
           <div
             key={index}
-            className="flex items-start gap-2 group bg-gray-50 hover:bg-gray-100 p-2 rounded-md transition-colors"
+            className="flex items-start gap-2 bg-gray-50 hover:bg-gray-100 p-2 rounded-md transition-colors"
           >
             <span className="text-xs mt-1 text-gray-600 font-bold">•</span>
             <div className="flex-1">
@@ -622,7 +629,7 @@ export default function EnhancedResume() {
             </div>
             <button
               onClick={() => removeAchievement(index)}
-              className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded transition-all"
+              className="opacity-0 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded transition-all"
               title="Remove achievement"
             >
               <X className="h-3 w-3" />
@@ -1429,7 +1436,7 @@ export default function EnhancedResume() {
                   {templateData.skills.slice(0, 8).map((skill, index) => (
                     <div
                       key={index}
-                      className="break-words flex items-center gap-1 group"
+                      className="break-words flex items-center gap-1"
                     >
                       •{" "}
                       <EditableText
@@ -1455,7 +1462,7 @@ export default function EnhancedResume() {
                             skills: newSkills,
                           }));
                         }}
-                        className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300"
+                        className="opacity-0 text-red-400 hover:text-red-300"
                       >
                         <X className="h-2 w-2" />
                       </button>
@@ -1534,7 +1541,7 @@ export default function EnhancedResume() {
                   {templateData.experience.map((exp, index) => (
                     <div
                       key={exp.id || index}
-                      className="group bg-white p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors"
+                      className="bg-white p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors"
                     >
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex-1 space-y-1">
@@ -1593,7 +1600,7 @@ export default function EnhancedResume() {
                           onClick={() =>
                             handleRemoveFromSection("experience", exp.id)
                           }
-                          className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded ml-2 transition-all"
+                          className="opacity-0 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded ml-2 transition-all"
                           title="Remove experience"
                         >
                           <X className="h-3 w-3" />
@@ -1627,7 +1634,7 @@ export default function EnhancedResume() {
                   ).map((edu, index) => (
                     <div
                       key={edu.id || index}
-                      className="group bg-white p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors"
+                      className="bg-white p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1 space-y-1">
@@ -1694,7 +1701,7 @@ export default function EnhancedResume() {
                               onClick={() =>
                                 handleRemoveFromSection("education", edu.id)
                               }
-                              className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded ml-2 transition-all"
+                              className="opacity-0 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded ml-2 transition-all"
                               title="Remove education"
                             >
                               <X className="h-3 w-3" />
@@ -2256,12 +2263,15 @@ export default function EnhancedResume() {
               Your resume looks great!
             </h2>
             <p className="text-xl text-blue-600 font-semibold mb-6">
-              Now let's secure the bag! 💰
+              Now let&apos;s secure the bag! 💰
             </p>
             <Loader2 className="h-8 w-8 animate-spin text-blue-600 mx-auto" />
           </div>
         </div>
       )}
+
+      {/* Custom styles */}
+      <style dangerouslySetInnerHTML={{ __html: customStyles }} />
 
       {/* Top Navigation Bar */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -2512,7 +2522,7 @@ export default function EnhancedResume() {
                   AI Improvements Applied
                 </CardTitle>
                 <CardDescription>
-                  Here's what we enhanced in your resume
+                  Here&apos;s what we enhanced in your resume
                 </CardDescription>
               </CardHeader>
 
@@ -2606,8 +2616,14 @@ export default function EnhancedResume() {
 
 // Resume Section Component
 const ResumeSection = ({ title, icon, isCompleted, onClick, onAdd }) => {
+  const [isHovered, setIsHovered] = React.useState(false);
+
   return (
-    <div className="group">
+    <div
+      className="mb-6"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div
         onClick={onClick}
         className="flex items-center gap-2 sm:gap-3 p-3 md:p-2 lg:p-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 cursor-pointer transition-all duration-200"
@@ -2645,7 +2661,9 @@ const ResumeSection = ({ title, icon, isCompleted, onClick, onAdd }) => {
             e.stopPropagation();
             onAdd();
           }}
-          className="w-full mt-1 flex items-center justify-center gap-1 p-2 md:p-1 text-xs text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors opacity-0 group-hover:opacity-100"
+          className={`w-full mt-1 flex items-center justify-center gap-1 p-2 md:p-1 text-xs text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-all duration-200 ${
+            isHovered ? 'opacity-100' : 'opacity-0'
+          }`}
         >
           <Plus className="h-3 w-3" />
           <span className="hidden sm:inline">
@@ -2664,3 +2682,11 @@ const ResumeSection = ({ title, icon, isCompleted, onClick, onAdd }) => {
     </div>
   );
 };
+
+export default function EnhancedResume() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <EnhancedResumeContent />
+    </Suspense>
+  );
+}

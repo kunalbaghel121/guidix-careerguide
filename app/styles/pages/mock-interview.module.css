@@ -7,11 +7,11 @@
 }
 
 .mainContent {
-  @apply max-w-8xl mx-auto space-y-12 py-8 lg:py-16;
+  @apply max-w-7xl mx-auto space-y-12 py-8 lg:py-16;
 }
 
 .header {
-  @apply text-center space-y-8 animate-fade-in;
+  @apply text-center space-y-8 animate-pulse;
 }
 
 .iconContainer {
@@ -29,7 +29,7 @@
 }
 
 .interviewSection {
-  @apply bg-white rounded-2xl shadow-sm border-2 p-8 animate-fade-in;
+  @apply bg-white rounded-2xl shadow-sm border-2 p-8 animate-pulse;
   border-color: #D5E4FF;
 }
 

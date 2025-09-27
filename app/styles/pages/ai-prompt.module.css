@@ -7,7 +7,7 @@
 }
 
 .mainContent {
-  @apply w-full max-w-5xl space-y-10 animate-fade-in;
+  @apply w-full max-w-5xl space-y-10 animate-pulse;
 }
 
 .header {
@@ -29,7 +29,7 @@
 }
 
 .promptCard {
-  @apply bg-white rounded-2xl shadow-sm border-2 p-8 animate-fade-in;
+  @apply bg-white rounded-2xl shadow-sm border-2 p-8 animate-pulse;
   border-color: #D5E4FF;
 }
 
@@ -116,7 +116,7 @@
 }
 
 .samplesCard {
-  @apply bg-white rounded-2xl shadow-sm border border-gray-300 p-8 animate-fade-in;
+  @apply bg-white rounded-2xl shadow-sm border border-gray-300 p-8 animate-pulse;
 }
 
 .samplesHeader {
@@ -162,7 +162,7 @@
 }
 
 .samplePromptTitle {
-  @apply font-bold text-xl text-gray-700 group-hover:text-blue-700 transition-colors;
+  @apply font-bold text-xl text-gray-700 hover:text-blue-700 transition-colors;
 }
 
 .samplePromptText {
@@ -170,7 +170,7 @@
 }
 
 .navigation {
-  @apply flex justify-between items-center pt-8 animate-fade-in;
+  @apply flex justify-between items-center pt-8 animate-pulse;
 }
 
 .backButton {
@@ -191,7 +191,7 @@
 }
 
 .footer {
-  @apply text-center rounded-3xl p-8 border shadow-sm animate-fade-in;
+  @apply text-center rounded-3xl p-8 border shadow-sm animate-pulse;
   background-color: #F4F8FF;
   border-color: #D5E4FF;
 }

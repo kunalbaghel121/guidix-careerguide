@@ -48,7 +48,7 @@ function ResumeCard({ resume, onEdit, onDelete, onDuplicate }) {
 
   return (
     <div
-      className="bg-white rounded-xl border shadow-sm hover:shadow-md transition-all duration-200 group"
+      className="bg-white rounded-xl border shadow-sm hover:shadow-md transition-all duration-200"
       style={{ borderColor: "var(--neutral-medium-light)" }}
       onMouseEnter={(e) =>
         (e.currentTarget.style.borderColor = "var(--brand-primary)")
@@ -126,7 +126,7 @@ function ResumeCard({ resume, onEdit, onDelete, onDuplicate }) {
           <div className="relative">
             <button
               onClick={() => setShowDropdown(!showDropdown)}
-              className="p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 ml-2"
+              className="p-1.5 rounded-lg opacity-0 transition-all duration-200 ml-2"
               style={{
                 "&:hover": { backgroundColor: "var(--neutral-lightest)" },
               }}
@@ -377,7 +377,7 @@ export default function ResumeBuilderPage() {
     }
 
     return filtered;
-  }, [searchQuery, filterType]);
+  }, [searchQuery, filterType, resumesData]);
 
   const hasResumes = resumesData.length > 0;
 
@@ -943,7 +943,7 @@ export default function ResumeBuilderPage() {
                       className="mb-6 max-w-md mx-auto"
                       style={{ color: "var(--neutral-medium-dark)" }}
                     >
-                      We're working on seamless LinkedIn integration to make
+                      We&apos;re working on seamless LinkedIn integration to make
                       resume creation even faster. Stay tuned!
                     </p>
                     <div className="flex flex-col lg:flex-row items-center justify-center gap-3">

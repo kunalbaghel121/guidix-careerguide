@@ -11,7 +11,7 @@
 }
 
 .loadingAnimation {
-  @apply text-center space-y-10 animate-fade-in;
+  @apply text-center space-y-10 animate-pulse;
 }
 
 .iconContainer {
@@ -58,7 +58,7 @@
 }
 
 .stepsProgress {
-  @apply bg-white rounded-2xl border-2 shadow-sm animate-fade-in;
+  @apply bg-white rounded-2xl border-2 shadow-sm animate-pulse;
   border-color: #D5E4FF;
 }
 
@@ -121,7 +121,7 @@
 }
 
 .stepCompletedIndicator {
-  @apply animate-fade-in;
+  @apply animate-pulse;
 }
 
 .stepCompletedIcon {
@@ -130,7 +130,7 @@
 }
 
 .encouragement {
-  @apply text-center animate-fade-in rounded-3xl p-8 border-2 shadow-sm;
+  @apply text-center animate-pulse rounded-3xl p-8 border-2 shadow-sm;
   background-color: #F4F8FF;
   border-color: #D5E4FF;
 }

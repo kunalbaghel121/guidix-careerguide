@@ -44,7 +44,7 @@ export default function DashboardPage() {
                 Welcome back!
               </h1>
               <p className={styles.dashboardSubtitle}>
-                Here's what's happening with your job search today
+                Here&apos;s what&apos;s happening with your job search today
               </p>
             </div>
             <div className={styles.dashboardIcon}>📊</div>

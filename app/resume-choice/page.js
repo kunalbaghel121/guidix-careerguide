@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 
-export default function ResumeChoicePage() {
+function ResumeChoicePageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedOption, setSelectedOption] = useState(null);
@@ -364,5 +364,13 @@ export default function ResumeChoicePage() {
       `}</style>
       </div>
     </DashboardLayout>
+  );
+}
+
+export default function ResumeChoicePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResumeChoicePageContent />
+    </Suspense>
   );
 }

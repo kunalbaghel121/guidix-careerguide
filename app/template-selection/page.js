@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowRight,
@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 
-export default function TemplateSelection() {
+function TemplateSelectionContent() {
   const [selectedTemplate, setSelectedTemplate] = useState("saanvi-patel-1");
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -227,7 +227,7 @@ export default function TemplateSelection() {
             transform: translateY(0);
           }
         }
-        .animate-fade-in {
+        .animate-pulse {
           animation: fadeIn 0.6s ease-out;
         }
         .hover\\:scale-105:hover {
@@ -436,12 +436,12 @@ export default function TemplateSelection() {
 
             {/* Templates Grid */}
             <div className="flex-1">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 lg:gap-8 animate-fade-in">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 lg:gap-8 animate-pulse">
                 {filteredTemplates.map((template, index) => (
                   <div
                     key={template.id}
                     onClick={() => handleTemplateSelect(template.id)}
-                    className={`bg-white rounded-2xl shadow-sm border-2 cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 relative group ${
+                    className={`bg-white rounded-2xl shadow-sm border-2 cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 relative ${
                       selectedTemplate === template.id
                         ? "shadow-xl border-4 -translate-y-1"
                         : "hover:shadow-md"
@@ -745,7 +745,7 @@ export default function TemplateSelection() {
                                   analytics tools
                                 </div>
                                 <div>
-                                  • Valid driver's license and own
+                                  • Valid driver&apos;s license and own
                                   transportation
                                 </div>
                               </div>
@@ -1324,7 +1324,7 @@ export default function TemplateSelection() {
                                     Partners LLC (2017)
                                   </div>
                                   <div>
-                                    🏆 Dean's List - Columbia Business School
+                                    🏆 Dean&apos;s List - Columbia Business School
                                     (2017, 2018)
                                   </div>
                                 </div>
@@ -1425,8 +1425,8 @@ export default function TemplateSelection() {
                                     Laude
                                   </div>
                                   <div className="text-gray-500">
-                                    Thesis: "Market Efficiency in Emerging
-                                    Economies"
+                                    Thesis: &quot;Market Efficiency in Emerging
+                                    Economies&quot;
                                   </div>
                                 </div>
                               </div>
@@ -1495,7 +1495,7 @@ export default function TemplateSelection() {
                               </div>
                               <div className="text-[5px] text-gray-600 space-y-0.5">
                                 <div>
-                                  • Dean's List: Fall 2017, Spring 2018, Fall
+                                  • Dean&apos;s List: Fall 2017, Spring 2018, Fall
                                   2019, Spring 2020
                                 </div>
                                 <div>
@@ -1524,7 +1524,7 @@ export default function TemplateSelection() {
                               <div className="text-[4px] text-gray-600 space-y-1">
                                 <div>
                                   <div className="font-semibold text-gray-800">
-                                    "Behavioral Economics in Emerging Markets"
+                                    &quot;Behavioral Economics in Emerging Markets&quot;
                                   </div>
                                   <div className="text-gray-600">
                                     Harvard Economics Review • Published Spring
@@ -1537,8 +1537,8 @@ export default function TemplateSelection() {
                                 </div>
                                 <div>
                                   <div className="font-semibold text-gray-800">
-                                    "Impact of Digital Banking on Financial
-                                    Inclusion"
+                                    &quot;Impact of Digital Banking on Financial
+                                    Inclusion&quot;
                                   </div>
                                   <div className="text-gray-600">
                                     Undergraduate Research Symposium • Presented
@@ -1890,15 +1890,15 @@ export default function TemplateSelection() {
                                 </div>
                                 <div className="text-[3.5px] text-gray-600 space-y-0.5">
                                   <div>
-                                    • "Digital Transformation in Corporate
-                                    Finance" - Harvard Business Review (2023)
+                                    • &quot;Digital Transformation in Corporate
+                                    Finance&quot; - Harvard Business Review (2023)
                                   </div>
                                   <div>
                                     • Keynote Speaker - Global CFO Summit,
                                     London (2023)
                                   </div>
                                   <div>
-                                    • "ESG Integration in Financial Strategy" -
+                                    • &quot;ESG Integration in Financial Strategy&quot; -
                                     McKinsey Quarterly (2022)
                                   </div>
                                   <div>
@@ -1906,7 +1906,7 @@ export default function TemplateSelection() {
                                     (2022)
                                   </div>
                                   <div>
-                                    • "The Future of Capital Markets" - Journal
+                                    • &quot;The Future of Capital Markets&quot; - Journal
                                     of Corporate Finance (2021)
                                   </div>
                                 </div>
@@ -1927,7 +1927,7 @@ export default function TemplateSelection() {
                                     Directors (NACD) - Active Member
                                   </div>
                                   <div>
-                                    • Young Presidents' Organization (YPO) -
+                                    • Young Presidents&apos; Organization (YPO) -
                                     Finance Chair, NYC Chapter
                                   </div>
                                   <div>
@@ -2234,7 +2234,7 @@ export default function TemplateSelection() {
                     {/* Template Name */}
                     <div className="p-4 md:p-6">
                       <h3
-                        className="font-bold text-lg md:text-xl mb-2 group-hover:text-blue-700 transition-colors"
+                        className="font-bold text-lg md:text-xl mb-2 transition-colors"
                         style={{ color: "var(--brand-primary)" }}
                       >
                         {template.name}
@@ -2294,5 +2294,13 @@ export default function TemplateSelection() {
         </div>
       </div>
     </DashboardLayout>
+  );
+}
+
+export default function TemplateSelection() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <TemplateSelectionContent />
+    </Suspense>
   );
 }

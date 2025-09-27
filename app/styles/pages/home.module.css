@@ -11,7 +11,7 @@
 }
 
 .header {
-  @apply text-center space-y-8 animate-fade-in;
+  @apply text-center space-y-8 animate-pulse;
 }
 
 .iconContainer {
@@ -29,7 +29,7 @@
 }
 
 .ctaSection {
-  @apply text-center animate-fade-in;
+  @apply text-center animate-pulse;
 }
 
 .ctaCard {
