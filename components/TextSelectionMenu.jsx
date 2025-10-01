@@ -23,7 +23,7 @@ export function TextSelectionMenu({ onEnhance }) {
         setSelectedText(text);
         setPosition({
           x: rect.left + rect.width / 2,
-          y: rect.top - 60
+          y: rect.top - 60,
         });
         setIsVisible(true);
       } else {
@@ -35,12 +35,12 @@ export function TextSelectionMenu({ onEnhance }) {
       setIsVisible(false);
     };
 
-    document.addEventListener('mouseup', handleSelection);
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener("mouseup", handleSelection);
+    document.addEventListener("click", handleClickOutside);
 
     return () => {
-      document.removeEventListener('mouseup', handleSelection);
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("mouseup", handleSelection);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
@@ -57,7 +57,7 @@ export function TextSelectionMenu({ onEnhance }) {
       style={{
         left: position.x,
         top: position.y,
-        transform: 'translateX(-50%)'
+        transform: "translateX(-50%)",
       }}
     >
       <Button

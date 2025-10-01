@@ -5,6 +5,7 @@ import Link from "next/link";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { EditResumeDialog } from "@/components/EditResumeDialog";
 import styles from "@/app/styles/pages/resume-builder.module.css";
+import { Trophy } from "lucide-react";
 
 // Initial resume data
 const initialResumesData = [
@@ -424,14 +425,20 @@ export default function ResumeBuilderPage() {
     <DashboardLayout>
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header Section */}
-        <div className="bg-gradient-to-r from-[#679CFF] to-[#2370FF] rounded-xl shadow-sm text-white p-6 lg:p-8">
+        <div className="border border-[#A8BEFF] bg-gradient-to-r from-[#F0F4FF] via-[#F0F4FF] to-[#D1DDFF] rounded-xl shadow-sm text-black p-8 ">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between">
             <div>
-              <h1 className="text-2xl lg:text-3xl font-bold mb-2">
+              {/* <span className=" text-xs rounded-xl px-2 py-1 bg-[#1F57FF] text-white">
+                <Trophy className=" d-inli "/>
+                Resume Enhancer
+              </span> */}
+              <h1 className="text-4xl lg:text-3xl font-md my-2">
                 AI Job Apply
               </h1>
-              <p className="text-pink-100 text-sm lg:text-base">
-                Automate your job applications with intelligent targeting
+              <p className="text-[#767D93] text-sm font-extralight lg:text-base leading-loose">
+                Automate your job applications with intelligent targeting — our
+                resume builder crafts personalized resumes that match the
+                specific role you’re applying to.
               </p>
             </div>
             <div className="mt-4 lg:mt-0 text-4xl lg:text-6xl">📤</div>
@@ -449,17 +456,13 @@ export default function ResumeBuilderPage() {
                 className="py-3 px-3 lg:px-4 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200"
                 style={{
                   backgroundColor:
-                    activeTab === "ai-prompt"
-                      ? "var(--brand-secondary-lightest)"
-                      : "transparent",
+                    activeTab === "ai-prompt" ? "#D1DDFF" : "transparent",
                   color:
                     activeTab === "ai-prompt"
-                      ? "var(--brand-primary)"
+                      ? "#003CF0"
                       : "var(--neutral-medium-dark)",
                   border:
-                    activeTab === "ai-prompt"
-                      ? "1px solid var(--brand-primary)"
-                      : "none",
+                    activeTab === "ai-prompt" ? "1px solid #003CF0" : "none",
                   boxShadow:
                     activeTab === "ai-prompt"
                       ? "0 1px 3px rgba(35, 112, 255, 0.1)"
@@ -486,17 +489,12 @@ export default function ResumeBuilderPage() {
                 className="py-3 px-3 lg:px-4 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200"
                 style={{
                   backgroundColor:
-                    activeTab === "all"
-                      ? "var(--brand-secondary-lightest)"
-                      : "transparent",
+                    activeTab === "all" ? "#D1DDFF" : "transparent",
                   color:
                     activeTab === "all"
-                      ? "var(--brand-primary)"
+                      ? "#003CF0"
                       : "var(--neutral-medium-dark)",
-                  border:
-                    activeTab === "all"
-                      ? "1px solid var(--brand-primary)"
-                      : "none",
+                  border: activeTab === "all" ? "1px solid #003CF0" : "none",
                   boxShadow:
                     activeTab === "all"
                       ? "0 1px 3px rgba(35, 112, 255, 0.1)"
@@ -523,17 +521,13 @@ export default function ResumeBuilderPage() {
                 className="py-3 px-3 lg:px-4 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200"
                 style={{
                   backgroundColor:
-                    activeTab === "linkedin"
-                      ? "var(--brand-secondary-lightest)"
-                      : "transparent",
+                    activeTab === "linkedin" ? "#D1DDFF" : "transparent",
                   color:
                     activeTab === "linkedin"
-                      ? "var(--brand-primary)"
+                      ? "#003CF0"
                       : "var(--neutral-medium-dark)",
                   border:
-                    activeTab === "linkedin"
-                      ? "1px solid var(--brand-primary)"
-                      : "none",
+                    activeTab === "linkedin" ? "1px solid #003CF0" : "none",
                   boxShadow:
                     activeTab === "linkedin"
                       ? "0 1px 3px rgba(35, 112, 255, 0.1)"
@@ -830,7 +824,7 @@ export default function ResumeBuilderPage() {
                   </div>
 
                   {/* Quick Stats */}
-                  <div className="grid grid-cols-3 gap-6 mb-8">
+                  <div className="grid lg:grid-cols-3 gap-6 mb-8">
                     <div
                       className="bg-white rounded-xl p-6 text-center shadow-sm border-2 transition-all duration-300 hover:shadow-md"
                       style={{ borderColor: "#D5E4FF" }}
@@ -943,8 +937,8 @@ export default function ResumeBuilderPage() {
                       className="mb-6 max-w-md mx-auto"
                       style={{ color: "var(--neutral-medium-dark)" }}
                     >
-                      We&apos;re working on seamless LinkedIn integration to make
-                      resume creation even faster. Stay tuned!
+                      We&apos;re working on seamless LinkedIn integration to
+                      make resume creation even faster. Stay tuned!
                     </p>
                     <div className="flex flex-col lg:flex-row items-center justify-center gap-3">
                       <button
