@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     color: '#000000',
     lineHeight: 1.5,
   },
+  
 });
 
 const InternshipTemplate1WithPhoto = ({ resumeData }) => {
