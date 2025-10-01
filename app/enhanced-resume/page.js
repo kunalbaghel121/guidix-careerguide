@@ -11,7 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   Download,
@@ -41,8 +41,29 @@ import {
   Loader2,
 } from "lucide-react";
 import { TextSelectionMenu } from "@/components/TextSelectionMenu";
+import { allTemplates, getTemplateById } from "@/components/pdf-templates";
+import dynamic from 'next/dynamic';
+import { pdf } from '@react-pdf/renderer';
+import * as Templates from '@/components/pdf-templates';
 
-export default function EnhancedResume() {
+// Dynamically import PDFPreview to avoid SSR issues
+const PDFPreview = dynamic(() => import('@/components/PDFPreview'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full bg-gray-100 rounded flex items-center justify-center">
+      <div className="text-gray-500">Loading preview...</div>
+    </div>
+  ),
+});
+
+// Custom styles for editable fields
+const customStyles = `
+  .editable-field:hover .edit-icon {
+    opacity: 1 !important;
+  }
+`;
+
+function EnhancedResumeContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(null);
@@ -57,7 +78,10 @@ export default function EnhancedResume() {
 
   const isFromUpload = searchParams.get("from") === "upload";
   const isFromAI = searchParams.get("from") === "ai";
-  const selectedTemplate = searchParams.get("template") || "saanvi-patel-1";
+  const selectedTemplate = searchParams.get("template") || "internship-1-with-photo";
+
+  // Get template metadata
+  const currentTemplate = getTemplateById(selectedTemplate);
 
   useEffect(() => {
     // Check if mobile
@@ -170,6 +194,7 @@ export default function EnhancedResume() {
       email: "claude.ai@anthropic.com",
       phone: "+1 (555) 123-CLAUDE",
       location: "Delhi, India",
+      photo: null,
       summary:
         "**Highly skilled Senior Software Engineer** with **5+ years of experience** developing scalable web applications using **React, Node.js, and cloud technologies**. Proven track record of leading cross-functional teams and delivering high-quality software solutions that drive business growth.",
     },
@@ -229,6 +254,20 @@ export default function EnhancedResume() {
       { id: 1, name: "English", level: "Fluent" },
       { id: 2, name: "Spanish", level: "Conversational" },
     ],
+    projects: [
+      {
+        id: 1,
+        name: "E-Commerce Platform",
+        description: "Built a full-stack e-commerce platform with React and Node.js serving 50,000+ users",
+        technologies: ["React", "Node.js", "MongoDB", "AWS"],
+      },
+      {
+        id: 2,
+        name: "Real-time Chat Application",
+        description: "Developed a real-time messaging app using WebSockets and Redis for instant communication",
+        technologies: ["Socket.io", "Redis", "Express", "React"],
+      },
+    ],
   });
 
   const aiImprovements = [
@@ -268,9 +307,141 @@ export default function EnhancedResume() {
     // Save logic would go here
   };
 
-  const handleDownload = () => {
-    // Download logic would go here
-    console.log("Downloading resume...");
+  const handlePhotoUpload = (event) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Check file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Photo size should be less than 5MB');
+        return;
+      }
+
+      // Check file type
+      if (!file.type.startsWith('image/')) {
+        alert('Please upload an image file');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        setProfilePhoto(base64String);
+        setResumeData((prev) => ({
+          ...prev,
+          personalInfo: {
+            ...prev.personalInfo,
+            photo: base64String,
+          },
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemovePhoto = () => {
+    setProfilePhoto(null);
+    setResumeData((prev) => ({
+      ...prev,
+      personalInfo: {
+        ...prev.personalInfo,
+        photo: null,
+      },
+    }));
+  };
+
+  const handleDownload = async () => {
+    try {
+      setIsGenerating(true);
+
+      // Map template ID to component name
+      const componentMap = {
+        'internship-1-with-photo': 'InternshipTemplate1WithPhoto',
+        'internship-2-with-photo': 'InternshipTemplate2WithPhoto',
+        'internship-3-with-photo': 'InternshipTemplate3WithPhoto',
+        'internship-1-without-photo': 'InternshipTemplate1WithoutPhoto',
+        'internship-2-without-photo': 'InternshipTemplate2WithoutPhoto',
+        'internship-3-without-photo': 'InternshipTemplate3WithoutPhoto',
+        'job-1-with-photo': 'JobTemplate1WithPhoto',
+        'job-2-with-photo': 'JobTemplate2WithPhoto',
+        'job-3-with-photo': 'JobTemplate3WithPhoto',
+        'job-1-without-photo': 'JobTemplate1WithoutPhoto',
+        'job-2-without-photo': 'JobTemplate2WithoutPhoto',
+        'job-3-without-photo': 'JobTemplate3WithoutPhoto',
+      };
+
+      const componentName = componentMap[selectedTemplate];
+      if (!componentName) {
+        throw new Error(`Template ${selectedTemplate} not found`);
+      }
+
+      const TemplateComponent = Templates[componentName];
+      if (!TemplateComponent) {
+        throw new Error(`Component ${componentName} not found`);
+      }
+
+      // Transform resume data to match template expectations
+      const nameParts = (resumeData.personalInfo?.name || '').split(' ');
+      const transformedData = {
+        personalInfo: {
+          ...resumeData.personalInfo,
+          firstName: nameParts[0] || 'John',
+          lastName: nameParts.slice(1).join(' ') || nameParts[0] || 'Doe',
+          email: resumeData.personalInfo?.email || '',
+          phone: resumeData.personalInfo?.phone || '',
+          location: resumeData.personalInfo?.location || '',
+          linkedin: resumeData.personalInfo?.linkedin || '',
+          website: resumeData.personalInfo?.website || '',
+          photo: resumeData.personalInfo?.photo || '',
+        },
+        summary: resumeData.personalInfo?.summary || resumeData.summary || '',
+        experience: (resumeData.experience || []).map(exp => ({
+          position: exp.position || 'Position',
+          company: exp.company || 'Company',
+          location: exp.location || resumeData.personalInfo?.location || '',
+          startDate: exp.duration ? exp.duration.split(' - ')[0] : (exp.startDate || 'Start'),
+          endDate: exp.duration ? exp.duration.split(' - ')[1] || 'Present' : (exp.endDate || 'Present'),
+          responsibilities: exp.achievements || exp.responsibilities || [],
+        })),
+        education: (resumeData.education || []).map(edu => ({
+          degree: edu.degree || 'Bachelor of Science',
+          fieldOfStudy: edu.fieldOfStudy || (edu.degree ? edu.degree.replace(/Bachelor of Science in |Bachelor of /gi, '') : 'Computer Science'),
+          institution: edu.school || edu.institution || 'University',
+          startDate: edu.startDate || (edu.year ? (parseInt(edu.year) - 4).toString() : '2016'),
+          endDate: edu.endDate || edu.year || '2020',
+          gpa: edu.gpa || '',
+        })),
+        skills: resumeData.skills || [],
+        projects: (resumeData.projects || []).map(proj => ({
+          name: proj.name || 'Project',
+          description: proj.description || '',
+          technologies: proj.technologies || [],
+          startDate: proj.startDate || '',
+          endDate: proj.endDate || '',
+        })),
+        certifications: resumeData.certifications || [],
+        languages: resumeData.languages || [],
+        achievements: resumeData.achievements || [],
+      };
+
+      // Generate PDF
+      const blob = await pdf(<TemplateComponent resumeData={transformedData} />).toBlob();
+
+      // Create download link
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${resumeData.personalInfo.name.replace(/\s+/g, '_')}_Resume.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      setIsGenerating(false);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      setIsGenerating(false);
+      alert('Error generating PDF. Please try again.');
+    }
   };
 
   const handleGenerate = async () => {
@@ -335,6 +506,16 @@ export default function EnhancedResume() {
         case "skills":
           newData.skills.push("New Skill");
           break;
+
+        case "projects":
+          const newProject = {
+            id: Date.now(),
+            name: "New Project",
+            description: "Project description",
+            technologies: ["Technology1", "Technology2"],
+          };
+          newData.projects.push(newProject);
+          break;
       }
 
       return newData;
@@ -363,6 +544,11 @@ export default function EnhancedResume() {
           break;
         case "languages":
           newData.languages = newData.languages.filter(
+            (item) => item.id !== id
+          );
+          break;
+        case "projects":
+          newData.projects = newData.projects.filter(
             (item) => item.id !== id
           );
           break;
@@ -423,17 +609,6 @@ export default function EnhancedResume() {
   const handleCancelEdit = () => {
     setEditingField(null);
     setEditingValue("");
-  };
-
-  const handlePhotoUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setProfilePhoto(e.target.result);
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   const handlePhotoClick = () => {
@@ -540,13 +715,13 @@ export default function EnhancedResume() {
 
     return (
       <span
-        className={`cursor-pointer hover:bg-blue-50 hover:border hover:border-blue-300 hover:shadow-md px-2 py-1 rounded-md transition-all duration-200 inline-flex items-center gap-2 group relative min-h-[24px] ${className}`}
+        className={`cursor-pointer hover:bg-blue-50 hover:border hover:border-blue-300 hover:shadow-md px-2 py-1 rounded-md transition-all duration-200 inline-flex items-center gap-2 editable-field relative min-h-[24px] ${className}`}
         onClick={() => handleEditField(field, value)}
         title="Click to edit"
       >
         <span className="flex-1">{value || placeholder}</span>
-        <Edit3 className="h-3 w-3 opacity-0 group-hover:opacity-70 transition-opacity text-blue-600 flex-shrink-0" />
-        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">
+        <Edit3 className="h-3 w-3 opacity-0 transition-opacity text-blue-600 flex-shrink-0 edit-icon" />
+        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1 rounded-md opacity-0 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">
           Click to edit
           <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
         </div>
@@ -607,7 +782,7 @@ export default function EnhancedResume() {
         {localAchievements.map((achievement, index) => (
           <div
             key={index}
-            className="flex items-start gap-2 group bg-gray-50 hover:bg-gray-100 p-2 rounded-md transition-colors"
+            className="flex items-start gap-2 bg-gray-50 hover:bg-gray-100 p-2 rounded-md transition-colors"
           >
             <span className="text-xs mt-1 text-gray-600 font-bold">•</span>
             <div className="flex-1">
@@ -622,7 +797,7 @@ export default function EnhancedResume() {
             </div>
             <button
               onClick={() => removeAchievement(index)}
-              className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded transition-all"
+              className="opacity-0 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded transition-all"
               title="Remove achievement"
             >
               <X className="h-3 w-3" />
@@ -1284,8 +1459,518 @@ export default function EnhancedResume() {
           </div>
         );
 
+      // Only the professional single-column templates
+      case "internship-1-with-photo":
+      case "job-1-with-photo":
+        return (
+          <div className="h-full bg-white overflow-y-auto" style={{padding: '20px 25px', fontFamily: 'Helvetica, Arial, sans-serif'}}>
+            {/* Header with Photo - EXACT PDF measurements */}
+            <div className="flex mb-5" style={{paddingBottom: '15px', borderBottom: '2px solid #2563eb'}}>
+              <div className="mr-5" style={{width: '80px', height: '80px'}}>
+                <div className="w-full h-full rounded-full overflow-hidden bg-gray-200" style={{width: '80px', height: '80px', borderRadius: '40px'}}>
+                  {profilePhoto ? (
+                    <img src={profilePhoto} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center cursor-pointer" onClick={handlePhotoClick}>
+                      <Camera className="h-6 w-6 text-gray-500" />
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="flex-1">
+                <h1 className="font-bold mb-1" style={{fontSize: '24px', color: '#1f2937', marginBottom: '5px'}}>
+                  <EditableText field="personalInfo.name" value={templateData.name} className="text-gray-800" onSave={(value) => setResumeData(prev => ({...prev, personalInfo: {...prev.personalInfo, name: value}}))} />
+                </h1>
+                <h2 className="font-bold mb-2" style={{fontSize: '14px', color: '#2563eb', marginBottom: '8px'}}>
+                  <EditableText field="personalInfo.title" value={templateData.title} className="text-blue-600" onSave={(value) => setResumeData(prev => ({...prev, personalInfo: {...prev.personalInfo, title: value}}))} />
+                </h2>
+                <div className="flex flex-wrap" style={{fontSize: '10px', color: '#6b7280'}}>
+                  <span style={{marginRight: '15px', marginBottom: '3px'}}>📧 <EditableText field="personalInfo.email" value={templateData.email} className="text-gray-500" onSave={(value) => setResumeData(prev => ({...prev, personalInfo: {...prev.personalInfo, email: value}}))} /></span>
+                  <span style={{marginRight: '15px', marginBottom: '3px'}}>📱 <EditableText field="personalInfo.phone" value={templateData.phone} className="text-gray-500" onSave={(value) => setResumeData(prev => ({...prev, personalInfo: {...prev.personalInfo, phone: value}}))} /></span>
+                  <span style={{marginRight: '15px', marginBottom: '3px'}}>📍 <EditableText field="personalInfo.location" value={templateData.location} className="text-gray-500" onSave={(value) => setResumeData(prev => ({...prev, personalInfo: {...prev.personalInfo, location: value}}))} /></span>
+                </div>
+              </div>
+            </div>
+
+            {/* Professional Summary */}
+            <div style={{marginBottom: '15px'}}>
+              <h3 className="font-bold uppercase" style={{fontSize: '14px', color: '#2563eb', marginBottom: '8px', letterSpacing: '1px'}}>Professional Summary</h3>
+              <div style={{fontSize: '10px', color: '#374151', lineHeight: '1.5'}}>
+                <EditableText field="personalInfo.summary" value={templateData.summary} className="text-gray-700" multiline={true} onSave={(value) => setResumeData(prev => ({...prev, personalInfo: {...prev.personalInfo, summary: value}}))} />
+              </div>
+            </div>
+
+            {/* Experience */}
+            <div style={{marginBottom: '15px'}}>
+              <h3 className="font-bold uppercase" style={{fontSize: '14px', color: '#2563eb', marginBottom: '8px', letterSpacing: '1px'}}>Experience</h3>
+              {templateData.experience.map((exp, index) => (
+                <div key={exp.id || index} style={{marginBottom: '12px'}}>
+                  <h4 className="font-bold" style={{fontSize: '12px', color: '#1f2937', marginBottom: '3px'}}>
+                    <EditableText field={`experience.${index}.position`} value={exp.position} className="text-gray-800" onSave={(value) => {const newExperience = [...templateData.experience]; newExperience[index] = {...newExperience[index], position: value}; setResumeData(prev => ({...prev, experience: newExperience}));}} />
+                  </h4>
+                  <div className="font-bold" style={{fontSize: '10px', color: '#2563eb', marginBottom: '3px'}}>
+                    <EditableText field={`experience.${index}.company`} value={exp.company} className="text-blue-600" onSave={(value) => {const newExperience = [...templateData.experience]; newExperience[index] = {...newExperience[index], company: value}; setResumeData(prev => ({...prev, experience: newExperience}));}} />
+                  </div>
+                  <div style={{fontSize: '9px', color: '#6b7280', marginBottom: '5px'}}>
+                    <EditableText field={`experience.${index}.duration`} value={exp.duration} className="text-gray-500" onSave={(value) => {const newExperience = [...templateData.experience]; newExperience[index] = {...newExperience[index], duration: value}; setResumeData(prev => ({...prev, experience: newExperience}));}} />
+                  </div>
+                  {exp.achievements?.map((achievement, achIndex) => (
+                    <div key={achIndex} style={{fontSize: '10px', color: '#374151', marginBottom: '2px', marginLeft: '10px'}}>
+                      • <EditableText field={`experience.${index}.achievements.${achIndex}`} value={achievement} className="text-gray-700" onSave={(value) => {const newExperience = [...templateData.experience]; const newAchievements = [...newExperience[index].achievements]; newAchievements[achIndex] = value; newExperience[index] = {...newExperience[index], achievements: newAchievements}; setResumeData(prev => ({...prev, experience: newExperience}));}} />
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+
+            {/* Skills */}
+            <div style={{marginBottom: '15px'}}>
+              <h3 className="font-bold uppercase" style={{fontSize: '14px', color: '#2563eb', marginBottom: '8px', letterSpacing: '1px'}}>Skills</h3>
+              <div style={{fontSize: '10px', color: '#374151', lineHeight: '1.5'}}>{templateData.skills.join(" • ")}</div>
+            </div>
+
+            {/* Education */}
+            <div style={{marginBottom: '15px'}}>
+              <h3 className="font-bold uppercase" style={{fontSize: '14px', color: '#2563eb', marginBottom: '8px', letterSpacing: '1px'}}>Education</h3>
+              {templateData.education.map((edu, index) => (
+                <div key={edu.id || index} style={{marginBottom: '10px'}}>
+                  <div className="font-bold" style={{fontSize: '12px', color: '#1f2937', marginBottom: '3px'}}>
+                    <EditableText field={`education.${index}.degree`} value={edu.degree} className="text-gray-800" onSave={(value) => {const newEducation = [...templateData.education]; newEducation[index] = {...newEducation[index], degree: value}; setResumeData(prev => ({...prev, education: newEducation}));}} />
+                  </div>
+                  <div style={{fontSize: '10px', color: '#6b7280'}}>
+                    <EditableText field={`education.${index}.school`} value={edu.school} className="text-gray-500" onSave={(value) => {const newEducation = [...templateData.education]; newEducation[index] = {...newEducation[index], school: value}; setResumeData(prev => ({...prev, education: newEducation}));}} /> • <EditableText field={`education.${index}.year`} value={edu.year} className="text-gray-500" onSave={(value) => {const newEducation = [...templateData.education]; newEducation[index] = {...newEducation[index], year: value}; setResumeData(prev => ({...prev, education: newEducation}));}} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      case "internship-1-without-photo":
+      case "job-1-without-photo":
+        return (
+          <div className="h-full bg-white p-6 text-sm leading-relaxed overflow-y-auto">
+            {/* Header without Photo */}
+            <div className="mb-5 pb-4 border-b-2 border-blue-600">
+              <h1 className="text-2xl font-bold text-gray-800 mb-1">
+                <EditableText field="personalInfo.name" value={templateData.name} className="text-gray-800" onSave={(value) => setResumeData(prev => ({...prev, personalInfo: {...prev.personalInfo, name: value}}))} />
+              </h1>
+              <h2 className="text-sm font-bold text-blue-600 mb-2">
+                <EditableText field="personalInfo.title" value={templateData.title} className="text-blue-600" onSave={(value) => setResumeData(prev => ({...prev, personalInfo: {...prev.personalInfo, title: value}}))} />
+              </h2>
+              <div className="flex flex-wrap gap-4 text-xs text-gray-600">
+                <span>📧 <EditableText field="personalInfo.email" value={templateData.email} className="text-gray-600" onSave={(value) => setResumeData(prev => ({...prev, personalInfo: {...prev.personalInfo, email: value}}))} /></span>
+                <span>📱 <EditableText field="personalInfo.phone" value={templateData.phone} className="text-gray-600" onSave={(value) => setResumeData(prev => ({...prev, personalInfo: {...prev.personalInfo, phone: value}}))} /></span>
+                <span>📍 <EditableText field="personalInfo.location" value={templateData.location} className="text-gray-600" onSave={(value) => setResumeData(prev => ({...prev, personalInfo: {...prev.personalInfo, location: value}}))} /></span>
+              </div>
+            </div>
+
+            {/* Professional Summary */}
+            <div className="mb-4">
+              <h3 className="text-sm font-bold text-blue-600 uppercase tracking-wide mb-2">Professional Summary</h3>
+              <div className="text-xs text-gray-700 leading-relaxed">
+                <EditableText field="personalInfo.summary" value={templateData.summary} className="text-gray-700" multiline={true} onSave={(value) => setResumeData(prev => ({...prev, personalInfo: {...prev.personalInfo, summary: value}}))} />
+              </div>
+            </div>
+
+            {/* Experience */}
+            <div className="mb-4">
+              <h3 className="text-sm font-bold text-blue-600 uppercase tracking-wide mb-2">Experience</h3>
+              {templateData.experience.map((exp, index) => (
+                <div key={index} className="mb-3">
+                  <h4 className="text-xs font-bold text-gray-800 mb-1">
+                    <EditableText field={`experience.${index}.position`} value={exp.position} className="text-gray-800" onSave={(value) => {const newExperience = [...templateData.experience]; newExperience[index] = {...newExperience[index], position: value}; setResumeData(prev => ({...prev, experience: newExperience}));}} />
+                  </h4>
+                  <div className="text-xs font-bold text-blue-600 mb-1">
+                    <EditableText field={`experience.${index}.company`} value={exp.company} className="text-blue-600" onSave={(value) => {const newExperience = [...templateData.experience]; newExperience[index] = {...newExperience[index], company: value}; setResumeData(prev => ({...prev, experience: newExperience}));}} />
+                  </div>
+                  <div className="text-xs text-gray-600 mb-2">
+                    <EditableText field={`experience.${index}.duration`} value={exp.duration} className="text-gray-600" onSave={(value) => {const newExperience = [...templateData.experience]; newExperience[index] = {...newExperience[index], duration: value}; setResumeData(prev => ({...prev, experience: newExperience}));}} />
+                  </div>
+                  {exp.achievements?.map((achievement, achIndex) => (
+                    <div key={achIndex} className="text-xs text-gray-700 ml-2 mb-1">•
+                      <EditableText field={`experience.${index}.achievements.${achIndex}`} value={achievement} className="text-gray-700" onSave={(value) => {const newExperience = [...templateData.experience]; const newAchievements = [...newExperience[index].achievements]; newAchievements[achIndex] = value; newExperience[index] = {...newExperience[index], achievements: newAchievements}; setResumeData(prev => ({...prev, experience: newExperience}));}} />
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+
+            {/* Skills */}
+            <div className="mb-4">
+              <h3 className="text-sm font-bold text-blue-600 uppercase tracking-wide mb-2">Skills</h3>
+              <div className="text-xs text-gray-700">{templateData.skills.join(" • ")}</div>
+            </div>
+
+            {/* Education */}
+            <div className="mb-4">
+              <h3 className="text-sm font-bold text-blue-600 uppercase tracking-wide mb-2">Education</h3>
+              {templateData.education.map((edu, index) => (
+                <div key={index} className="mb-2">
+                  <div className="text-xs font-bold text-gray-800">
+                    <EditableText field={`education.${index}.degree`} value={edu.degree} className="text-gray-800" onSave={(value) => {const newEducation = [...templateData.education]; newEducation[index] = {...newEducation[index], degree: value}; setResumeData(prev => ({...prev, education: newEducation}));}} />
+                  </div>
+                  <div className="text-xs text-gray-700">
+                    <EditableText field={`education.${index}.school`} value={edu.school} className="text-gray-700" onSave={(value) => {const newEducation = [...templateData.education]; newEducation[index] = {...newEducation[index], school: value}; setResumeData(prev => ({...prev, education: newEducation}));}} /> • <EditableText field={`education.${index}.year`} value={edu.year} className="text-gray-700" onSave={(value) => {const newEducation = [...templateData.education]; newEducation[index] = {...newEducation[index], year: value}; setResumeData(prev => ({...prev, education: newEducation}));}} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      case "saanvi-patel-1":
+        return (
+          <div className="h-full flex bg-white p-4 text-sm leading-relaxed overflow-hidden">
+            {/* Left Sidebar - Dark Blue */}
+            <div className="w-1/3 bg-slate-700 text-white p-3 rounded-sm mr-3 overflow-y-auto">
+              <div className="text-center mb-4">
+                <div
+                  className="w-12 h-12 bg-gray-300 rounded-full mx-auto mb-2 border-2 border-white cursor-pointer hover:border-blue-300 transition-colors overflow-hidden"
+                  onClick={handlePhotoClick}
+                  title="Click to upload photo"
+                >
+                  {profilePhoto ? (
+                    <img
+                      src={profilePhoto}
+                      alt="Profile"
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Camera className="h-5 w-5 text-gray-500" />
+                    </div>
+                  )}
+                </div>
+                <div className="font-bold text-white text-base leading-tight break-words">
+                  <EditableText
+                    field="personalInfo.name"
+                    value={templateData.name}
+                    className="text-white"
+                    onSave={(value) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        personalInfo: { ...prev.personalInfo, name: value },
+                      }))
+                    }
+                  />
+                </div>
+                <div className="text-xs text-gray-300 mt-1 font-medium break-words">
+                  <EditableText
+                    field="personalInfo.title"
+                    value={templateData.title}
+                    className="text-gray-300"
+                    onSave={(value) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        personalInfo: { ...prev.personalInfo, title: value },
+                      }))
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">
+                  CONTACT
+                </div>
+                <div className="text-xs text-gray-300 space-y-1">
+                  <div className="break-all flex items-center gap-1">
+                    📧{" "}
+                    <EditableText
+                      field="personalInfo.email"
+                      value={templateData.email}
+                      className="text-gray-300"
+                      onSave={(value) =>
+                        setResumeData((prev) => ({
+                          ...prev,
+                          personalInfo: { ...prev.personalInfo, email: value },
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="break-words flex items-center gap-1">
+                    📱{" "}
+                    <EditableText
+                      field="personalInfo.phone"
+                      value={templateData.phone}
+                      className="text-gray-300"
+                      onSave={(value) =>
+                        setResumeData((prev) => ({
+                          ...prev,
+                          personalInfo: { ...prev.personalInfo, phone: value },
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="break-all">
+                    🌐 linkedin.com/in/{firstName.toLowerCase()}
+                  </div>
+                  <div className="break-words flex items-center gap-1">
+                    📍{" "}
+                    <EditableText
+                      field="personalInfo.location"
+                      value={templateData.location}
+                      className="text-gray-300"
+                      onSave={(value) =>
+                        setResumeData((prev) => ({
+                          ...prev,
+                          personalInfo: {
+                            ...prev.personalInfo,
+                            location: value,
+                          },
+                        }))
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">
+                  SKILLS
+                </div>
+                <div className="text-xs text-gray-300 space-y-1">
+                  {templateData.skills.slice(0, 8).map((skill, index) => (
+                    <div
+                      key={index}
+                      className="break-words flex items-center gap-1"
+                    >
+                      •{" "}
+                      <EditableText
+                        field={`skills.${index}`}
+                        value={skill}
+                        className="text-gray-300 flex-1"
+                        onSave={(value) => {
+                          const newSkills = [...templateData.skills];
+                          newSkills[index] = value;
+                          setResumeData((prev) => ({
+                            ...prev,
+                            skills: newSkills,
+                          }));
+                        }}
+                      />
+                      <button
+                        onClick={() => {
+                          const newSkills = templateData.skills.filter(
+                            (_, i) => i !== index
+                          );
+                          setResumeData((prev) => ({
+                            ...prev,
+                            skills: newSkills,
+                          }));
+                        }}
+                        className="opacity-0 text-red-400 hover:text-red-300"
+                      >
+                        <X className="h-2 w-2" />
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    onClick={() => handleAddToSection("skills")}
+                    className="flex items-center gap-1 text-xs text-blue-300 hover:text-blue-200 hover:bg-blue-800 hover:bg-opacity-20 mt-1 px-2 py-1 rounded transition-colors"
+                  >
+                    <Plus className="h-3 w-3" />
+                    Add skill
+                  </button>
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <div className="text-white font-bold mb-2 text-xs uppercase tracking-wide">
+                  EDUCATION
+                </div>
+                <div className="text-xs text-gray-300 space-y-2">
+                  {templateData.education.map((edu, index) => (
+                    <div key={edu.id || index} className="break-words">
+                      <div className="font-semibold text-gray-200">
+                        <EditableText
+                          field={`education.${index}.degree`}
+                          value={edu.degree}
+                          className="text-gray-200"
+                          onSave={(value) => {
+                            const newEducation = [...templateData.education];
+                            newEducation[index] = {
+                              ...newEducation[index],
+                              degree: value,
+                            };
+                            setResumeData((prev) => ({
+                              ...prev,
+                              education: newEducation,
+                            }));
+                          }}
+                        />
+                      </div>
+                      <div className="text-gray-300">
+                        <EditableText
+                          field={`education.${index}.school`}
+                          value={edu.school}
+                          className="text-gray-300"
+                          onSave={(value) => {
+                            const newEducation = [...templateData.education];
+                            newEducation[index] = {
+                              ...newEducation[index],
+                              school: value,
+                            };
+                            setResumeData((prev) => ({
+                              ...prev,
+                              education: newEducation,
+                            }));
+                          }}
+                        />
+                      </div>
+                      <div className="text-gray-400">
+                        <EditableText
+                          field={`education.${index}.year`}
+                          value={edu.year}
+                          className="text-gray-400"
+                          onSave={(value) => {
+                            const newEducation = [...templateData.education];
+                            newEducation[index] = {
+                              ...newEducation[index],
+                              year: value,
+                            };
+                            setResumeData((prev) => ({
+                              ...prev,
+                              education: newEducation,
+                            }));
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Main Content Area - White */}
+            <div className="flex-1 p-3 overflow-y-auto">
+              <div className="mb-4">
+                <div className="font-bold text-gray-800 mb-2 text-sm uppercase tracking-wide">
+                  PROFESSIONAL SUMMARY
+                </div>
+                <div className="text-xs text-gray-700 leading-relaxed break-words">
+                  <EditableText
+                    field="personalInfo.summary"
+                    value={templateData.summary}
+                    className="text-gray-700"
+                    multiline={true}
+                    onSave={(value) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        personalInfo: { ...prev.personalInfo, summary: value },
+                      }))
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <div className="font-bold text-gray-800 mb-2 text-sm uppercase tracking-wide">
+                  PROFESSIONAL EXPERIENCE
+                </div>
+                <div className="space-y-3">
+                  {templateData.experience.map((exp, index) => (
+                    <div key={exp.id || index} className="break-words">
+                      <div className="flex justify-between items-start mb-1">
+                        <div className="font-semibold text-gray-800 text-sm">
+                          <EditableText
+                            field={`experience.${index}.position`}
+                            value={exp.position}
+                            className="text-gray-800"
+                            onSave={(value) => {
+                              const newExperience = [...templateData.experience];
+                              newExperience[index] = {
+                                ...newExperience[index],
+                                position: value,
+                              };
+                              setResumeData((prev) => ({
+                                ...prev,
+                                experience: newExperience,
+                              }));
+                            }}
+                          />
+                        </div>
+                        <div className="text-xs text-gray-600">
+                          <EditableText
+                            field={`experience.${index}.duration`}
+                            value={exp.duration}
+                            className="text-gray-600"
+                            onSave={(value) => {
+                              const newExperience = [...templateData.experience];
+                              newExperience[index] = {
+                                ...newExperience[index],
+                                duration: value,
+                              };
+                              setResumeData((prev) => ({
+                                ...prev,
+                                experience: newExperience,
+                              }));
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="text-xs text-gray-600 mb-2">
+                        <EditableText
+                          field={`experience.${index}.company`}
+                          value={exp.company}
+                          className="text-gray-600"
+                          onSave={(value) => {
+                            const newExperience = [...templateData.experience];
+                            newExperience[index] = {
+                              ...newExperience[index],
+                              company: value,
+                            };
+                            setResumeData((prev) => ({
+                              ...prev,
+                              experience: newExperience,
+                            }));
+                          }}
+                        />
+                      </div>
+                      <div className="text-xs text-gray-700 space-y-1">
+                        {exp.achievements?.map((achievement, achIndex) => (
+                          <div key={achIndex} className="flex items-start gap-1">
+                            <span className="text-gray-500 mt-0.5">•</span>
+                            <EditableText
+                              field={`experience.${index}.achievements.${achIndex}`}
+                              value={achievement}
+                              className="text-gray-700 flex-1"
+                              onSave={(value) => {
+                                const newExperience = [...templateData.experience];
+                                const newAchievements = [
+                                  ...newExperience[index].achievements,
+                                ];
+                                newAchievements[achIndex] = value;
+                                newExperience[index] = {
+                                  ...newExperience[index],
+                                  achievements: newAchievements,
+                                };
+                                setResumeData((prev) => ({
+                                  ...prev,
+                                  experience: newExperience,
+                                }));
+                              }}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
       default:
-        return renderStaticTemplate(templateData, firstName, lastName);
+        return (
+          <div className="h-full flex items-center justify-center bg-white">
+            <div className="text-center text-gray-500">
+              <p>Template not found</p>
+              <p className="text-sm">Selected template: {selectedTemplate}</p>
+            </div>
+          </div>
+        );
     }
   };
 
@@ -1429,7 +2114,7 @@ export default function EnhancedResume() {
                   {templateData.skills.slice(0, 8).map((skill, index) => (
                     <div
                       key={index}
-                      className="break-words flex items-center gap-1 group"
+                      className="break-words flex items-center gap-1"
                     >
                       •{" "}
                       <EditableText
@@ -1455,7 +2140,7 @@ export default function EnhancedResume() {
                             skills: newSkills,
                           }));
                         }}
-                        className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300"
+                        className="opacity-0 text-red-400 hover:text-red-300"
                       >
                         <X className="h-2 w-2" />
                       </button>
@@ -1534,7 +2219,7 @@ export default function EnhancedResume() {
                   {templateData.experience.map((exp, index) => (
                     <div
                       key={exp.id || index}
-                      className="group bg-white p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors"
+                      className="bg-white p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors"
                     >
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex-1 space-y-1">
@@ -1593,7 +2278,7 @@ export default function EnhancedResume() {
                           onClick={() =>
                             handleRemoveFromSection("experience", exp.id)
                           }
-                          className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded ml-2 transition-all"
+                          className="opacity-0 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded ml-2 transition-all"
                           title="Remove experience"
                         >
                           <X className="h-3 w-3" />
@@ -1627,7 +2312,7 @@ export default function EnhancedResume() {
                   ).map((edu, index) => (
                     <div
                       key={edu.id || index}
-                      className="group bg-white p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors"
+                      className="bg-white p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1 space-y-1">
@@ -1694,7 +2379,7 @@ export default function EnhancedResume() {
                               onClick={() =>
                                 handleRemoveFromSection("education", edu.id)
                               }
-                              className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded ml-2 transition-all"
+                              className="opacity-0 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded ml-2 transition-all"
                               title="Remove education"
                             >
                               <X className="h-3 w-3" />
@@ -2256,12 +2941,15 @@ export default function EnhancedResume() {
               Your resume looks great!
             </h2>
             <p className="text-xl text-blue-600 font-semibold mb-6">
-              Now let's secure the bag! 💰
+              Now let&apos;s secure the bag! 💰
             </p>
             <Loader2 className="h-8 w-8 animate-spin text-blue-600 mx-auto" />
           </div>
         </div>
       )}
+
+      {/* Custom styles */}
+      <style dangerouslySetInnerHTML={{ __html: customStyles }} />
 
       {/* Top Navigation Bar */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -2328,6 +3016,8 @@ export default function EnhancedResume() {
           className={`grid grid-cols-1 ${
             sidebarCollapsed
               ? "lg:grid-cols-1"
+              : isEditing
+              ? "md:grid-cols-3 lg:grid-cols-3"
               : "md:grid-cols-3 lg:grid-cols-3"
           } gap-4 lg:gap-6 transition-all duration-300`}
         >
@@ -2387,6 +3077,13 @@ export default function EnhancedResume() {
                     onClick={() => handleSectionClick("summary")}
                   />
                   <ResumeSection
+                    title="Education"
+                    icon={<FileText className="h-4 w-4" />}
+                    isCompleted={true}
+                    onClick={() => handleSectionClick("education")}
+                    onAdd={() => handleAddToSection("education")}
+                  />
+                  <ResumeSection
                     title="Work Experience"
                     icon={<Zap className="h-4 w-4" />}
                     isCompleted={true}
@@ -2394,18 +3091,18 @@ export default function EnhancedResume() {
                     onAdd={() => handleAddToSection("experience")}
                   />
                   <ResumeSection
+                    title="Projects"
+                    icon={<FileText className="h-4 w-4" />}
+                    isCompleted={true}
+                    onClick={() => handleSectionClick("projects")}
+                    onAdd={() => handleAddToSection("projects")}
+                  />
+                  <ResumeSection
                     title="Skills"
                     icon={<Target className="h-4 w-4" />}
                     isCompleted={true}
                     onClick={() => handleSectionClick("skills")}
                     onAdd={() => handleAddToSection("skills")}
-                  />
-                  <ResumeSection
-                    title="Education"
-                    icon={<FileText className="h-4 w-4" />}
-                    isCompleted={true}
-                    onClick={() => handleSectionClick("education")}
-                    onAdd={() => handleAddToSection("education")}
                   />
                   <ResumeSection
                     title="Certifications"
@@ -2450,6 +3147,8 @@ export default function EnhancedResume() {
             className={`${
               sidebarCollapsed
                 ? "lg:col-span-1"
+                : isEditing
+                ? "col-span-1 md:col-span-1 lg:col-span-1"
                 : "col-span-1 md:col-span-2 lg:col-span-2"
             } order-1 md:order-2 lg:order-2 transition-all duration-300`}
           >
@@ -2460,6 +3159,25 @@ export default function EnhancedResume() {
                     Resume Preview
                   </CardTitle>
                   <div className="flex items-center gap-2">
+                    <Button
+                      variant="default"
+                      size="sm"
+                      className="gap-1 text-xs bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
+                      onClick={handleDownload}
+                      disabled={isGenerating}
+                    >
+                      {isGenerating ? (
+                        <>
+                          <Loader2 className="h-3 w-3 animate-spin" />
+                          Generating...
+                        </>
+                      ) : (
+                        <>
+                          <Download className="h-3 w-3" />
+                          Download PDF
+                        </>
+                      )}
+                    </Button>
                     <Button
                       variant="outline"
                       size="sm"
@@ -2472,11 +3190,17 @@ export default function EnhancedResume() {
                       variant="outline"
                       size="sm"
                       className="gap-1 text-xs"
+                      onClick={handlePrev}
                     >
                       <Settings className="h-3 w-3" />
                       Templates
                     </Button>
                   </div>
+                  {currentTemplate && (
+                    <div className="text-sm text-gray-600 mt-2">
+                      Current template: <span className="font-medium">{currentTemplate.name}</span>
+                    </div>
+                  )}
                 </div>
               </CardHeader>
 
@@ -2493,13 +3217,464 @@ export default function EnhancedResume() {
                     }}
                   >
                     <div className="h-full overflow-y-auto overflow-x-hidden">
-                      {renderTemplate()}
+                      <PDFPreview
+                        key={JSON.stringify(resumeData)}
+                        templateId={selectedTemplate}
+                        width="100%"
+                        height="100%"
+                        data={resumeData}
+                      />
                     </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
           </div>
+
+          {/* Right Sidebar - Edit Panel */}
+          {isEditing && (
+            <div className="col-span-1 order-3 transition-all duration-300">
+              <Card className="bg-white shadow-lg border-2 border-blue-200 sticky top-20">
+                <CardHeader className="pb-3 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
+                        <Edit3 className="h-4 w-4 text-white" />
+                      </div>
+                      <CardTitle className="text-base font-bold text-gray-900">
+                        Edit {isEditing === "personalInfo" ? "Personal Info" :
+                             isEditing === "summary" ? "Summary" :
+                             isEditing.charAt(0).toUpperCase() + isEditing.slice(1)}
+                      </CardTitle>
+                    </div>
+                    <button
+                      onClick={() => setIsEditing(null)}
+                      className="p-1.5 text-gray-500 hover:text-gray-700 hover:bg-white rounded-lg transition-colors"
+                      title="Close"
+                    >
+                      <X className="h-5 w-5" />
+                    </button>
+                  </div>
+                </CardHeader>
+                <CardContent className="max-h-[calc(100vh-180px)] overflow-y-auto p-4">
+                  {isEditing === "personalInfo" && (
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                        <Input
+                          value={resumeData.personalInfo.name}
+                          onChange={(e) => setResumeData(prev => ({
+                            ...prev,
+                            personalInfo: { ...prev.personalInfo, name: e.target.value }
+                          }))}
+                          placeholder="Your Name"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Title/Position</label>
+                        <Input
+                          value={resumeData.personalInfo.title}
+                          onChange={(e) => setResumeData(prev => ({
+                            ...prev,
+                            personalInfo: { ...prev.personalInfo, title: e.target.value }
+                          }))}
+                          placeholder="Software Engineer"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <Input
+                          type="email"
+                          value={resumeData.personalInfo.email}
+                          onChange={(e) => setResumeData(prev => ({
+                            ...prev,
+                            personalInfo: { ...prev.personalInfo, email: e.target.value }
+                          }))}
+                          placeholder="your.email@example.com"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                        <Input
+                          type="tel"
+                          value={resumeData.personalInfo.phone}
+                          onChange={(e) => setResumeData(prev => ({
+                            ...prev,
+                            personalInfo: { ...prev.personalInfo, phone: e.target.value }
+                          }))}
+                          placeholder="+1 (555) 123-4567"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                        <Input
+                          value={resumeData.personalInfo.location}
+                          onChange={(e) => setResumeData(prev => ({
+                            ...prev,
+                            personalInfo: { ...prev.personalInfo, location: e.target.value }
+                          }))}
+                          placeholder="City, Country"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {isEditing === "summary" && (
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Professional Summary</label>
+                        <Textarea
+                          value={resumeData.personalInfo.summary}
+                          onChange={(e) => setResumeData(prev => ({
+                            ...prev,
+                            personalInfo: { ...prev.personalInfo, summary: e.target.value }
+                          }))}
+                          placeholder="Write a brief professional summary..."
+                          rows={6}
+                        />
+                        <p className="text-xs text-gray-500 mt-1">2-3 sentences about your career goals and specialization</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {isEditing === "education" && (
+                    <div className="space-y-4">
+                      {resumeData.education.map((edu, index) => (
+                        <div key={edu.id} className="p-4 border border-gray-200 rounded-lg space-y-3">
+                          <div className="flex justify-between items-start">
+                            <h4 className="font-medium text-sm">Education {index + 1}</h4>
+                            <button
+                              onClick={() => handleRemoveFromSection("education", edu.id)}
+                              className="text-red-600 hover:text-red-800"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                          <Input
+                            value={edu.degree}
+                            onChange={(e) => {
+                              const newEdu = [...resumeData.education];
+                              newEdu[index].degree = e.target.value;
+                              setResumeData(prev => ({ ...prev, education: newEdu }));
+                            }}
+                            placeholder="Degree"
+                          />
+                          <Input
+                            value={edu.school}
+                            onChange={(e) => {
+                              const newEdu = [...resumeData.education];
+                              newEdu[index].school = e.target.value;
+                              setResumeData(prev => ({ ...prev, education: newEdu }));
+                            }}
+                            placeholder="Institution"
+                          />
+                          <Input
+                            value={edu.year}
+                            onChange={(e) => {
+                              const newEdu = [...resumeData.education];
+                              newEdu[index].year = e.target.value;
+                              setResumeData(prev => ({ ...prev, education: newEdu }));
+                            }}
+                            placeholder="Year"
+                          />
+                        </div>
+                      ))}
+                      <Button
+                        onClick={() => handleAddToSection("education")}
+                        variant="outline"
+                        className="w-full"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Education
+                      </Button>
+                    </div>
+                  )}
+
+                  {isEditing === "experience" && (
+                    <div className="space-y-4">
+                      {resumeData.experience.map((exp, index) => (
+                        <div key={exp.id} className="p-4 border border-gray-200 rounded-lg space-y-3">
+                          <div className="flex justify-between items-start">
+                            <h4 className="font-medium text-sm">Experience {index + 1}</h4>
+                            <button
+                              onClick={() => handleRemoveFromSection("experience", exp.id)}
+                              className="text-red-600 hover:text-red-800"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                          <Input
+                            value={exp.company}
+                            onChange={(e) => {
+                              const newExp = [...resumeData.experience];
+                              newExp[index].company = e.target.value;
+                              setResumeData(prev => ({ ...prev, experience: newExp }));
+                            }}
+                            placeholder="Company"
+                          />
+                          <Input
+                            value={exp.position}
+                            onChange={(e) => {
+                              const newExp = [...resumeData.experience];
+                              newExp[index].position = e.target.value;
+                              setResumeData(prev => ({ ...prev, experience: newExp }));
+                            }}
+                            placeholder="Position"
+                          />
+                          <Input
+                            value={exp.duration}
+                            onChange={(e) => {
+                              const newExp = [...resumeData.experience];
+                              newExp[index].duration = e.target.value;
+                              setResumeData(prev => ({ ...prev, experience: newExp }));
+                            }}
+                            placeholder="2020 - Present"
+                          />
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-2">Achievements</label>
+                            {exp.achievements.map((ach, achIndex) => (
+                              <div key={achIndex} className="flex gap-2 mb-2">
+                                <Textarea
+                                  value={ach}
+                                  onChange={(e) => {
+                                    const newExp = [...resumeData.experience];
+                                    newExp[index].achievements[achIndex] = e.target.value;
+                                    setResumeData(prev => ({ ...prev, experience: newExp }));
+                                  }}
+                                  rows={2}
+                                  className="flex-1"
+                                />
+                                <button
+                                  onClick={() => {
+                                    const newExp = [...resumeData.experience];
+                                    newExp[index].achievements.splice(achIndex, 1);
+                                    setResumeData(prev => ({ ...prev, experience: newExp }));
+                                  }}
+                                  className="text-red-600 hover:text-red-800"
+                                >
+                                  <X className="h-4 w-4" />
+                                </button>
+                              </div>
+                            ))}
+                            <Button
+                              onClick={() => {
+                                const newExp = [...resumeData.experience];
+                                newExp[index].achievements.push("New achievement");
+                                setResumeData(prev => ({ ...prev, experience: newExp }));
+                              }}
+                              variant="outline"
+                              size="sm"
+                              className="mt-2"
+                            >
+                              <Plus className="h-3 w-3 mr-1" />
+                              Add Achievement
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                      <Button
+                        onClick={() => handleAddToSection("experience")}
+                        variant="outline"
+                        className="w-full"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Experience
+                      </Button>
+                    </div>
+                  )}
+
+                  {isEditing === "projects" && (
+                    <div className="space-y-4">
+                      {resumeData.projects.map((project, index) => (
+                        <div key={project.id} className="p-4 border border-gray-200 rounded-lg space-y-3">
+                          <div className="flex justify-between items-start">
+                            <h4 className="font-medium text-sm">Project {index + 1}</h4>
+                            <button
+                              onClick={() => handleRemoveFromSection("projects", project.id)}
+                              className="text-red-600 hover:text-red-800"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                          <Input
+                            value={project.name}
+                            onChange={(e) => {
+                              const newProjects = [...resumeData.projects];
+                              newProjects[index].name = e.target.value;
+                              setResumeData(prev => ({ ...prev, projects: newProjects }));
+                            }}
+                            placeholder="Project Name"
+                          />
+                          <Textarea
+                            value={project.description}
+                            onChange={(e) => {
+                              const newProjects = [...resumeData.projects];
+                              newProjects[index].description = e.target.value;
+                              setResumeData(prev => ({ ...prev, projects: newProjects }));
+                            }}
+                            placeholder="Project description"
+                            rows={3}
+                          />
+                          <Input
+                            value={project.technologies.join(", ")}
+                            onChange={(e) => {
+                              const newProjects = [...resumeData.projects];
+                              newProjects[index].technologies = e.target.value.split(",").map(t => t.trim());
+                              setResumeData(prev => ({ ...prev, projects: newProjects }));
+                            }}
+                            placeholder="React, Node.js, MongoDB"
+                          />
+                        </div>
+                      ))}
+                      <Button
+                        onClick={() => handleAddToSection("projects")}
+                        variant="outline"
+                        className="w-full"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Project
+                      </Button>
+                    </div>
+                  )}
+
+                  {isEditing === "skills" && (
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Skills</label>
+                        {resumeData.skills.map((skill, index) => (
+                          <div key={index} className="flex gap-2 mb-2">
+                            <Input
+                              value={skill}
+                              onChange={(e) => {
+                                const newSkills = [...resumeData.skills];
+                                newSkills[index] = e.target.value;
+                                setResumeData(prev => ({ ...prev, skills: newSkills }));
+                              }}
+                              placeholder="Skill"
+                            />
+                            <button
+                              onClick={() => {
+                                const newSkills = resumeData.skills.filter((_, i) => i !== index);
+                                setResumeData(prev => ({ ...prev, skills: newSkills }));
+                              }}
+                              className="text-red-600 hover:text-red-800"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                        ))}
+                        <Button
+                          onClick={() => handleAddToSection("skills")}
+                          variant="outline"
+                          className="w-full mt-2"
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Skill
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {isEditing === "certifications" && (
+                    <div className="space-y-4">
+                      {resumeData.certifications.map((cert, index) => (
+                        <div key={cert.id} className="p-4 border border-gray-200 rounded-lg space-y-3">
+                          <div className="flex justify-between items-start">
+                            <h4 className="font-medium text-sm">Certification {index + 1}</h4>
+                            <button
+                              onClick={() => handleRemoveFromSection("certifications", cert.id)}
+                              className="text-red-600 hover:text-red-800"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                          <Input
+                            value={cert.name}
+                            onChange={(e) => {
+                              const newCerts = [...resumeData.certifications];
+                              newCerts[index].name = e.target.value;
+                              setResumeData(prev => ({ ...prev, certifications: newCerts }));
+                            }}
+                            placeholder="Certification Name"
+                          />
+                          <Input
+                            value={cert.issuer}
+                            onChange={(e) => {
+                              const newCerts = [...resumeData.certifications];
+                              newCerts[index].issuer = e.target.value;
+                              setResumeData(prev => ({ ...prev, certifications: newCerts }));
+                            }}
+                            placeholder="Issuing Organization"
+                          />
+                          <Input
+                            value={cert.year}
+                            onChange={(e) => {
+                              const newCerts = [...resumeData.certifications];
+                              newCerts[index].year = e.target.value;
+                              setResumeData(prev => ({ ...prev, certifications: newCerts }));
+                            }}
+                            placeholder="Year"
+                          />
+                        </div>
+                      ))}
+                      <Button
+                        onClick={() => handleAddToSection("certifications")}
+                        variant="outline"
+                        className="w-full"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Certification
+                      </Button>
+                    </div>
+                  )}
+
+                  {isEditing === "languages" && (
+                    <div className="space-y-4">
+                      {resumeData.languages.map((lang, index) => (
+                        <div key={lang.id} className="p-4 border border-gray-200 rounded-lg space-y-3">
+                          <div className="flex justify-between items-start">
+                            <h4 className="font-medium text-sm">Language {index + 1}</h4>
+                            <button
+                              onClick={() => handleRemoveFromSection("languages", lang.id)}
+                              className="text-red-600 hover:text-red-800"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                          <Input
+                            value={lang.name}
+                            onChange={(e) => {
+                              const newLangs = [...resumeData.languages];
+                              newLangs[index].name = e.target.value;
+                              setResumeData(prev => ({ ...prev, languages: newLangs }));
+                            }}
+                            placeholder="Language"
+                          />
+                          <Input
+                            value={lang.level}
+                            onChange={(e) => {
+                              const newLangs = [...resumeData.languages];
+                              newLangs[index].level = e.target.value;
+                              setResumeData(prev => ({ ...prev, languages: newLangs }));
+                            }}
+                            placeholder="Proficiency Level"
+                          />
+                        </div>
+                      ))}
+                      <Button
+                        onClick={() => handleAddToSection("languages")}
+                        variant="outline"
+                        className="w-full"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Language
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </div>
 
         {/* AI Improvements Panel - Only show for upload flow */}
@@ -2512,7 +3687,7 @@ export default function EnhancedResume() {
                   AI Improvements Applied
                 </CardTitle>
                 <CardDescription>
-                  Here's what we enhanced in your resume
+                  Here&apos;s what we enhanced in your resume
                 </CardDescription>
               </CardHeader>
 
@@ -2560,13 +3735,23 @@ export default function EnhancedResume() {
                 </h2>
                 <div className="flex items-center gap-2">
                   <Button
-                    variant="outline"
+                    variant="default"
                     size="sm"
                     onClick={handleDownload}
-                    className="gap-2"
+                    disabled={isGenerating}
+                    className="gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
                   >
-                    <Download className="h-4 w-4" />
-                    Download
+                    {isGenerating ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        <Download className="h-4 w-4" />
+                        Download PDF
+                      </>
+                    )}
                   </Button>
                   <button
                     onClick={() => setShowPreview(false)}
@@ -2591,7 +3776,13 @@ export default function EnhancedResume() {
                     }}
                   >
                     <div className="h-full overflow-y-auto overflow-x-hidden">
-                      {renderTemplate(true)}
+                      <PDFPreview
+                        key={JSON.stringify(resumeData)}
+                        templateId={selectedTemplate}
+                        width="100%"
+                        height="100%"
+                        data={resumeData}
+                      />
                     </div>
                   </div>
                 </div>
@@ -2606,8 +3797,14 @@ export default function EnhancedResume() {
 
 // Resume Section Component
 const ResumeSection = ({ title, icon, isCompleted, onClick, onAdd }) => {
+  const [isHovered, setIsHovered] = React.useState(false);
+
   return (
-    <div className="group">
+    <div
+      className="mb-6"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div
         onClick={onClick}
         className="flex items-center gap-2 sm:gap-3 p-3 md:p-2 lg:p-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 cursor-pointer transition-all duration-200"
@@ -2645,7 +3842,9 @@ const ResumeSection = ({ title, icon, isCompleted, onClick, onAdd }) => {
             e.stopPropagation();
             onAdd();
           }}
-          className="w-full mt-1 flex items-center justify-center gap-1 p-2 md:p-1 text-xs text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors opacity-0 group-hover:opacity-100"
+          className={`w-full mt-1 flex items-center justify-center gap-1 p-2 md:p-1 text-xs text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-all duration-200 ${
+            isHovered ? 'opacity-100' : 'opacity-0'
+          }`}
         >
           <Plus className="h-3 w-3" />
           <span className="hidden sm:inline">
@@ -2664,3 +3863,11 @@ const ResumeSection = ({ title, icon, isCompleted, onClick, onAdd }) => {
     </div>
   );
 };
+
+export default function EnhancedResume() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <EnhancedResumeContent />
+    </Suspense>
+  );
+}

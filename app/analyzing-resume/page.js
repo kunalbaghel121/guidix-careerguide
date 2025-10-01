@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Brain, Zap, Target, CheckCircle, Sparkles, FileText, TrendingUp } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 
-export default function AnalyzingResumePage() {
+function AnalyzingResumePageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [progress, setProgress] = useState(0);
@@ -15,7 +15,7 @@ export default function AnalyzingResumePage() {
   const education = searchParams.get("education") || "";
   const filename = searchParams.get("filename") || "your-resume.pdf";
 
-  const analysisSteps = [
+  const analysisSteps = useMemo(() => [
     {
       icon: <FileText className="h-6 w-6" />,
       title: "Reading your resume...",
@@ -46,7 +46,7 @@ export default function AnalyzingResumePage() {
       subtitle: "Creating your review",
       duration: 800
     }
-  ];
+  ], []);
 
   useEffect(() => {
     let totalDuration = 0;
@@ -80,7 +80,7 @@ export default function AnalyzingResumePage() {
       intervals.forEach(clearTimeout);
       clearInterval(progressTimer);
     };
-  }, [router, field, education, filename]);
+  }, [router, field, education, filename, analysisSteps]);
 
   return (
     <DashboardLayout>
@@ -245,5 +245,13 @@ export default function AnalyzingResumePage() {
       `}</style>
       </div>
     </DashboardLayout>
+  );
+}
+
+export default function AnalyzingResumePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AnalyzingResumePageContent />
+    </Suspense>
   );
 }

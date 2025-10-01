@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 
-export default function ResumeReviewPage() {
+function ResumeReviewPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [animationComplete, setAnimationComplete] = useState(false);
@@ -181,7 +181,7 @@ export default function ResumeReviewPage() {
                 Strengths 💪
               </CardTitle>
               <CardDescription className="text-xs">
-                What's working well in your resume
+                What&apos;s working well in your resume
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
@@ -189,7 +189,7 @@ export default function ResumeReviewPage() {
                 <div
                   key={index}
                   className={`p-2 bg-white rounded-lg border border-green-200 transition-all duration-500 ${
-                    animationComplete ? 'animate-fade-in' : 'opacity-0'
+                    animationComplete ? 'animate-pulse' : 'opacity-0'
                   }`}
                   style={{ animationDelay: `${index * 200}ms` }}
                 >
@@ -226,7 +226,7 @@ export default function ResumeReviewPage() {
                 <div
                   key={index}
                   className={`p-2 bg-white rounded-lg border border-orange-200 transition-all duration-500 ${
-                    animationComplete ? 'animate-fade-in' : 'opacity-0'
+                    animationComplete ? 'animate-pulse' : 'opacity-0'
                   }`}
                   style={{ animationDelay: `${(index + 3) * 200}ms` }}
                 >
@@ -340,7 +340,7 @@ export default function ResumeReviewPage() {
             transform: translateY(0);
           }
         }
-        .animate-fade-in {
+        .animate-pulse {
           animation: fade-in 0.6s ease-out forwards;
         }
         .animation-delay-2000 {
@@ -352,5 +352,13 @@ export default function ResumeReviewPage() {
       `}</style>
       </div>
     </DashboardLayout>
+  );
+}
+
+export default function ResumeReviewPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResumeReviewPageContent />
+    </Suspense>
   );
 }

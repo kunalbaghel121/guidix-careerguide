@@ -222,11 +222,11 @@
 }
 
 .sectionButton {
-  @apply p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 text-left group;
+  @apply p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 text-left;
 }
 
 .sectionButtonTitle {
-  @apply font-semibold text-gray-900 mb-2 group-hover:text-blue-700;
+  @apply font-semibold text-gray-900 mb-2 hover:text-blue-700;
 }
 
 .linkedinInput {
@@ -255,11 +255,11 @@
 }
 
 .categoryButton {
-  @apply p-4 border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-all duration-200 text-left group;
+  @apply p-4 border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-all duration-200 text-left;
 }
 
 .categoryButtonTitle {
-  @apply font-semibold text-gray-900 mb-2 group-hover:text-orange-700;
+  @apply font-semibold text-gray-900 mb-2 hover:text-orange-700;
 }
 
 .mockInterviewInput {

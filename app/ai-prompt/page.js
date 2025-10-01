@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import {
   ArrowRight,
   ArrowLeft,
@@ -26,7 +26,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import styles from "@/app/styles/pages/ai-prompt.module.css";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 
-export default function AIPromptInput() {
+function AIPromptInputContent() {
   const [prompt, setPrompt] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -525,7 +525,7 @@ export default function AIPromptInput() {
                   <div
                     key={index}
                     onClick={() => handleSamplePrompt(example.prompt)}
-                    className="p-4 border rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md group"
+                    className="p-4 border rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md"
                     style={{ borderColor: "var(--neutral-medium-light)" }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.borderColor =
@@ -553,7 +553,7 @@ export default function AIPromptInput() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div
-                          className="font-semibold text-sm mb-2 group-hover:text-blue-700"
+                          className="font-semibold text-sm mb-2 hover:text-blue-700"
                           style={{ color: "var(--neutral-darkest)" }}
                         >
                           {example.title}
@@ -635,5 +635,13 @@ export default function AIPromptInput() {
         </div>
       </div>
     </DashboardLayout>
+  );
+}
+
+export default function AIPromptInput() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AIPromptInputContent />
+    </Suspense>
   );
 }

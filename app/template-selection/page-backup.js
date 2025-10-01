@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowRight,
@@ -296,7 +296,8 @@ export default function TemplateSelection() {
 
   return (
     <DashboardLayout>
-      <style jsx>{`
+      <div>
+        <style jsx>{`
         @keyframes fadeIn {
           from {
             opacity: 0;
@@ -345,7 +346,7 @@ export default function TemplateSelection() {
             transform: translateX(100%);
           }
         }
-        .animate-fade-in {
+        .animate-pulse {
           animation: fadeIn 0.6s ease-out;
         }
         .animate-slide-in-left {
@@ -365,7 +366,7 @@ export default function TemplateSelection() {
           overflow: hidden;
         }
         .shimmer-effect::before {
-          content: "";
+          content: ";
           position: absolute;
           top: 0;
           left: 0;
@@ -2512,7 +2513,7 @@ export default function TemplateSelection() {
                                 </span>
                                 <span className="inline-flex items-center gap-1 bg-gray-50 text-gray-700 text-xs font-medium px-2 py-1 rounded-md">
                                   {template.columns} Column
-                                  {template.columns > 1 ? "s" : ""}
+                                  {template.columns > 1 ? "s" : "}
                                 </span>
                                 <span className="inline-flex items-center gap-1 bg-green-50 text-green-700 text-xs font-medium px-2 py-1 rounded-md">
                                   {template.style.charAt(0).toUpperCase() +
@@ -2545,12 +2546,9 @@ export default function TemplateSelection() {
                 </div>
               </div>
             </div>
-
-            {/* Premium Progress Indicator */}
           </div>
         </div>
 
-        {/* Navigation Buttons */}
         {/* <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-8 lg:mt-12">
           <Button
             variant="outline"
@@ -2589,6 +2587,7 @@ export default function TemplateSelection() {
             <ArrowRight className="h-4 w-4 lg:h-5 lg:w-5" />
           </Button>
         </div> */}
+      </div>
       </div>
     </DashboardLayout>
   );

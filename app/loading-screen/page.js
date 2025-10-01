@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, FileText, Brain, Sparkles, CheckCircle } from "lucide-react";
 import styles from "@/app/styles/pages/loading-screen.module.css";
 
-export default function LoadingScreen() {
+function LoadingScreenContent() {
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const router = useRouter();
@@ -256,7 +256,7 @@ export default function LoadingScreen() {
                         <div className="h-full rounded-full" style={{width: `${Math.min(100, ((index + (isCompleted ? 1 : 0)) / loadingMessages.length) * 100)}%`, background: isCompleted || isCurrent ? 'linear-gradient(90deg, #2370FF, #79C7FF)' : '#E5E7EB'}}></div>
                       </div>
                       {isCompleted && (
-                        <div className="animate-fade-in">
+                        <div className="animate-pulse">
                           <div className="w-6 h-6 rounded-lg flex items-center justify-center shadow-lg text-white" style={{backgroundColor: '#10B981'}}>
                             <CheckCircle className="h-4 w-4" />
                           </div>
@@ -276,5 +276,13 @@ export default function LoadingScreen() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoadingScreen() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoadingScreenContent />
+    </Suspense>
   );
 }

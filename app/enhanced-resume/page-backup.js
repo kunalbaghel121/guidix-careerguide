@@ -405,12 +405,12 @@ export default function EnhancedResume() {
       });
     }
     setEditingField(null);
-    setEditingValue("");
+    setEditingValue(");
   };
 
   const handleCancelEdit = () => {
     setEditingField(null);
-    setEditingValue("");
+    setEditingValue(");
   };
 
   const handlePhotoUpload = (event) => {
@@ -533,8 +533,8 @@ export default function EnhancedResume() {
         title="Click to edit"
       >
         <span className="flex-1">{value || placeholder}</span>
-        <Edit3 className="h-3 w-3 opacity-0 group-hover:opacity-70 transition-opacity text-blue-600 flex-shrink-0" />
-        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">
+        <Edit3 className="h-3 w-3 opacity-0 transition-opacity text-blue-600 flex-shrink-0" />
+        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1 rounded-md opacity-0 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">
           Click to edit
           <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
         </div>
@@ -610,7 +610,7 @@ export default function EnhancedResume() {
             </div>
             <button
               onClick={() => removeAchievement(index)}
-              className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded transition-all"
+              className="opacity-0 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded transition-all"
               title="Remove achievement"
             >
               <X className="h-3 w-3" />
@@ -1417,7 +1417,7 @@ export default function EnhancedResume() {
                   {templateData.skills.slice(0, 8).map((skill, index) => (
                     <div
                       key={index}
-                      className="break-words flex items-center gap-1 group"
+                      className="break-words flex items-center gap-1"
                     >
                       •{" "}
                       <EditableText
@@ -1443,7 +1443,7 @@ export default function EnhancedResume() {
                             skills: newSkills,
                           }));
                         }}
-                        className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300"
+                        className="opacity-0 text-red-400 hover:text-red-300"
                       >
                         <X className="h-2 w-2" />
                       </button>
@@ -1581,7 +1581,7 @@ export default function EnhancedResume() {
                           onClick={() =>
                             handleRemoveFromSection("experience", exp.id)
                           }
-                          className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded ml-2 transition-all"
+                          className="opacity-0 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded ml-2 transition-all"
                           title="Remove experience"
                         >
                           <X className="h-3 w-3" />
@@ -1682,7 +1682,7 @@ export default function EnhancedResume() {
                               onClick={() =>
                                 handleRemoveFromSection("education", edu.id)
                               }
-                              className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded ml-2 transition-all"
+                              className="opacity-0 text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded ml-2 transition-all"
                               title="Remove education"
                             >
                               <X className="h-3 w-3" />
@@ -2462,7 +2462,7 @@ export default function EnhancedResume() {
                   AI Improvements Applied
                 </CardTitle>
                 <CardDescription>
-                  Here's what we enhanced in your resume
+                  Here&apos;s what we enhanced in your resume
                 </CardDescription>
               </CardHeader>
 
@@ -2557,7 +2557,7 @@ export default function EnhancedResume() {
 // Resume Section Component
 const ResumeSection = ({ title, icon, isCompleted, onClick, onAdd }) => {
   return (
-    <div className="group">
+    <div className="mb-6">
       <div
         onClick={onClick}
         className="flex items-center gap-2 sm:gap-3 p-3 md:p-2 lg:p-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 cursor-pointer transition-all duration-200"

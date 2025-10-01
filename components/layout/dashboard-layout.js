@@ -206,10 +206,10 @@ export function DashboardLayout({ children }) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header - Full Width */}
-      <header className="bg-gray-50 border-b border-gray-200 px-6 py-4 sticky top-0 z-30 h-16 w-full">
+      <header className="bg-gray-50 border-b border-gray-200 px-4 sm:px-6 py-4 sticky top-0 z-30 h-16 w-full">
         <div className="flex items-center justify-between w-full h-full">
           {/* Left: Logo */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-3">
             <button
               onClick={() => setSidebarOpen(true)}
               className="p-2 rounded-lg hover:bg-gray-100 transition-colors lg:hidden"
@@ -231,10 +231,10 @@ export function DashboardLayout({ children }) {
 
             {/* Logo */}
             <div className="flex items-center space-x-2">
-              <div className="w-7 h-7 bg-blue-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-sm">G</span>
+              <div className="w-6 h-6 sm:w-7 sm:h-7 bg-blue-600 rounded-full flex items-center justify-center">
+                <span className="text-white font-bold text-xs sm:text-sm">G</span>
               </div>
-              <div>
+              <div className="hidden sm:block">
                 <h1 className="font-semibold text-gray-900 text-sm">Guidix</h1>
                 <p className="text-xs text-blue-600 leading-tight">
                   AI Career Hub
@@ -243,8 +243,8 @@ export function DashboardLayout({ children }) {
             </div>
           </div>
 
-          {/* Center: Career Progress */}
-          <div className="flex items-center space-x-2">
+          {/* Center: Career Progress - Hidden on small screens */}
+          <div className="hidden md:flex items-center space-x-2">
             <span className="text-sm text-blue-600 font-medium">
               Career Progress 68%
             </span>
@@ -254,9 +254,9 @@ export function DashboardLayout({ children }) {
           </div>
 
           {/* Right: Upgrade Button and User */}
-          <div className="flex items-center space-x-4">
-            {/* Upgrade Button */}
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-md text-sm font-medium">
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            {/* Upgrade Button - Responsive text */}
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-2 sm:px-4 py-1.5 rounded-md text-xs sm:text-sm font-medium">
               <svg
                 className="w-3 h-3 inline mr-1"
                 fill="currentColor"
@@ -264,14 +264,15 @@ export function DashboardLayout({ children }) {
               >
                 <path d="M7 14l5-5 5 5z" />
               </svg>
-              Upgrade Now
+              <span className="hidden sm:inline">Upgrade Now</span>
+              <span className="sm:hidden">Upgrade</span>
             </button>
 
             {/* User Profile */}
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-full overflow-hidden bg-orange-500 flex items-center justify-center">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden bg-orange-500 flex items-center justify-center">
                 <svg
-                  className="w-5 h-5 text-white"
+                  className="w-4 h-4 sm:w-5 sm:h-5 text-white"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -312,9 +313,9 @@ export function DashboardLayout({ children }) {
       <div
         className={`fixed z-50 bg-gray-50 border-r border-gray-200 shadow-sm transition-all duration-300 flex flex-col ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 ${collapsed ? "lg:w-16" : "lg:w-64"} ${
+        } lg:translate-x-0 ${collapsed ? "lg:w-16" : "lg:w-60"} ${
           // Mobile: full height and width
-          "top-0 left-0 h-screen w-64 lg:top-16 lg:h-[calc(100vh-4rem)]"
+          "top-0 left-0 h-screen w-60 lg:top-16 lg:h-[calc(100vh-4rem)]"
         }`}
       >
         {/* Mobile Header with Logo - Only visible on mobile when sidebar is open */}
@@ -325,7 +326,7 @@ export function DashboardLayout({ children }) {
                 <span className="text-white font-bold text-sm">G</span>
               </div>
               <div>
-                <h1 className="font-semibold text-gray-900 text-sm">Guidix</h1>
+                <h1 className="font-bold text-gray-900 text-sm">Guidix</h1>
                 <p className="text-xs text-blue-600 leading-tight">
                   AI Career Hub
                 </p>
@@ -353,32 +354,36 @@ export function DashboardLayout({ children }) {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4 overflow-y-auto">
+        <nav className="px-4 sm:px-6 pt-4 overflow-y-auto flex-1">
           <ul className="space-y-1">
             {sidebarItems.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center px-3 py-2.5 rounded-lg transition-all duration-200 group ${
+                  className={`flex items-center px-2 py-2 rounded-lg transition-all duration-200 ${
                     isActive(item.href)
-                      ? "bg-linear-to-bl from-[#679CFF] to-[#2370FF] text-white"
+                      ? "bg-gradient-to-r from-[#679CFF] to-[#2370FF] text-white"
                       : "text-gray-700 hover:bg-white hover:text-gray-900"
                   }`}
                   title={collapsed ? item.title : undefined}
                 >
-                  <div className="flex items-center justify-between w-full">
-                    <div className="flex items-center space-x-3">
+                  <div className={`flex items-center w-full ${
+                    collapsed ? "justify-center" : "justify-between"
+                  }`}>
+                    <div className={`flex items-center ${
+                      collapsed ? "" : "space-x-3"
+                    }`}>
                       <span
-                        className={`${
-                          isActive(item.href) ? "text-white" : "text-gray-600"
+                        className={`flex-shrink-0 ${
+                          isActive(item.href) ? "text-white" : "text-black"
                         }`}
                       >
                         {item.icon}
                       </span>
                       {!collapsed && (
                         <span
-                          className={`font-medium text-sm ${
+                          className={`font-medium text-xs ml-3 ${
                             isActive(item.href) ? "text-white" : ""
                           }`}
                         >
@@ -388,7 +393,7 @@ export function DashboardLayout({ children }) {
                     </div>
                     {!collapsed && (
                       <svg
-                        className={`w-4 h-4 ${
+                        className={`w-4 h-4 flex-shrink-0 ${
                           isActive(item.href) ? "text-white" : "text-gray-400"
                         }`}
                         fill="none"
@@ -411,27 +416,33 @@ export function DashboardLayout({ children }) {
         </nav>
 
         {/* Footer Items */}
-        <div className="mt-auto p-4 border-t border-gray-200">
+        <div className="mt-auto px-4 sm:px-6 pt-4 border-t border-gray-200">
           <ul className="space-y-1 mb-3">
             {footerItems.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="flex items-center px-3 py-2.5 rounded-lg text-gray-700 hover:bg-white hover:text-gray-900 transition-all duration-200"
+                  className="flex items-center px-2 py-1.5 rounded-lg text-gray-700 hover:bg-white hover:text-gray-900 transition-all duration-200"
                   title={collapsed ? item.title : undefined}
                 >
-                  <div className="flex items-center justify-between w-full">
-                    <div className="flex items-center space-x-3">
-                      <span className="text-gray-600">{item.icon}</span>
+                  <div className={`flex items-center w-full ${
+                    collapsed ? "justify-center" : "justify-between"
+                  }`}>
+                    <div className={`flex items-center ${
+                      collapsed ? "" : "space-x-3"
+                    }`}>
+                      <span className={`text-gray-600 flex-shrink-0 ${
+                        collapsed ? "" : ""
+                      }`}>{item.icon}</span>
                       {!collapsed && (
-                        <span className="font-medium text-sm">
+                        <span className="font-medium text-xs ml-3">
                           {item.title}
                         </span>
                       )}
                     </div>
                     {!collapsed && (
                       <svg
-                        className="w-4 h-4 text-gray-400"
+                        className="w-4 h-4 text-gray-400 flex-shrink-0"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -454,10 +465,10 @@ export function DashboardLayout({ children }) {
           {!collapsed ? (
             <button
               onClick={() => setCollapsed(true)}
-              className="hidden lg:flex items-center space-x-3 w-full px-3 py-2.5 text-gray-700 hover:bg-white rounded-lg transition-colors"
+              className="hidden lg:flex items-center space-x-3 w-full px-2 py-2.5 text-gray-700 hover:bg-white rounded-lg transition-colors mb-4"
             >
               <svg
-                className="w-4 h-4"
+                className="w-4 h-4 flex-shrink-0"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -469,12 +480,12 @@ export function DashboardLayout({ children }) {
                   d="M11 19l-7-7 7-7m8 14l-7-7 7-7"
                 />
               </svg>
-              <span className="text-sm font-medium">Collapse</span>
+              <span className="text-xs font-medium">Collapse</span>
             </button>
           ) : (
             <button
               onClick={() => setCollapsed(false)}
-              className="hidden lg:flex items-center justify-center w-full px-3 py-2.5 text-gray-700 hover:bg-white rounded-lg transition-colors"
+              className="hidden lg:flex items-center justify-center w-full px-2 py-2.5 text-gray-700 hover:bg-white rounded-lg transition-colors mb-4"
               title="Expand sidebar"
             >
               <svg
@@ -497,12 +508,12 @@ export function DashboardLayout({ children }) {
 
       {/* Main Content */}
       <div
-        className={`transition-all duration-300 ${
-          collapsed ? "lg:ml-16" : "lg:ml-64"
-        } `}
+        className={`transition-all duration-300 lg:pt-0 ${
+          collapsed ? "lg:ml-16" : "lg:ml-60"
+        }`}
       >
         {/* Page Content */}
-        <main className="p-4 lg:p-6">{children}</main>
+        <main className="p-4 sm:p-6 min-h-[calc(100vh-4rem)] lg:min-h-screen">{children}</main>
       </div>
     </div>
   );

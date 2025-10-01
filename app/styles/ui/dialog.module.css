@@ -6,7 +6,7 @@
 }
 
 .overlayAnimated {
-  @apply animate-fade-in;
+  @apply animate-pulse;
 }
 
 .dialog {
@@ -14,7 +14,7 @@
 }
 
 .dialogAnimated {
-  @apply animate-fade-in;
+  @apply animate-pulse;
 }
 
 .dialogLarge {
@@ -139,6 +139,6 @@
   }
 }
 
-.animate-fade-in {
+.animate-pulse {
   animation: fadeIn 0.2s ease-out;
 }

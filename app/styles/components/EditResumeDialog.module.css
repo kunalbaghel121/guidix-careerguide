@@ -6,7 +6,7 @@
 }
 
 .dialog {
-  @apply bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-screen overflow-y-auto animate-fade-in;
+  @apply bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-screen overflow-y-auto animate-pulse;
 }
 
 .header {

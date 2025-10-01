@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
@@ -145,7 +145,7 @@ const engineeringFields = [
   }
 ];
 
-export default function FieldSelectionPage() {
+function FieldSelectionPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedField, setSelectedField] = useState("cse");
@@ -306,5 +306,13 @@ export default function FieldSelectionPage() {
         </div>
       </div>
     </DashboardLayout>
+  );
+}
+
+export default function FieldSelectionPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <FieldSelectionPageContent />
+    </Suspense>
   );
 }

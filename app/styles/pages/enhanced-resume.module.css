@@ -7,11 +7,11 @@
 }
 
 .mainContent {
-  @apply max-w-8xl mx-auto p-4 py-8 lg:py-12;
+  @apply max-w-7xl mx-auto p-4 py-8 lg:py-12;
 }
 
 .header {
-  @apply flex items-center justify-between mb-8 lg:mb-12 animate-fade-in;
+  @apply flex items-center justify-between mb-8 lg:mb-12 animate-pulse;
 }
 
 .backButton {
@@ -33,7 +33,7 @@
 }
 
 .resumeCard {
-  @apply bg-white rounded-2xl border-2 shadow-lg animate-fade-in;
+  @apply bg-white rounded-2xl border-2 shadow-lg animate-pulse;
   border-color: rgba(35, 112, 255, 0.3);
 }
 
@@ -91,11 +91,11 @@
 }
 
 .editButton {
-  @apply absolute -right-12 top-0 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl;
+  @apply absolute -right-12 top-0 opacity-0 transition-opacity rounded-xl;
 }
 
 .titleSection {
-  @apply group relative mt-4;
+  @apply relative mt-4;
 }
 
 .titleInput {
@@ -144,7 +144,7 @@
 }
 
 .sectionActions {
-  @apply flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity;
+  @apply flex gap-2 opacity-0 transition-opacity;
 }
 
 .sectionButton {
@@ -282,7 +282,7 @@
 }
 
 .callToAction {
-  @apply mt-12 text-center animate-fade-in;
+  @apply mt-12 text-center animate-pulse;
 }
 
 .ctaCard {
